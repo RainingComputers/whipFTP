@@ -1,9 +1,9 @@
 <div style="text-align:center">
-    <img style="filter: drop-shadow(0px 0px 5px grey);" src ="https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Screenshot.png" />
+    <img src ="https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Screenshot.png" />
 </div>
 
 # About
-### whipFTP is a FTP/SFTP client written in python using the tkinter GUI toolkit. Can upload, download, create, rename, copy, move and search files/folders.
+whipFTP is a FTP/SFTP client written in python using the tkinter GUI toolkit. Can upload, download, create, rename, copy, move and search files/folders.
 #### Currently supported platforms:
 + Linux
 + Windows
