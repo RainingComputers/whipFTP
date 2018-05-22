@@ -9,6 +9,6 @@ pip.main(['install', 'paramiko'])
 pip.main(['install', 'psutil'])
 
 if(platform.system() == 'Windows'):
-    pip.main(['install', 'win32api'])
+    pip.main(['install', 'pypiwin32'])
 else:
-    print('No need to install win32api.')
+    print('No need to install pypiwin32.')
