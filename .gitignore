@@ -1,0 +1,4 @@
+TODO.txt
+*.pyc
+.vscode
+.DS_Store
