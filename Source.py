@@ -1104,15 +1104,19 @@ class app:
 
 
 #Program entry point
-#Queue for handling threads
-if(platform.system() is 'Windows'):
-    os.environ['TCLLIBPATH'] = os.getcwd() + '\\Theme\\'
-else:    
-    os.environ['TCLLIBPATH'] = os.getcwd() + '/Theme/'
-global thread_request_queue
-thread_request_queue = queue.Queue()
 #Create root window
 root = Tk()
+#Include the theme
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+if(platform.system() is 'Windows'):
+    tcllibpath = (dname+'\\Theme')
+else:
+    tcllibpath = (dname+'/Theme')
+root.tk.eval('lappend auto_path {%s}' % tcllibpath)
+#Queue for handling threads
+global thread_request_queue
+thread_request_queue = queue.Queue()
 #Initilize the app
 whipFTP = app(root)
 #Initialize mainloop
