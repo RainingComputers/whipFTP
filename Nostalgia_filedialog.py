@@ -703,7 +703,10 @@ class open_file_dialog:
             common_file_list = []
             for home_folders in ['Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']:
                 common_file_list.append(os.getcwd()+'\\'+home_folders)
-            for drive in psutil.disk_partitions():
+           #See SO link: https://stackoverflow.com/questions/827371/is-there-a-way-to-list-all-the-available-drive-letters-in-python
+            drives = win32api.GetLogicalDriveStrings()
+            drives = drives.split('\000')[:-1]
+            for drive in drives:
                 common_file_list.append(drive)
             self.directory_text['values'] = common_file_list
 
