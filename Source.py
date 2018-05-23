@@ -254,12 +254,10 @@ class app:
         self.master.bind('<Control-x>', self.clipboard_cut)
         self.master.bind('<Control-X>', self.clipboard_cut)
         self.master.bind('<Control-v>', self.clipboard_paste_thread_create)
-        self.master.bind('<Control-V>', self.clipboard_paste_thread_create)
+        self.master.bind('<Control-V>', self.clipboard_paste_thread_create) 
         self.master.bind('<Delete>', self.delete_window)
 
        #Bind events for canvas, this part of code tells what some of the functions do
-        self.canvas.bind('<Control-h>', self.toggle_hidden_files)
-        self.canvas.bind('<Control-H>', self.toggle_hidden_files)
         self.canvas.bind('<Button-4>', self.on_mouse_wheel)
         self.canvas.bind('<Button-5>', self.on_mouse_wheel)     
         self.canvas.bind('<MouseWheel>', self.on_mouse_wheel)
