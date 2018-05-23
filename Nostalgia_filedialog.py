@@ -694,14 +694,14 @@ class open_file_dialog:
        #Add all partitions to the list
         if(platform.system() == 'Linux' or platform.system() == 'FreeBSD'):
             common_file_list = []
-            for home_folders in ['Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']:
+            for home_folders in ['', 'Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']:
                 common_file_list.append(os.getcwd()+'/'+home_folders)
             for drive in psutil.disk_partitions():
                 common_file_list.append(drive.mountpoint)
             self.directory_text['values'] = common_file_list
         elif(platform.system() == 'Windows'):
             common_file_list = []
-            for home_folders in ['Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']:
+            for home_folders in ['', 'Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']:
                 common_file_list.append(os.getcwd()+'\\'+home_folders)
            #See SO link: https://stackoverflow.com/questions/827371/is-there-a-way-to-list-all-the-available-drive-letters-in-python
             drives = win32api.GetLogicalDriveStrings()
