@@ -15,8 +15,10 @@ from tkinter import filedialog
 from tkinter import PhotoImage
 from FTP_controller import *
 from SFTP_controller import *
+from TkDND_wrapper import *
 import Nostalgia_button as NButton
 import Nostalgia_filedialog as Nfiledialog
+
 
 class app:
     def __init__(self, master):
@@ -115,6 +117,11 @@ class app:
         self.pad_frame.pack(fill = BOTH, expand = True)       
         self.canvas_frame = ttk.Frame(self.pad_frame, relief = 'groove', border = 1)
         self.canvas_frame.pack(fill = BOTH, expand = True, padx = 5, pady = 3)
+
+       #Code for handling file/folder drag and drop, uses TkDND_wrapper.py
+       #See SO link: https://stackoverflow.com/questions/14267900/python-drag-and-drop-explorer-files-to-tkinter-entry-widget
+        dnd = TkDND(master)
+        dnd.bindtarget(self.canvas_frame, self.handle_dnd, 'text/uri-list')
 
        #Load all icons
         self.connect_icon = PhotoImage(file='Icons/connect_big.png')
@@ -562,7 +569,11 @@ class app:
                     self.selected_file_indices[file_index] = self.canvas.create_rectangle(i*self.cell_width+2, j*35+2, (i+1)*self.cell_width-1, (j+1)*35-1, fill = '', outline = 'Red')
        #Tell how many files are present and how many are selected in the status bar
         self.update_status(event, 'Total no. of items: ' + str(len(self.file_list)) + '   Selected: ' + str(len(self.selected_file_indices)))
-                                 
+
+    def handle_dnd(self, event):
+        print(event.data)
+        print(type(event.data))
+
     def deselect_everything(self):
            #Delete selected file dictionary
             self.selected_file_indices.clear()
@@ -1108,10 +1119,14 @@ root = Tk()
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 if(platform.system() is 'Windows'):
-    tcllibpath = (dname+'\\Theme')
+    arc_theme_path = (dname+'\\Theme')
+    tkdnd_path = (dname+'\\TkDND')
 else:
-    tcllibpath = (dname+'/Theme')
-root.tk.eval('lappend auto_path {%s}' % tcllibpath)
+    arc_theme_path = (dname+'/Theme')
+    tkdnd_path = (dname+'/TkDND')
+root.tk.eval('lappend auto_path {%s}' % arc_theme_path)
+root.tk.eval('lappend auto_path {%s}' % tkdnd_path)
+root.tk.eval('package require tkdnd')
 #Queue for handling threads
 global thread_request_queue
 thread_request_queue = queue.Queue()
