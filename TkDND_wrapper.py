@@ -1,4 +1,9 @@
-#This wrapper was copied from SO post: https://stackoverflow.com/questions/14267900/python-drag-and-drop-explorer-files-to-tkinter-entry-widget/14283431#14283431
+'''
+    This wrapper was copied from SO post: https://stackoverflow.com/questions/14267900/python-drag-and-drop-explorer-files-to-tkinter-entry-widget/14283431#14283431 and
+    mailing list: https://mail.python.org/pipermail/tkinter-discuss/2005-July/000476.html
+    
+    parse_uri_list(self, uri_list) method was added by the author
+'''
 
 import os
 import tkinter
@@ -87,3 +92,22 @@ class TkDND(object):
             setattr(event, name, try_int(getattr(event, name)))
 
         return (event, )
+
+    def parse_uri_list(self, uri_list):
+        space_in_path = False
+        unprocessed_file_list = uri_list.split(' ')
+        file_list = []
+        processed_path = ''
+        for item in unprocessed_file_list:
+            if('{' in item):
+                space_in_path = True
+                processed_path = item.replace('{', '')
+            elif('}' in item):
+                space_in_path = False
+                processed_path += ' ' + item.replace('}', '')
+                file_list.append(processed_path)
+            elif(space_in_path): 
+                processed_path+= ' ' + item
+            else:
+                file_list.append(item)
+        return file_list

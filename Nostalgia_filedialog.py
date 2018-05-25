@@ -1,4 +1,6 @@
-#Custom file dialogs for whipFTP, Copyrights Vishnu Shankar B,
+'''
+    Custom file dialogs for whipFTP, Copyrights Vishnu Shankar B,
+'''
 
 import os
 from os.path import expanduser

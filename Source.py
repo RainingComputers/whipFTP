@@ -1,4 +1,10 @@
-#whipFTP, Copyrights Vishnu Shankar B,
+'''
+    whipFTP, Copyrights Vishnu Shankar B
+
+    List of Tk extensions used:
+        Arc theme (modified to red color and more styles were added) : https://wiki.tcl.tk/48689
+        TkDND : https://sourceforge.net/projects/tkdnd/
+'''
 
 import os
 from os.path import expanduser
@@ -8,6 +14,7 @@ import sys
 import platform
 import threading
 import queue
+import re
 from tkinter import *
 from tkinter import font
 from tkinter import ttk
@@ -44,6 +51,9 @@ class app:
 
        #A dictionary to store indices and highlight rectangle references of selected files
         self.selected_file_indices = {}
+
+       #A list to hold files that have been droped into the window
+        self.dnd_file_list = []
 
        #Things in the clipboard
         self.cut = False
@@ -120,8 +130,8 @@ class app:
 
        #Code for handling file/folder drag and drop, uses TkDND_wrapper.py
        #See SO link: https://stackoverflow.com/questions/14267900/python-drag-and-drop-explorer-files-to-tkinter-entry-widget
-        dnd = TkDND(master)
-        dnd.bindtarget(self.canvas_frame, self.handle_dnd, 'text/uri-list')
+        self.dnd = TkDND(master)
+        self.dnd.bindtarget(self.canvas_frame, self.handle_dnd, 'text/uri-list')
 
        #Load all icons
         self.connect_icon = PhotoImage(file='Icons/connect_big.png')
@@ -571,8 +581,9 @@ class app:
         self.update_status(event, 'Total no. of items: ' + str(len(self.file_list)) + '   Selected: ' + str(len(self.selected_file_indices)))
 
     def handle_dnd(self, event):
-        print(event.data)
-        print(type(event.data))
+        del self.dnd_file_list[:]
+        self.dnd_file_list = self.dnd.parse_uri_list(event.data)
+        self.upload_thread_dnd()
 
     def deselect_everything(self):
            #Delete selected file dictionary
@@ -785,6 +796,40 @@ class app:
         thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
         thread_request_queue.put(lambda:self.console_window.enable_close_button())
 
+    def upload_thread_dnd(self):
+       #Create console/terminal window
+        self.create_progress_window()
+       #Set status
+        self.update_status('Uploading file(s)...')
+       #start thread
+        self.thread =  threading.Thread(target = self.upload_dnd, args = (self.ftpController, self.dnd_file_list))
+        self.thread.daemon = True
+        self.thread.start()
+        self.process_thread_requests()
+        
+    def upload_dnd(self, ftpController, dnd_file_list):
+       #Thread safe progress function
+        def progress(file_name, status):
+            thread_request_queue.put(lambda:self.progress(file_name, status))
+       #Thread safe replace function
+        def replace(file_name, status):
+            thread_request_queue.put(lambda:self.thread_safe_replace(file_name, status))
+            thread_request_queue.join()
+            with self.thread_lock:
+                return self.replace_flag
+       #Loop through selected items and upload them         
+        for file in dnd_file_list:
+            os.chdir('/'.join(file.split('/')[:-1]))
+            file = ''.join(file.split('/')[-1:])
+            if(isfile(file)):
+                ftpController.upload_file(file, os.path.getsize(file), progress, replace)
+            else:
+                ftpController.upload_dir(file, progress, replace)
+       #Update file list and redraw icons
+        thread_request_queue.put(lambda:self.update_file_list())
+        thread_request_queue.put(lambda:self.update_status(' '))
+        thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
+        thread_request_queue.put(lambda:self.console_window.enable_close_button())        
 
 
     def download_window(self):
