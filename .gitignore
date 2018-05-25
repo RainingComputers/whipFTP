@@ -2,3 +2,4 @@ TODO.txt
 *.pyc
 .vscode
 .DS_Store
+copy_temps
