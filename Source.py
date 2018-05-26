@@ -1165,7 +1165,7 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 if(platform.system() is 'Windows'):
     arc_theme_path = (dname+'\\Theme')
-    tkdnd_path = (dname+'\\TkDND_windows')
+    tkdnd_path = (dname+'\\TkDND')
 else:
     arc_theme_path = (dname+'/Theme')
     tkdnd_path = (dname+'/TkDND')
