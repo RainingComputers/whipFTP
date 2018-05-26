@@ -16,7 +16,6 @@ import sys
 import platform
 import threading
 import queue
-import re
 from tkinter import *
 from tkinter import font
 from tkinter import ttk
