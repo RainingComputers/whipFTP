@@ -616,13 +616,12 @@ class app:
        #Delete selected file list
         self.selected_file_indices.clear()
        #Show message box
-        if(self.current_file_index >= 0 and self.current_file_index < len(self.file_list) and self.mouse_x < self.max_width):
-            try:
-                self.ftpController.ftp.cwd(path)
-                self.update_file_list()       
-            except:
-                self.update_status_red('Unable to open directory, try reconnecting.')
-                self.lock_status_bar()       
+        try:
+            self.ftpController.ftp.cwd(path)
+            self.update_file_list()       
+        except:
+            self.update_status_red('Unable to open directory, try reconnecting.')
+            self.lock_status_bar()       
 
 
 
