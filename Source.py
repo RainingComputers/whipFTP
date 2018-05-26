@@ -129,9 +129,9 @@ class app:
         self.canvas_frame.pack(fill = BOTH, expand = True, padx = 5, pady = 3)
 
        #Code for handling file/folder drag and drop, uses TkDND_wrapper.py
-       #See SO link: https://stackoverflow.com/questions/14267900/python-drag-and-drop-explorer-files-to-tkinter-entry-widget
+       #See link: https://mail.python.org/pipermail/tkinter-discuss/2005-July/000476.html
         self.dnd = TkDND(master)
-        self.dnd.bindtarget(self.canvas_frame, self.handle_dnd, 'text/uri-list')
+        self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<Drop>', self.handle_dnd, ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
 
        #Load all icons
         self.connect_icon = PhotoImage(file='Icons/connect_big.png')
@@ -580,9 +580,9 @@ class app:
        #Tell how many files are present and how many are selected in the status bar
         self.update_status(event, 'Total no. of items: ' + str(len(self.file_list)) + '   Selected: ' + str(len(self.selected_file_indices)))
 
-    def handle_dnd(self, event):
+    def handle_dnd(self, action, actions, type, win, X, Y, x, y, data):
         del self.dnd_file_list[:]
-        self.dnd_file_list = self.dnd.parse_uri_list(event.data)
+        self.dnd_file_list = self.dnd.parse_uri_list(data)
         self.upload_thread_dnd()
 
     def deselect_everything(self):
