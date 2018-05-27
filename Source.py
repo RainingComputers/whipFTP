@@ -133,6 +133,8 @@ class app:
        #See link: https://mail.python.org/pipermail/tkinter-discuss/2005-July/000476.html
         self.dnd = TkDND(master)
         self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<Drop>', self.handle_dnd, ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
+        self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragEnter>', self.show_dnd_icon, ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
+        self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragLeave>', lambda action, actions, type, win, X, Y, x, y, data:self.draw_icons(), ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
 
        #Load all icons
         self.connect_icon = PhotoImage(file='Icons/connect_big.png')
@@ -170,6 +172,7 @@ class app:
         self.console_glow_icon = PhotoImage(file='Icons_glow/console_big_glow.png')
         self.search_glow_icon = PhotoImage(file='Icons_glow/search_big_glow.png')
         self.whipFTP_glow_icon = PhotoImage(file='Icons_glow/whipFTP_large_glow.png')
+        self.dnd_glow_icon = PhotoImage(file='Icons_glow/upload_large_glow.png')
         self.goto_glow_icon = PhotoImage(file='Icons_glow/gotopath_big_glow.png')
 
        #Set window icon
@@ -586,6 +589,11 @@ class app:
         self.dnd_file_list = self.dnd.parse_uri_list(data)
         self.upload_thread_dnd()
 
+    def show_dnd_icon(self, action, actions, type, win, X, Y, x, y, data):
+        self.deselect_everything()
+        self.canvas.delete("all")
+        self.canvas.create_image(self.canvas_width/2, self.canvas_height/2, image = self.dnd_glow_icon)
+
     def deselect_everything(self):
            #Delete selected file dictionary
             self.selected_file_indices.clear()
@@ -834,7 +842,7 @@ class app:
     def download_window(self):
        #Check number of files selected
         if(len(self.selected_file_indices) < 1): return
-        self.download_dialog = Nfiledialog.open_file_dialog(self.master, 'Choose folder to download in', self.download_thread, True)
+        self.download_dialog = Nfiledialog.open_file_dialog(self.master, 'Choose or Drag and Drop folder to download in', self.download_thread, True)
 
     def download_thread(self):
        #Destroy download window

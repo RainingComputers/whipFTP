@@ -13,6 +13,7 @@ from tkinter import font
 from tkinter import ttk
 from tkinter import PhotoImage
 from tkinter import messagebox
+from TkDND_wrapper import *
 if(platform.system() is 'Windows'):
     import win32api
     import win32con
@@ -654,6 +655,7 @@ class open_file_dialog:
         self.folder_icon = PhotoImage(file='Icons/folder_big.png')
         self.textfile_icon = PhotoImage(file='Icons/textfile_big.png')
         self.up_icon = PhotoImage(file='Icons/up_small.png')
+        self.dnd_glow_icon = PhotoImage(file='Icons_glow/gotopath_large_glow.png')
 
        #Create a new dialog box window and set minimum size
         self.open_file_dialog_window = Toplevel(master)
@@ -762,6 +764,14 @@ class open_file_dialog:
         self.vbar.bind('<Motion>', self.stop_highlight) 
         self.button_frame.bind('<Motion>', self.stop_highlight)
 
+       #Code for handling file/folder drag and drop, uses TkDND_wrapper.py
+       #See link: https://mail.python.org/pipermail/tkinter-discuss/2005-July/000476.html
+        if(directory_mode is True):
+            self.dnd = TkDND(master)
+            self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<Drop>', self.handle_dnd, ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
+            self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragEnter>', self.show_dnd_icon, ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
+            self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragLeave>', lambda action, actions, type, win, X, Y, x, y, data:self.draw_icons(), ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
+
        #Focus on the dialog box, freeze controll of main window
         self.open_file_dialog_window.focus_force()
         while True:
@@ -788,6 +798,25 @@ class open_file_dialog:
                 if(len(file) > self.max_len):
                     self.max_len = len(file)
                     self.max_len_name = file
+
+    def handle_dnd(self, action, actions, type, win, X, Y, x, y, data):
+       #Deselect everything
+        self.deselect_everything()
+       #Get path from text field
+        dir_path = self.dnd.parse_uri_list(data)[0]
+       #Chack validity and change directory
+        if os.path.isdir(dir_path): os.chdir(dir_path)
+       #Change directory text
+        self.directory_text.delete(0, 'end')
+        self.directory_text.insert(END, os.getcwd()) 
+       #Update file list and redraw icons
+        self.update_file_list()
+        self.draw_icons()        
+
+    def show_dnd_icon(self, action, actions, type, win, X, Y, x, y, data):
+        self.deselect_everything()
+        self.canvas.delete("all")
+        self.canvas.create_image(self.canvas_width/2, self.canvas_height/2, image = self.dnd_glow_icon)        
 
     def draw_icons(self, event = None):    
        #Calculate cell width
@@ -973,7 +1002,7 @@ class open_file_dialog:
         self.deselect_everything()
        #Get path from text field
         dir_path = self.directory_text.get()
-       #Chack validity and cnage directory
+       #Chack validity and change directory
         if os.path.isdir(dir_path): os.chdir(dir_path)
        #Update file list and redraw icons
         self.update_file_list()
