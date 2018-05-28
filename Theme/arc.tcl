@@ -4,6 +4,12 @@
 #
 #  Copyright (c) 2015 Sergei Golovan <sgolovan@nes.ru>
 
+#
+# Modifications made:   Changed the base color to #e26652
+#                       Styled Combobox menu to fit the theme
+#                       Changed parent to 'clam' theme instead of default
+#
+
 package require Tk 8.6.0
 
 namespace eval ttk::theme::Arc {
@@ -329,11 +335,17 @@ namespace eval ttk::theme::Arc {
             -background [list selected $colors(-selectbg)] \
             -foreground [list selected $colors(-selectfg)]
 
+  ########### Modifications ###########
 	# Frame border color
 	ttk::style configure TFrame -bordercolor #cfd6e6
 
-    # Combobox styleings
+    # Configure Combobox style
     ttk::style configure TCombobox -selectbackground none -selectforeground 'grey' -fieldbackground 'white'
+    option add *TCombobox*Listbox.background #f5f6f7
+    option add *TCombobox*Listbox.foreground #5c616c
+    option add *TCombobox*Listbox.selectBackground #e26652
+    option add *TCombobox*Listbox.selectForeground #ffffff
+    ttk::style configure ComboboxPopdownFrame -borderwidth 0 -bordercolor #cfd6e6
     }
 }
 
