@@ -341,11 +341,11 @@ namespace eval ttk::theme::Arc {
 
     # Configure Combobox style
     ttk::style configure TCombobox -selectbackground none -selectforeground 'grey' -fieldbackground 'white'
-    option add *TCombobox*Listbox.background #f5f6f7
+    option add *TCombobox*Listbox.background #ffffff
     option add *TCombobox*Listbox.foreground #5c616c
     option add *TCombobox*Listbox.selectBackground #e26652
     option add *TCombobox*Listbox.selectForeground #ffffff
-    ttk::style configure ComboboxPopdownFrame -borderwidth 0 -bordercolor #cfd6e6
+    ttk::style configure ComboboxPopdownFrame -borderwidth 1 -background #b0b0af
     }
 }
 
