@@ -585,11 +585,15 @@ class app:
         self.update_status(event, 'Total no. of items: ' + str(len(self.file_list)) + '   Selected: ' + str(len(self.selected_file_indices)))
 
     def handle_dnd(self, action, actions, type, win, X, Y, x, y, data):
+       #If there is another child window, disable dnd
+        if(len(self.master.children) != 4): return
         del self.dnd_file_list[:]
         self.dnd_file_list = self.dnd.parse_uri_list(data)
         self.upload_thread_dnd()
 
     def show_dnd_icon(self, action, actions, type, win, X, Y, x, y, data):
+       #If there is another child window, disable dnd
+        if(len(self.master.children) != 4): return
         self.deselect_everything()
         self.canvas.delete("all")
         self.canvas.create_image(self.canvas_width/2, self.canvas_height/2, image = self.dnd_glow_icon)
