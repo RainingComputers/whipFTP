@@ -24,8 +24,8 @@ from tkinter import PhotoImage
 from FTP_controller import *
 from SFTP_controller import *
 from TkDND_wrapper import *
-import Nostalgia_button as NButton
-import Nostalgia_filedialog as Nfiledialog
+import whipFTP_ToolbarButton as ToolbarButton
+import whipFTP_FileDialogs as Filedialogs
 
 
 class app:
@@ -179,43 +179,43 @@ class app:
         self.master.iconphoto(True, self.whipFTP_icon)
 
        #Create the connect button
-        self.connect_button = NButton.Button(self.toolbar, image = self.connect_icon, image_hover = self.connect_glow_icon, command = self.connect_to_ftp)
+        self.connect_button = ToolbarButton.Button(self.toolbar, image = self.connect_icon, image_hover = self.connect_glow_icon, command = self.connect_to_ftp)
         self.connect_button.pack(side = 'left', padx = 5)
        #Create the upload button
-        self.upload_button = NButton.Button(self.toolbar, image = self.upload_icon, image_hover = self.upload_glow_icon, command = self.upload_window)
+        self.upload_button = ToolbarButton.Button(self.toolbar, image = self.upload_icon, image_hover = self.upload_glow_icon, command = self.upload_window)
         self.upload_button.pack(side = 'left', padx = 5)
        #Create the download button
-        self.download_button = NButton.Button(self.toolbar, image = self.download_icon, image_hover = self.download_glow_icon, command = self.download_window)
+        self.download_button = ToolbarButton.Button(self.toolbar, image = self.download_icon, image_hover = self.download_glow_icon, command = self.download_window)
         self.download_button.pack(side = 'left', padx = 5)
        #Create the newfolder button
-        self.newfolder_button = NButton.Button(self.toolbar, image = self.newfolder_icon, image_hover = self.newfolder_glow_icon, command = self.create_dir_window)
+        self.newfolder_button = ToolbarButton.Button(self.toolbar, image = self.newfolder_icon, image_hover = self.newfolder_glow_icon, command = self.create_dir_window)
         self.newfolder_button.pack(side = 'left', padx = 5)
        #Create the up-directory button
-        self.up_button = NButton.Button(self.toolbar, image = self.up_icon, image_hover = self.up_glow_icon, command = self.dir_up)
+        self.up_button = ToolbarButton.Button(self.toolbar, image = self.up_icon, image_hover = self.up_glow_icon, command = self.dir_up)
         self.up_button.pack(side = 'right', padx = 5)
        #Create the search button
-        self.search_button = NButton.Button(self.toolbar, image = self.search_icon, image_hover = self.search_glow_icon, command = self.search_window_ask)
+        self.search_button = ToolbarButton.Button(self.toolbar, image = self.search_icon, image_hover = self.search_glow_icon, command = self.search_window_ask)
         self.search_button.pack(side = 'right', padx = 5)
        #Create the goto button
-        self.goto_button = NButton.Button(self.toolbar, image = self.goto_icon, image_hover = self.goto_glow_icon, command = self.goto_window_ask)
+        self.goto_button = ToolbarButton.Button(self.toolbar, image = self.goto_icon, image_hover = self.goto_glow_icon, command = self.goto_window_ask)
         self.goto_button.pack(side = 'right', padx = 5)
        #Create the info button
-        self.info_button = NButton.Button(self.toolbar, image = self.info_icon, image_hover = self.info_glow_icon, command = self.info)
+        self.info_button = ToolbarButton.Button(self.toolbar, image = self.info_icon, image_hover = self.info_glow_icon, command = self.info)
         self.info_button.pack(side = 'right', padx = 5)
        #Create the delete button
-        self.delete_button = NButton.Button(self.toolbar, image = self.delete_icon, image_hover = self.delete_glow_icon, command = self.delete_window)
+        self.delete_button = ToolbarButton.Button(self.toolbar, image = self.delete_icon, image_hover = self.delete_glow_icon, command = self.delete_window)
         self.delete_button.pack(side = 'left', padx = 5)
        #Create the properties button
-        self.properties_button = NButton.Button(self.toolbar, image = self.properties_icon, image_hover = self.properties_glow_icon, command = self.file_properties_window)
+        self.properties_button = ToolbarButton.Button(self.toolbar, image = self.properties_icon, image_hover = self.properties_glow_icon, command = self.file_properties_window)
         self.properties_button.pack(side = 'left', padx = 5)
        #Create the cut button
-        self.cut_button = NButton.Button(self.toolbar, image = self.cut_icon, image_hover = self.cut_glow_icon, command = self.clipboard_cut)
+        self.cut_button = ToolbarButton.Button(self.toolbar, image = self.cut_icon, image_hover = self.cut_glow_icon, command = self.clipboard_cut)
         self.cut_button.pack(side = 'left', padx = 5)
        #Create the copy button
-        self.copy_button = NButton.Button(self.toolbar, image = self.copy_icon, image_hover = self.copy_glow_icon, command = self.clipboard_copy)
+        self.copy_button = ToolbarButton.Button(self.toolbar, image = self.copy_icon, image_hover = self.copy_glow_icon, command = self.clipboard_copy)
         self.copy_button.pack(side = 'left', padx = 5)
        #Create the paste button
-        self.paste_button = NButton.Button(self.toolbar, image = self.paste_icon, image_hover = self.paste_glow_icon, command = self.clipboard_paste_thread_create)
+        self.paste_button = ToolbarButton.Button(self.toolbar, image = self.paste_icon, image_hover = self.paste_glow_icon, command = self.clipboard_paste_thread_create)
         self.paste_button.pack(side = 'left', padx = 5)
        #Create label field for hostname
         self.label_hostname = ttk.Label(self.entry_bar, text = 'Host:')
@@ -336,7 +336,7 @@ class app:
 
     def connect_to_ftp(self):        
        #Show message box
-        self.float_window = Nfiledialog.floating_message_dialog(self.master, "whipFTP", self.connect_icon, "Attempting to connect..." )
+        self.float_window = Filedialogs.floating_message_dialog(self.master, "whipFTP", self.connect_icon, "Attempting to connect..." )
        #Show 'Connecting' in status bar
         self.unlock_status_bar()
         self.update_status(message = 'Connecting...')
@@ -616,7 +616,7 @@ class app:
                     self.lock_status_bar()
 
     def goto_window_ask(self):
-        self.goto_window = Nfiledialog.name_dialog(self.master, 'Goto', self.goto_path, self.goto_icon, 'Enter path:')
+        self.goto_window = Filedialogs.name_dialog(self.master, 'Goto', self.goto_path, self.goto_icon, 'Enter path:')
 
     def goto_path(self):
         path = self.goto_window.rename_entry.get()
@@ -668,18 +668,18 @@ class app:
                 file_name = ''.join((file_name.split('/')[-1:]))+'\n'
                 properties = 'Name: '+ file_name + 'Attributes: ' + file_attribs + 'Size: ' + file_size + 'Date: ' + date_modified
        #Display the created string in properties dialog
-        self.properties_dialog = Nfiledialog.file_properties_dialog(self.master, 'Properties', self.rename_window, self.change_permissions_window, self.properties_icon, properties)
+        self.properties_dialog = Filedialogs.file_properties_dialog(self.master, 'Properties', self.rename_window, self.change_permissions_window, self.properties_icon, properties)
 
     def rename_window(self):
         self.properties_dialog.destroy()
-        self.rename_dialog =  Nfiledialog.name_dialog(self.master, 'Rename', self.rename_file_thread, self.rename_icon)
+        self.rename_dialog =  Filedialogs.name_dialog(self.master, 'Rename', self.rename_file_thread, self.rename_icon)
 
     def rename_file_thread(self):
         rename_name = self.rename_dialog.rename_entry.get()
        #Destroy rename window
         self.rename_dialog.destroy()
        #Show message box
-        self.float_window = Nfiledialog.floating_message_dialog(self.master, "whipFTP", self.rename_icon, "Renaming file..." )
+        self.float_window = Filedialogs.floating_message_dialog(self.master, "whipFTP", self.rename_icon, "Renaming file..." )
        #start thread
         self.thread =  threading.Thread(target = self.rename_file, args = (self.ftpController, self.file_list, self.detailed_file_list, self.selected_file_indices, rename_name))
         self.thread.daemon = True
@@ -707,14 +707,14 @@ class app:
 
     def change_permissions_window(self):
         self.properties_dialog.destroy()
-        self.permission_window =  Nfiledialog.name_dialog(self.master, 'chmod', self.change_permissions_thread, self.permissions_icon, 'Enter octal notation:')
+        self.permission_window =  Filedialogs.name_dialog(self.master, 'chmod', self.change_permissions_thread, self.permissions_icon, 'Enter octal notation:')
 
     def change_permissions_thread(self):
         octal_notation = self.permission_window.rename_entry.get()
        #Destroy permission window
         self.permission_window.destroy()
        #Show message box
-        self.float_window = Nfiledialog.floating_message_dialog(self.master, "whipFTP", self.permissions_icon, "Changing file permissions..." )
+        self.float_window = Filedialogs.floating_message_dialog(self.master, "whipFTP", self.permissions_icon, "Changing file permissions..." )
        #start thread
         self.thread = threading.Thread(target = self.change_permissions, args = (self.ftpController, self.file_list, self.selected_file_indices, octal_notation))
         self.thread.daemon = True
@@ -738,7 +738,7 @@ class app:
 
     
     def create_dir_window(self):
-        self.create_dir_dialog = Nfiledialog.name_dialog(self.master, 'Create a new folder', self.create_dir_thread, self.newfolder_icon)
+        self.create_dir_dialog = Filedialogs.name_dialog(self.master, 'Create a new folder', self.create_dir_thread, self.newfolder_icon)
 
     def create_dir_thread(self):
        #Create thread
@@ -746,7 +746,7 @@ class app:
        #Destroy rename window
         self.create_dir_dialog.destroy()
        #Show message box
-        self.float_window = Nfiledialog.floating_message_dialog(self.master, "whipFTP", self.newfolder_icon, "Creating directory..." )
+        self.float_window = Filedialogs.floating_message_dialog(self.master, "whipFTP", self.newfolder_icon, "Creating directory..." )
        #Start thread and process requests
         self.thread.daemon = True
         self.thread.start()
@@ -766,7 +766,7 @@ class app:
 
 
     def upload_window(self):
-        self.upload_dialog = Nfiledialog.open_file_dialog(self.master, 'Choose file(s) or folder(s) to upload', self.upload_thread)
+        self.upload_dialog = Filedialogs.open_file_dialog(self.master, 'Choose file(s) or folder(s) to upload', self.upload_thread)
 
     def upload_thread(self):
        #Create console/terminal window
@@ -842,7 +842,7 @@ class app:
     def download_window(self):
        #Check number of files selected
         if(len(self.selected_file_indices) < 1): return
-        self.download_dialog = Nfiledialog.open_file_dialog(self.master, 'Choose or Drag and Drop folder to download in', self.download_thread, True)
+        self.download_dialog = Filedialogs.open_file_dialog(self.master, 'Choose or Drag and Drop folder to download in', self.download_thread, True)
 
     def download_thread(self):
        #Destroy download window
@@ -886,7 +886,7 @@ class app:
 
 
     def search_window_ask(self):
-        self.search_window =  Nfiledialog.name_dialog(self.master, 'Search', self.search_thread, self.search_icon, 'Enter file name:')
+        self.search_window =  Filedialogs.name_dialog(self.master, 'Search', self.search_thread, self.search_icon, 'Enter file name:')
 
     def search_thread(self):
        #Create console/terminal window
@@ -941,7 +941,7 @@ class app:
 
     def delete_window(self, event = None):
         if(len(self.selected_file_indices) < 1): return
-        self.delete_warning = Nfiledialog.warning_dialog(self.master, 'Are you sure?', self.delete_thread, self.delete_icon, 'Delete selected files/folders?')
+        self.delete_warning = Filedialogs.warning_dialog(self.master, 'Are you sure?', self.delete_thread, self.delete_icon, 'Delete selected files/folders?')
 
     def delete_thread(self):
        #Create console/terminal window
@@ -1070,7 +1070,7 @@ class app:
        #Check if skip all has been selected
         if(self.skip_all is True): return False
        #Create replace dialog
-        self.replace_window = Nfiledialog.replace_dialog(self.console_window.console_dialog_window, 'Conflicting files', self.copy_icon, file_name+': '+status+', Replace?')
+        self.replace_window = Filedialogs.replace_dialog(self.console_window.console_dialog_window, 'Conflicting files', self.copy_icon, file_name+': '+status+', Replace?')
        #Loop till a button is pressed
         while self.replace_window.command is 0:
             self.replace_window.replace_dialog_window.update()
@@ -1100,7 +1100,7 @@ class app:
             self.master.after(5, self.process_thread_requests)
 
     def create_progress_window(self):
-        self.console_window = Nfiledialog.console_dialog(self.master, self.console_icon, self.reset_replace)
+        self.console_window = Filedialogs.console_dialog(self.master, self.console_icon, self.reset_replace)
 
     def progress(self, file_name, status):
        #If it is a progress
@@ -1116,7 +1116,7 @@ class app:
 
 
     def info(self):
-        self.info_window = Nfiledialog.message_dialog(self.master, 'About', self.whipFTP_icon, 'whipFTP v4.1, Written by:\nVishnu Shankar') 
+        self.info_window = Filedialogs.message_dialog(self.master, 'About', self.whipFTP_icon, 'whipFTP v4.1, Written by:\nVishnu Shankar') 
 
 
 
