@@ -12,10 +12,10 @@ whipFTP is a FTP/SFTP client written in python using the tkinter GUI toolkit. Ca
 # Getting whipFTP
 
 #### Ubuntu/Debian:
-+ Download the [.deb](https://github.com/RainingComputers/whipFTP/raw/master/Builds/whipftp_4.1.deb) file and install it.
++ Download the [.deb](https://github.com/RainingComputers/whipFTP/releases/download/v4.1/whipftp_4.1.deb) file and install it.
 
 #### Windows:
-+ Install Python (minimum required version: python3.6.5), download the [.zip](https://github.com/RainingComputers/whipFTP/raw/master/Builds/whipftp_4.1_windows.zip) file and extract it. Run `install_dependencies.py` script to install dependencies. Now you can run `whipFTP.pyw` to launch the application.
++ Install Python (minimum required version: python3.6.5), download the [.zip](https://github.com/RainingComputers/whipFTP/releases/download/v4.1/whipftp_4.1_windows.zip) file and extract it. Run `install_dependencies.py` script to install dependencies. Now you can run `whipFTP.pyw` to launch the application.
 
 #### FreeBSD and other Linux distributions:
-+ Install Python (minimum required version: python3.6.5), download the [.zip](https://github.com/RainingComputers/whipFTP/raw/master/Builds/whipftp_4.1.zip) file and extract it. Run `install_dependencies.py` script to install dependencies. Now you can run `whipFTP.py` to launch the application.
++ Install Python (minimum required version: python3.6.5), download the [.zip](https://github.com/RainingComputers/whipFTP/releases/download/v4.1/whipftp_4.1.zip) file and extract it. Run `install_dependencies.py` script to install dependencies. Now you can run `whipFTP.py` to launch the application.
