@@ -177,7 +177,7 @@ class ftp_controller:
         try:
             file_to_up = open(file_name, 'rb')
         except:
-            status_command(file_path, 'Failed to open file')
+            status_command(file_name, 'Failed to open file')
             return
        #Try to upload file
         try:
