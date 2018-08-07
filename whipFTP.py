@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 
-'''
-    whipFTP, Copyrights Vishnu Shankar B
-
-    List of Tk extensions used:
-        Arc theme (modified to red color and more styles were added) : https://wiki.tcl.tk/48689
-        TkDND : https://sourceforge.net/projects/tkdnd/
-'''
+#
+#    whipFTP, Copyrights Vishnu Shankar B
+#
+#    List of Tk extensions used:
+#        Arc theme (modified to red color and more styles were added) : https://wiki.tcl.tk/48689
+#        TkDND : https://sourceforge.net/projects/tkdnd/
+#
 
 import os
 from os.path import expanduser

@@ -1,7 +1,7 @@
-'''
-    This wrapper was copied from https://mail.python.org/pipermail/tkinter-discuss/2005-July/000476.html    
-    parse_uri_list(self, uri_list) method was added by the author
-'''
+#
+#    This wrapper was copied from https://mail.python.org/pipermail/tkinter-discuss/2005-July/000476.html    
+#    parse_uri_list(self, uri_list) method was added by the author
+#
 
 import os
 import tkinter
