@@ -110,7 +110,7 @@ class app:
 
         s.configure('Red.TLabel', foreground = 'Red')
 
-        if((len(sys.argv) == 2 and sys.argv[1] == 'white') or platform.system() == 'Windows'):
+        if((len(sys.argv) == 2 and sys.argv[1] == 'white') or (platform.system() == 'Windows' and platform.release() == '10')):
             s.configure('TFrame', background = 'white')
             s.configure('TLabel', background = 'white')
             s.configure('TCombobox', background = 'white')

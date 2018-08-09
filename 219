@@ -1,0 +1,3 @@
+Collecting pypiwin32
+  Downloading https://files.pythonhosted.org/packages/d0/1b/2f292bbd742e369a100c91faa0483172cd91a1a422a6692055ac920946c5/pypiwin32-223-py3-none-any.whl
+Collecting pywin32>=223 (from pypiwin32)

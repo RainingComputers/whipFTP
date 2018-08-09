@@ -7,7 +7,6 @@ whipFTP is a FTP/SFTP client written in python using the tkinter GUI toolkit. Ca
 #### Currently supported platforms:
 + Linux
 + Windows
-+ FreeBSD
 
 # Getting whipFTP
 
