@@ -1180,6 +1180,10 @@ if(platform.system() is 'Windows'):
 else:
     arc_theme_path = (dname+'/Theme')
     tkdnd_path = (dname+'/TkDND')
+#Check if 64bit
+if(sys.maxsize > (2**31-1)):
+    tkdnd_path+='64'
+#Include the .so / .dll file
 root.tk.eval('lappend auto_path {%s}' % arc_theme_path)
 root.tk.eval('lappend auto_path {%s}' % tkdnd_path)
 root.tk.eval('package require tkdnd')
