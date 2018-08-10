@@ -1120,7 +1120,7 @@ class app:
 
 
     def info(self):
-        self.info_window = Filedialogs.message_dialog(self.master, 'About', self.whipFTP_icon, 'whipFTP v4.2, Written by:\nVishnu Shankar') 
+        self.info_window = Filedialogs.message_dialog(self.master, 'About', self.whipFTP_icon, 'whipFTP v4.3, Written by:\nVishnu Shankar') 
 
 
 
