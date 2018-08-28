@@ -4,9 +4,21 @@
 
 switch [tk windowingsystem] {
   x11 {
-    package ifneeded tkdnd 2.8 \
-      "source \{$dir/tkdnd.tcl\} ; \
-       tkdnd::initialise \{$dir\} libtkdnd2.8.so tkdnd"
+    switch [lindex $::tcl_platform(os) 0] {
+      Linux {
+        package ifneeded tkdnd 2.8 \
+          "source \{$dir/tkdnd.tcl\} ; \
+           tkdnd::initialise \{$dir\} libtkdnd2.8.so tkdnd"
+      }
+      FreeBSD {
+        package ifneeded tkdnd 2.8 \
+          "source \{$dir/tkdnd.tcl\} ; \
+           tkdnd::initialise \{$dir\} libtkdnd2.8_FreeBSD.so tkdnd"        
+      }
+      default {
+        error "unknown x11 platform"
+      }
+    }
   }
   win32 -
   windows {

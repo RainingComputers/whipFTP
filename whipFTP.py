@@ -96,7 +96,7 @@ class app:
  
        #Set window title and size
         master.wm_title('whipFTP')
-        master.minsize(width = 860, height = 560)
+        master.minsize(width = 930, height = 600)
 
        #Variable for holding the font
         self.default_font = font.nametofont("TkDefaultFont")
@@ -303,7 +303,8 @@ class app:
         self.cut_button.bind('<Motion>', lambda event, arg = 'Cut.': self.update_status(event, arg)) 
         self.copy_button.bind('<Motion>', lambda event, arg = 'Copy.': self.update_status(event, arg)) 
         self.paste_button.bind('<Motion>', lambda event, arg = 'Paste.': self.update_status(event, arg)) 
-        self.search_button.bind('<Motion>', lambda event, arg = 'Find.': self.update_status(event, arg)) 
+        self.search_button.bind('<Motion>', lambda event, arg = 'Find.': self.update_status(event, arg))
+        self.goto_button.bind('<Motion>', lambda event, arg = 'Goto.': self.update_status(event, arg)) 
         self.up_button.bind('<Motion>', lambda event, arg = 'Go to parent directory.': self.update_status(event, arg)) 
         self.info_button.bind('<Motion>', lambda event, arg = 'About/Info.': self.update_status(event, arg)) 
 
@@ -377,7 +378,7 @@ class app:
         self.disable_toolbar()
        #Set search to false
         self.search_performed = False
-        self.update_status(message = 'Retrieving file list, Hidden files: {}.'.format(self.ftpController.hidden_files))
+        self.update_status(message = 'Retrieving file list, Hidden files: {}, Please wait...'.format(self.ftpController.hidden_files))
         self.lock_status_bar()
         del self.file_list[:]
         del self.detailed_file_list[:]
@@ -1120,7 +1121,7 @@ class app:
 
 
     def info(self):
-        self.info_window = Filedialogs.message_dialog(self.master, 'About', self.whipFTP_icon, 'whipFTP v4.3, Written by:\nVishnu Shankar') 
+        self.info_window = Filedialogs.about_dialog(self.master, 'About', self.whipFTP_icon, 'whipFTP v5.0', '© Vishnu Shankar') 
 
 
 

@@ -100,3 +100,4 @@ class TkDND(object):
             else:
                 file_list.append(item)
         return file_list
+        

@@ -125,7 +125,88 @@ class message_dialog:
 
     def destroy(self):
         self.message_dialog_window.destroy()
-        
+
+class about_dialog:
+
+    def __init__(self, master, Title, icon, software_version, author):
+
+       #Change to script's directory
+        abspath = os.path.abspath(__file__)
+        dname = os.path.dirname(abspath)
+        os.chdir(dname)
+
+        os_name = platform.system() + ' ' + platform.release() 
+
+       #Load icons
+        if(platform.system() == 'Linux'):
+            self.os_icon = PhotoImage(file='Icons/linux_large.png')
+        elif(platform.system() == 'FreeBSD'):
+            self.os_icon = PhotoImage(file='Icons/freebsd_large.png')
+        else:
+            self.os_icon = PhotoImage(file='Icons/windows_large.png')
+
+        python_version = 'python v' + platform.python_version()
+        if(sys.maxsize > (2**31-1)):
+            python_version += ' (64 bit)'
+        else:
+            python_version += ' (32 bit)'
+
+        message = software_version + '\n' +  python_version + '\n' + os_name +'\n' + author
+
+       #Create a new dialog box window
+        self.about_dialog_window = Toplevel()
+
+       #Make it non-resizeble, set title
+        self.about_dialog_window.resizable(False, False)
+        self.about_dialog_window.title(Title)
+
+       #Create frames 
+        self.icon_frame = ttk.Frame(self.about_dialog_window)
+        self.icon_frame.pack(side = 'left', fill = Y)
+        self.entry_frame = ttk.Frame(self.about_dialog_window)
+        self.entry_frame.pack(side = 'left', fill = Y)
+        self.os_icon_frame = ttk.Frame(self.about_dialog_window)
+        self.os_icon_frame.pack(side = 'left', fill = Y)
+
+       #Create the label showing main icon
+        ttk.Label(self.icon_frame, image = icon).pack(padx = 3, pady = 3)
+
+       #Create the label
+        ttk.Label(self.entry_frame, text = message, anchor = 'w').pack(padx = 3, fill = X, expand = True)
+
+       #Create the label showing os icon
+        ttk.Label(self.os_icon_frame, image = self.os_icon).pack(padx = 3, pady = 3)
+
+       #Create buttons
+        self.rename_ok_button = ttk.Button(self.entry_frame, text = 'OK', command = self.destroy)
+        self.rename_ok_button.pack(pady = 3, padx = 3 )
+
+       #center the window
+        self.about_dialog_window.withdraw()
+        self.about_dialog_window.update()
+        x = master.winfo_rootx()
+        y = master.winfo_rooty()
+        main_height =master.winfo_height()
+        main_width = master.winfo_width()
+        window_height = self.about_dialog_window.winfo_reqheight()
+        window_width = self.about_dialog_window.winfo_reqwidth()
+        geom = '+%d+%d' % ((x + main_width//2 - window_width//2), (y + main_height//2 - window_height//2))  
+        self.about_dialog_window.geometry(geom)
+        self.about_dialog_window.deiconify()
+
+       #Prevent new task in taskbar
+        self.about_dialog_window.transient(master)  
+
+       #Focus on the dialog box, freeze controll of main window
+        self.about_dialog_window.focus_force()
+        while True:
+            try:
+                self.about_dialog_window.grab_set()
+                break
+            except: continue
+
+    def destroy(self):
+        self.about_dialog_window.destroy()        
 
 class warning_dialog:
 
@@ -699,14 +780,16 @@ class open_file_dialog:
         if(platform.system() == 'Linux' or platform.system() == 'FreeBSD'):
             common_file_list = []
             for home_folders in ['', 'Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']:
-                common_file_list.append(os.getcwd()+'/'+home_folders)
+                if(os.path.exists(os.getcwd()+'/'+home_folders)):
+                    common_file_list.append(os.getcwd()+'/'+home_folders)
             for drive in psutil.disk_partitions():
                 common_file_list.append(drive.mountpoint)
             self.directory_text['values'] = common_file_list
         elif(platform.system() == 'Windows'):
             common_file_list = []
             for home_folders in ['', 'Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']:
-                common_file_list.append(os.getcwd()+'\\'+home_folders)
+                if(os.path.exists(os.getcwd()+'/'+home_folders)):
+                    common_file_list.append(os.getcwd()+'\\'+home_folders)
            #See SO link: https://stackoverflow.com/questions/827371/is-there-a-way-to-list-all-the-available-drive-letters-in-python
             drives = win32api.GetLogicalDriveStrings()
             drives = drives.split('\000')[:-1]
@@ -904,7 +987,9 @@ class open_file_dialog:
         
     def mouse_select(self, event):
        #Check for directory mode
-        if(self.directory_mode is True): return
+        if(self.directory_mode is True and not isfile(self.file_list[self.current_file_index])):
+           self.change_dir(event)
+           return
        #Store start position for drag select
         self.start_x = self.x_cell_pos
         self.start_y = self.y_cell_pos

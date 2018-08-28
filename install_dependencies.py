@@ -48,14 +48,28 @@ if(platform.system() == 'Windows'):
         print('Installing pypiwin32...')
         os.system(python_path + ' -m pip install pypiwin32==219')
         input('Press enter to continue...')       
-
 #if Linux
-if(platform.system() == 'Linux'):
+elif(platform.system() == 'Linux'):
     print('Platform: Linux')
     print('Upgrading pip...')
     os.system('python3 -m pip install --upgrade pip')
     print('Installing pramiko...')
     os.system('python3 -m pip install paramiko')
-    os.system('python3 -m pip install psutil')
     print('Installing psutil...')
+    os.system('python3 -m pip install psutil')
+    input('Press enter to continue...')
+#if FreeBSD
+elif(platform.system() == 'FreeBSD'):
+    if(os.geteuid() != 0):
+        print('You need to have root privileges to run this script.')
+        input('Press enter to continue...')
+    print('Platform: FreeBSD')
+    print('Upgrading pip...')
+    os.system('python3.6 -m pip install --upgrade pip')
+    print('Installing tkinter...')
+    os.system('pkg install py36-tkinter-3.6.5_6')
+    print('Installing pramiko...')
+    os.system('python3.6 -m pip install paramiko')
+    print('Installing psutil...')
+    os.system('python3.6 -m pip install psutil')
     input('Press enter to continue...')
