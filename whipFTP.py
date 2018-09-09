@@ -12,6 +12,7 @@ import os
 from os.path import expanduser
 from os import listdir
 from os.path import isfile, join
+from ctypes import *
 import sys
 import platform
 import threading
@@ -96,7 +97,7 @@ class app:
  
        #Set window title and size
         master.wm_title('whipFTP')
-        master.minsize(width = 930, height = 600)
+        master.minsize(width = 950, height = 600)
 
        #Variable for holding the font
         self.default_font = font.nametofont("TkDefaultFont")

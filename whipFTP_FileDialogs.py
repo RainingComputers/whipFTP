@@ -19,6 +19,21 @@ if(platform.system() is 'Windows'):
     import win32con
 
 
+def center_window(master_window, child_window):
+       #center the window
+        child_window.withdraw()
+        child_window.update()
+        x = master_window.winfo_rootx()
+        y = master_window.winfo_rooty()
+        main_height =master_window.winfo_height()
+        main_width = master_window.winfo_width()
+        window_height = child_window.winfo_reqheight()
+        window_width = child_window.winfo_reqwidth()
+        geom = '+%d+%d' % ((x + main_width//2 - window_width//2), (y + main_height//2 - window_height//2))  
+        child_window.geometry(geom)
+        child_window.deiconify()
+
+
 class floating_message_dialog:
 
     def __init__(self, master, Title, icon, message):
@@ -45,17 +60,7 @@ class floating_message_dialog:
         self.floating_message_dialog_window.overrideredirect(1)
 
        #center the window
-        self.floating_message_dialog_window.withdraw()
-        self.floating_message_dialog_window.update()
-        x = master.winfo_rootx()
-        y = master.winfo_rooty()
-        main_height =master.winfo_height()
-        main_width = master.winfo_width()
-        window_height = self.floating_message_dialog_window.winfo_reqheight()
-        window_width = self.floating_message_dialog_window.winfo_reqwidth()
-        geom = '+%d+%d' % ((x + main_width//2 - window_width//2), (y + main_height//2 - window_height//2))  
-        self.floating_message_dialog_window.geometry(geom)
-        self.floating_message_dialog_window.deiconify()
+        center_window(master, self.floating_message_dialog_window)
 
        #Prevent new task in taskbar
         self.floating_message_dialog_window.transient(master)  
@@ -100,17 +105,7 @@ class message_dialog:
         self.rename_ok_button.pack(side = 'right', pady = 3, padx = 3 )
 
        #center the window
-        self.message_dialog_window.withdraw()
-        self.message_dialog_window.update()
-        x = master.winfo_rootx()
-        y = master.winfo_rooty()
-        main_height =master.winfo_height()
-        main_width = master.winfo_width()
-        window_height = self.message_dialog_window.winfo_reqheight()
-        window_width = self.message_dialog_window.winfo_reqwidth()
-        geom = '+%d+%d' % ((x + main_width//2 - window_width//2), (y + main_height//2 - window_height//2))  
-        self.message_dialog_window.geometry(geom)
-        self.message_dialog_window.deiconify()
+        center_window(master, self.message_dialog_window)
 
        #Prevent new task in taskbar
         self.message_dialog_window.transient(master)  
@@ -182,17 +177,7 @@ class about_dialog:
         self.rename_ok_button.pack(pady = 3, padx = 3 )
 
        #center the window
-        self.about_dialog_window.withdraw()
-        self.about_dialog_window.update()
-        x = master.winfo_rootx()
-        y = master.winfo_rooty()
-        main_height =master.winfo_height()
-        main_width = master.winfo_width()
-        window_height = self.about_dialog_window.winfo_reqheight()
-        window_width = self.about_dialog_window.winfo_reqwidth()
-        geom = '+%d+%d' % ((x + main_width//2 - window_width//2), (y + main_height//2 - window_height//2))  
-        self.about_dialog_window.geometry(geom)
-        self.about_dialog_window.deiconify()
+        center_window(master, self.about_dialog_window)
 
        #Prevent new task in taskbar
         self.about_dialog_window.transient(master)  
@@ -237,17 +222,7 @@ class warning_dialog:
         self.rename_ok_button.pack(side = 'right', pady = 3, padx = 3 )
 
        #center the window
-        self.warning_dialog_window.withdraw()
-        self.warning_dialog_window.update()
-        x = master.winfo_rootx()
-        y = master.winfo_rooty()
-        main_height =master.winfo_height()
-        main_width = master.winfo_width()
-        window_height = self.warning_dialog_window.winfo_reqheight()
-        window_width = self.warning_dialog_window.winfo_reqwidth()
-        geom = '+%d+%d' % ((x + main_width//2 - window_width//2), (y + main_height//2 - window_height//2))  
-        self.warning_dialog_window.geometry(geom)
-        self.warning_dialog_window.deiconify()
+        center_window(master, self.warning_dialog_window)
 
        #Prevent new task in taskbar
         self.warning_dialog_window.transient(master)  
@@ -298,17 +273,7 @@ class name_dialog:
         self.rename_ok_button.pack(side = 'right', pady = 3, padx = 3 )
 
        #center the window
-        self.name_dialog_window.withdraw()
-        self.name_dialog_window.update()
-        x = master.winfo_rootx()
-        y = master.winfo_rooty()
-        main_height =master.winfo_height()
-        main_width = master.winfo_width()
-        window_height = self.name_dialog_window.winfo_reqheight()
-        window_width = self.name_dialog_window.winfo_reqwidth()
-        geom = '+%d+%d' % ((x + main_width//2 - window_width//2), (y + main_height//2 - window_height//2))  
-        self.name_dialog_window.geometry(geom)
-        self.name_dialog_window.deiconify()
+        center_window(master, self.name_dialog_window)
 
        #Bind events
         self.rename_entry.bind('<Return>', func_command)
@@ -367,17 +332,7 @@ class replace_dialog:
         self.replace_all_button.pack(side = 'left', pady = 3, padx = 3 )
 
        #center the window
-        self.replace_dialog_window.withdraw()
-        self.replace_dialog_window.update()
-        x = master.winfo_rootx()
-        y = master.winfo_rooty()
-        main_height =master.winfo_height()
-        main_width = master.winfo_width()
-        window_height = self.replace_dialog_window.winfo_reqheight()
-        window_width = self.replace_dialog_window.winfo_reqwidth()
-        geom = '+%d+%d' % ((x + main_width//2 - window_width//2), (y + main_height//2 - window_height//2))  
-        self.replace_dialog_window.geometry(geom)
-        self.replace_dialog_window.deiconify()
+        center_window(master, self.replace_dialog_window)
 
        #Prevent new task in taskbar
         self.replace_dialog_window.transient(master)  
@@ -441,17 +396,7 @@ class file_properties_dialog:
         self.rename_ok_button.pack(side = 'right', pady = 3, padx = 3 )
 
        #center the window
-        self.file_properties_dialog_window.withdraw()
-        self.file_properties_dialog_window.update()
-        x = master.winfo_rootx()
-        y = master.winfo_rooty()
-        main_height =master.winfo_height()
-        main_width = master.winfo_width()
-        window_height = self.file_properties_dialog_window.winfo_reqheight()
-        window_width = self.file_properties_dialog_window.winfo_reqwidth()
-        geom = '+%d+%d' % ((x + main_width//2 - window_width//2), (y + main_height//2 - window_height//2))  
-        self.file_properties_dialog_window.geometry(geom)
-        self.file_properties_dialog_window.deiconify()
+        center_window(master, self.file_properties_dialog_window)
 
        #Prevent new task in taskbar
         self.file_properties_dialog_window.transient(master)  
@@ -528,17 +473,7 @@ class terminal_dialog:
         self.close_button.pack(side = 'right', pady = 3, padx = 3 )
 
        #Center the window
-        self.terminal_dialog_window.withdraw()
-        self.terminal_dialog_window.update()
-        x = master.winfo_rootx()
-        y = master.winfo_rooty()
-        main_height =master.winfo_height()
-        main_width = master.winfo_width()
-        window_height = self.terminal_dialog_window.winfo_reqheight()
-        window_width = self.terminal_dialog_window.winfo_reqwidth()
-        geom = '+%d+%d' % ((x + main_width//2 - window_width//2), (y + main_height//2 - window_height//2 - 20))  
-        self.terminal_dialog_window.geometry(geom)
-        self.terminal_dialog_window.deiconify()
+        center_window(master, self.terminal_dialog_window)
         
        #Bind events
         self.terminal_text.bind('<Return>', self.print_command)
@@ -637,17 +572,7 @@ class console_dialog:
         self.close_button.pack(side = 'right', pady = 3, padx = 3 )
 
        #Center the window
-        self.console_dialog_window.withdraw()
-        self.console_dialog_window.update()
-        x = master.winfo_rootx()
-        y = master.winfo_rooty()
-        main_height =master.winfo_height()
-        main_width = master.winfo_width()
-        window_height = self.console_dialog_window.winfo_reqheight()
-        window_width = self.console_dialog_window.winfo_reqwidth()
-        geom = '+%d+%d' % ((x + main_width//2 - window_width//2), (y + main_height//2 - window_height//2 - 20))  
-        self.console_dialog_window.geometry(geom)
-        self.console_dialog_window.deiconify()
+        center_window(master, self.console_dialog_window)
 
        #Focus on the dialog box, freeze controll of main window
         self.console_dialog_window.focus_force()
@@ -753,7 +678,9 @@ class open_file_dialog:
             os.chdir(home)
             self.update_file_list()
 
-       #center the window
+       #center the window 
+       # (did not use the center window function becuse it does not work with this for some reason, it
+       # is fixed size anyways, so just hard coded it...)
         x = master.winfo_rootx()
         y = master.winfo_rooty()
         main_height = master.winfo_height()
