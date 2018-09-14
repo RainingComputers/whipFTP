@@ -321,7 +321,13 @@ class app:
         self.type_combobox.bind('<<ComboboxSelected>>', self.handle_combobox)
         self.usrname_entry.bind('<Motion>', lambda event, arg = 'Enter your username.': self.update_status(event, arg))
         self.pass_entry.bind('<Motion>', lambda event, arg = 'Enter your password.': self.update_status(event, arg))
-        self.port_entry.bind('<Motion>', lambda event, arg = 'Enter port.': self.update_status(event, arg)) 
+        self.port_entry.bind('<Motion>', lambda event, arg = 'Enter port.': self.update_status(event, arg))
+
+        #Press enter key to connect
+        self.hostname_entry.bind('<Return>', self.connect_to_ftp) 
+        self.usrname_entry.bind('<Return>', self.connect_to_ftp)
+        self.pass_entry.bind('<Return>', self.connect_to_ftp)
+        self.port_entry.bind('<Return>', self.connect_to_ftp)  
 
 
     def handle_combobox(self, event):
@@ -335,7 +341,7 @@ class app:
 
 
 
-    def connect_to_ftp(self):        
+    def connect_to_ftp(self, event = None):        
         #Show message box
         self.float_window = Filedialogs.floating_message_dialog(self.master, "whipFTP", self.connect_icon, "Attempting to connect..." )
         #Show 'Connecting' in status bar
