@@ -1,0 +1,43 @@
+TASK                                                                                    STATUS          PRIORITY              
+############################################################################################################################# 
+->Implement drag and drop using TKDND                                                   |DONE           |NORMAL             |                     
+->Someway to tell what directory you are in (maybe the title bar)                       |DONE           |NORMAL             |
+->Display watermark if directory is empty                                               |DONE           |NORMAL             |
+->Exception handling for copying files                                                  |DONE           |NORMAL             |
+->Clean up the code                                                                     |DONE           |NORMAL             |
+->Create a proper .ico file for the application                                         |               |HIGH               |
+->Replace unique_list(list)                                                             |DONE           |NORMAL             |
+->Debug ftp_controller.py module                                                        |DONE           |NORMAL             | 
+->Ability to hide hidden folders                                                        |DONE           |NORMAL             |   
+->Ability to copy and paste search results                                              |DONE           |NORMAL             |
+->Fix icons in open directory dialog box                                                |DONE           |NORMAL             |
+->Fix partition list in open directory dialog box                                       |DONE           |HIGH               |
+->Remove dependency 'ttkthemes'                                                         |DONE           |NORMAL             |
+->Make UI more modern (Windows 10)                                                      |DONE           |LOW                |
+->Center the terminal/console window                                                    |DONE           |NORMAL             |
+->Fix segmentation fault                                                                |DONE           |NORMAL             |
+->More exception handling for upload                                                    |DONE           |NORMAL             |
+->Center window for nostalgia filedialogs                                               |DONE           |NORMAL             |
+->Fix copy/cut                                                                          |DONE           |NORMAL             |
+->Fix self.Replace                                                                      |DONE           |NORMAL             |
+->Implement thread safe practices                                                       |DONE           |NORMAL             |
+->Change status messages to floating message windows                                    |DONE           |NORMAL             |
+->Implement threads for EVERYTHING                                                      |DONE           |NORMAL             |
+->Make search case insensitive                                                          |DONE           |NORMAL             |
+->Take focus away from entry if necessary                                               |DONE           |NORMAL             |
+->Find cell_width with tkfont                                                           |DONE           |NORMAL             |
+->Fix scroll region                                                                     |DONE           |NORMAL             |
+->Add Goto button                                                                       |DONE           |NORMAL             |
+->Release v5.0 with freeBSD testing                                                     |               |NORMAL             |
+->Add SYNC feature                                                                      |               |NORMAL             |
+->Add sidebar, path buttons and forward/backward buttons                                |               |NORMAL             |   
+->Improve upload dialog box                                                             |               |NORMAL             |
+->Add support for Display scaling                                                       |               |HIGH               |
+->Fix centering windows on windows                                                      |               |NORMAL             |
+->Add themes                                                                            |               |NORMAL             |
+->Allow to choose keys(maybe)                                                           |               |LOW                |
+->Fix launch times                                                                      |               |HIGH               |
+->Enter key to start connection                                                         |DONE           |HIGH               |
+->Fix floating windows                                                                  |               |NORMAL             |
+->Better way to show notifications                                                      |               |HIGH               |
+->Add underscores to private variables and improve code readability                     |               |HIGH               |
