@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 #
 #    whipFTP, Copyrights Vishnu Shankar B
 #
@@ -31,81 +30,81 @@ import whipFTP_FileDialogs as Filedialogs
 
 class app:
     def __init__(self, master):
-       #/!\ Although the comments and variable names say 'file_list', or 'items' it inculdes folders also
+        #/!\ Although the comments and variable names say 'file_list', or 'items' it inculdes folders also
 
-       #Cell width of each cell
+        #Cell width of each cell
         self.cell_width = 190
 
-       #List to store all item names (including folders) that are currently being displayed and their details
+        #List to store all item names (including folders) that are currently being displayed and their details
         self.file_list = []
         self.detailed_file_list = []
-       #An index that points to current file that the mouse is pointing
+        #An index that points to current file that the mouse is pointing
         self.current_file_index = 0
 
-       #Variables for drawing and storing cursor position
+        #Variables for drawing and storing cursor position
         self.mouse_x = 0
         self.mouse_y = 0
         self.max_width = 0
 
-       #Variable to store which cell cursor is currently pointing
+        #Variable to store which cell cursor is currently pointing
         self.x_cell_pos = 0
         self.y_cell_pos = 0
 
-       #A dictionary to store indices and highlight rectangle references of selected files
+        #A dictionary to store indices and highlight rectangle references of selected files
         self.selected_file_indices = {}
 
-       #A list to hold files that have been droped into the window
+        #A list to hold files that have been droped into the window
         self.dnd_file_list = []
 
-       #Things in the clipboard
+        #Things in the clipboard
         self.cut = False
         self.copy = False
         self.clipboard_file_list = []
         self.clipboard_path_list = []
         self.detailed_clipboard_file_list = []
 
-       #Variable to store start cell position of drag select
+        #Variable to store start cell position of drag select
         self.start_x = 0
         self.start_y = 0
 
-       #Variable to tell weather to change status, if false the current message will stay on status bar and status bar will ignore other status messages
+        #Variable to tell weather to change status, if false the current message will stay on status bar and status bar will ignore other status messages
         self.change_status = True
 
-       #Variable to tell replace all has been selected
+        #Variable to tell replace all has been selected
         self.replace_all = False
 
-       #Variable to tell skip all has been selected
+        #Variable to tell skip all has been selected
         self.skip_all = False
 
-       #Variable to tell weather a search has been performes
+        #Variable to tell weather a search has been performes
         self.search_performed = False
 
-       #Variable to tell weather hidden file are enabled
+        #Variable to tell weather hidden file are enabled
         self.hidden_files = False
 
-       #Variable to tell a thread weather to replace a file
+        #Variable to tell a thread weather to replace a file
         self.replace_flag = False
 
-       #For thread syncrhoniztion
+        #For thread syncrhoniztion
         self.thread_lock = threading.Lock()
 
-       #Save reference to the window
+        #Save reference to the window
         self.master = master
 
-       #Save reference to ftpcontroller
+        #Save reference to ftpcontroller
         self.ftpController = ftp_controller()
  
-       #Set window title and size
+        #Set window title and size
         master.wm_title('whipFTP')
         master.minsize(width = 950, height = 600)
 
-       #Variable for holding the font
+        #Variable for holding the font
         self.default_font = font.nametofont("TkDefaultFont")
 
-       #Variable to tell weather to displat updatin file list dialog
+        #Variable to tell weather to displat updatin file list dialog
         self.float_dialog_destroy = False
 
-       #Set theme and style
+        #Set theme and style
         s = ttk.Style()
         s.theme_use('Arc')
 
@@ -116,28 +115,28 @@ class app:
             s.configure('TLabel', background = 'white')
             s.configure('TCombobox', background = 'white')
 
-       #Create frame for toolbar buttons
+        #Create frame for toolbar buttons
         self.toolbar = ttk.Frame(master)
         self.toolbar.pack(fill = X)
 
-       #Create frame for text fields
+        #Create frame for text fields
         self.entry_bar = ttk.Frame(master)
         self.entry_bar.pack(fill = X)     
 
-       #Create frame for canvas and scrollbar
+        #Create frame for canvas and scrollbar
         self.pad_frame = ttk.Frame(master)
         self.pad_frame.pack(fill = BOTH, expand = True)       
         self.canvas_frame = ttk.Frame(self.pad_frame, relief = 'groove', border = 1)
         self.canvas_frame.pack(fill = BOTH, expand = True, padx = 5, pady = 3)
 
-       #Code for handling file/folder drag and drop, uses TkDND_wrapper.py
-       #See link: https://mail.python.org/pipermail/tkinter-discuss/2005-July/000476.html
+        #Code for handling file/folder drag and drop, uses TkDND_wrapper.py
+        #See link: https://mail.python.org/pipermail/tkinter-discuss/2005-July/000476.html
         self.dnd = TkDND(master)
         self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<Drop>', self.handle_dnd, ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
         self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragEnter>', self.show_dnd_icon, ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
         self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragLeave>', lambda action, actions, type, win, X, Y, x, y, data:self.draw_icons(), ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
 
-       #Load all icons
+        #Load all icons
         self.connect_icon = PhotoImage(file='Icons/connect_big.png')
         self.upload_icon = PhotoImage(file='Icons/upload_big.png')
         self.download_icon = PhotoImage(file='Icons/download_big.png')
@@ -158,7 +157,7 @@ class app:
         self.whipFTP_icon = PhotoImage(file='Icons/whipFTP_large.png')
         self.goto_icon = PhotoImage(file='Icons/gotopath_big.png')
 
-       #Load glow version of icons
+        #Load glow version of icons
         self.connect_glow_icon = PhotoImage(file='Icons_glow/connect_big_glow.png')
         self.upload_glow_icon = PhotoImage(file='Icons_glow/upload_big_glow.png')
         self.download_glow_icon = PhotoImage(file='Icons_glow/download_big_glow.png')
@@ -176,99 +175,99 @@ class app:
         self.dnd_glow_icon = PhotoImage(file='Icons_glow/upload_large_glow.png')
         self.goto_glow_icon = PhotoImage(file='Icons_glow/gotopath_big_glow.png')
 
-       #Set window icon
+        #Set window icon
         self.master.iconphoto(True, self.whipFTP_icon)
 
-       #Create the connect button
+        #Create the connect button
         self.connect_button = ToolbarButton.Button(self.toolbar, image = self.connect_icon, image_hover = self.connect_glow_icon, command = self.connect_to_ftp)
         self.connect_button.pack(side = 'left', padx = 5)
-       #Create the upload button
+        #Create the upload button
         self.upload_button = ToolbarButton.Button(self.toolbar, image = self.upload_icon, image_hover = self.upload_glow_icon, command = self.upload_window)
         self.upload_button.pack(side = 'left', padx = 5)
-       #Create the download button
+        #Create the download button
         self.download_button = ToolbarButton.Button(self.toolbar, image = self.download_icon, image_hover = self.download_glow_icon, command = self.download_window)
         self.download_button.pack(side = 'left', padx = 5)
-       #Create the newfolder button
+        #Create the newfolder button
         self.newfolder_button = ToolbarButton.Button(self.toolbar, image = self.newfolder_icon, image_hover = self.newfolder_glow_icon, command = self.create_dir_window)
         self.newfolder_button.pack(side = 'left', padx = 5)
-       #Create the up-directory button
+        #Create the up-directory button
         self.up_button = ToolbarButton.Button(self.toolbar, image = self.up_icon, image_hover = self.up_glow_icon, command = self.dir_up)
         self.up_button.pack(side = 'right', padx = 5)
-       #Create the search button
+        #Create the search button
         self.search_button = ToolbarButton.Button(self.toolbar, image = self.search_icon, image_hover = self.search_glow_icon, command = self.search_window_ask)
         self.search_button.pack(side = 'right', padx = 5)
-       #Create the goto button
+        #Create the goto button
         self.goto_button = ToolbarButton.Button(self.toolbar, image = self.goto_icon, image_hover = self.goto_glow_icon, command = self.goto_window_ask)
         self.goto_button.pack(side = 'right', padx = 5)
-       #Create the info button
+        #Create the info button
         self.info_button = ToolbarButton.Button(self.toolbar, image = self.info_icon, image_hover = self.info_glow_icon, command = self.info)
         self.info_button.pack(side = 'right', padx = 5)
-       #Create the delete button
+        #Create the delete button
         self.delete_button = ToolbarButton.Button(self.toolbar, image = self.delete_icon, image_hover = self.delete_glow_icon, command = self.delete_window)
         self.delete_button.pack(side = 'left', padx = 5)
-       #Create the properties button
+        #Create the properties button
         self.properties_button = ToolbarButton.Button(self.toolbar, image = self.properties_icon, image_hover = self.properties_glow_icon, command = self.file_properties_window)
         self.properties_button.pack(side = 'left', padx = 5)
-       #Create the cut button
+        #Create the cut button
         self.cut_button = ToolbarButton.Button(self.toolbar, image = self.cut_icon, image_hover = self.cut_glow_icon, command = self.clipboard_cut)
         self.cut_button.pack(side = 'left', padx = 5)
-       #Create the copy button
+        #Create the copy button
         self.copy_button = ToolbarButton.Button(self.toolbar, image = self.copy_icon, image_hover = self.copy_glow_icon, command = self.clipboard_copy)
         self.copy_button.pack(side = 'left', padx = 5)
-       #Create the paste button
+        #Create the paste button
         self.paste_button = ToolbarButton.Button(self.toolbar, image = self.paste_icon, image_hover = self.paste_glow_icon, command = self.clipboard_paste_thread_create)
         self.paste_button.pack(side = 'left', padx = 5)
-       #Create label field for hostname
+        #Create label field for hostname
         self.label_hostname = ttk.Label(self.entry_bar, text = 'Host:')
         self.label_hostname.pack(side = 'left', padx = 2)
-       #Create text field for hostname
+        #Create text field for hostname
         self.hostname_entry = ttk.Entry(self.entry_bar)
         self.hostname_entry.pack(side = 'left', expand = True, fill = X)
-       #Create combobox
+        #Create combobox
         self.connection_type = StringVar()
         self.type_combobox = ttk.Combobox(self.entry_bar, textvariable=self.connection_type, width = 5, state = 'readonly')
         self.connection_type.set('SFTP')
         self.type_combobox['values'] = ('FTP', 'SFTP')
         self.type_combobox.pack(side = 'left')
-       #Create label for username
+        #Create label for username
         self.label_usrname = ttk.Label(self.entry_bar, text = 'Username:')
         self.label_usrname.pack(side = 'left', padx = 2)
-       #Create text field for username
+        #Create text field for username
         self.usrname_entry = ttk.Entry(self.entry_bar)
         self.usrname_entry.pack(side = 'left', expand = True, fill = X)
-       #Create label for password
+        #Create label for password
         self.label_pass = ttk.Label(self.entry_bar, text = 'Password:')
         self.label_pass.pack(side = 'left', padx = 2)
-       #Create textfield for password
+        #Create textfield for password
         self.pass_entry = ttk.Entry(self.entry_bar, show = '*')
         self.pass_entry.pack(side = 'left', expand = True, fill = X)
-       #Create label for port
+        #Create label for port
         self.label_port = ttk.Label(self.entry_bar, text = 'Port:')
         self.label_port.pack(side = 'left', padx = 2)
-       #Create textfield for port
+        #Create textfield for port
         self.port_entry = ttk.Entry(self.entry_bar, width = 5)
         self.port_entry.pack(side = 'left', padx = (0, 2))
         self.port_entry.insert(END, '22')
-       #Create scrollbar
+        #Create scrollbar
         self.vbar = ttk.Scrollbar(self.canvas_frame, orient=VERTICAL)
         self.vbar.pack(anchor = E,side=RIGHT,fill=Y)
-       #Create drawing space for all file and folder icons
+        #Create drawing space for all file and folder icons
         self.canvas = Canvas(self.canvas_frame, relief = 'flat', bg = 'white', highlightthickness=0)
         self.canvas.pack(fill = BOTH, expand = True)
         self.vbar.config(command = self.canvas.yview)
         self.canvas['yscrollcommand'] = self.vbar.set
-       #Create status text/bar and status sting viraiable
+        #Create status text/bar and status sting viraiable
         self.current_status = StringVar()
         self.status_label = ttk.Label(master, textvariable = self.current_status, anchor = 'center')
         self.status_label.pack(fill = X)
 
-       #Bind events
+        #Bind events
         self.bind_events()
 
 
 
     def bind_events(self):
-       #Bind keyboard shortcuts
+        #Bind keyboard shortcuts
         self.master.bind('<Control-h>', self.toggle_hidden_files)
         self.master.bind('<Control-H>', self.toggle_hidden_files)
         self.master.bind('<Control-c>', self.clipboard_copy)
@@ -279,7 +278,7 @@ class app:
         self.master.bind('<Control-V>', self.clipboard_paste_thread_create) 
         self.master.bind('<Delete>', self.delete_window)
 
-       #Bind events for canvas, this part of code tells what some of the functions do
+        #Bind events for canvas, this part of code tells what some of the functions do
         self.canvas.bind('<Button-4>', self.on_mouse_wheel)
         self.canvas.bind('<Button-5>', self.on_mouse_wheel)     
         self.canvas.bind('<MouseWheel>', self.on_mouse_wheel)
@@ -290,11 +289,11 @@ class app:
         self.canvas.bind('<Control-Button-1>', self.ctrl_select)
         self.canvas.bind('<B1-Motion>', self.drag_select)
 
-       #Bind events for statusbar and scroll bar
+        #Bind events for statusbar and scroll bar
         self.vbar.bind('<Motion>', lambda event, arg = 'Scrollbar.': self.update_status(event, arg)) 
         self.status_label.bind('<Motion>', lambda event, arg = 'Statusbar.': self.update_status(event, arg)) 
 
-       #Bind events for all buttons
+        #Bind events for all buttons
         self.connect_button.bind('<Motion>', lambda event, arg = 'Start connection.': self.update_status(event, arg)) 
         self.upload_button.bind('<Motion>', lambda event, arg = 'Upload file(s) or folder(s).': self.update_status(event, arg)) 
         self.download_button.bind('<Motion>', lambda event, arg = 'Save/Download file(s) or folder(s).': self.update_status(event, arg)) 
@@ -309,13 +308,13 @@ class app:
         self.up_button.bind('<Motion>', lambda event, arg = 'Go to parent directory.': self.update_status(event, arg)) 
         self.info_button.bind('<Motion>', lambda event, arg = 'About/Info.': self.update_status(event, arg)) 
 
-       #Bind events for all labels
+        #Bind events for all labels
         self.toolbar.bind('<Motion>', lambda event, arg = ' ': self.update_status(event, arg)) 
         self.label_usrname.bind('<Motion>', lambda event, arg = ' ': self.update_status(event, arg)) 
         self.label_hostname.bind('<Motion>', lambda event, arg = ' ': self.update_status(event, arg)) 
         self.label_port.bind('<Motion>', lambda event, arg = ' ': self.update_status(event, arg)) 
 
-       #Bind events for all entries/text fields
+        #Bind events for all entries/text fields
         self.hostname_entry.bind('<Motion>', lambda event, arg = 'Enter host address.': self.update_status(event, arg)) 
         self.type_combobox.bind('<Motion>', lambda event, arg = 'Select connection type': self.update_status(event, arg)) 
         self.type_combobox.bind('<Motion>', lambda event, arg = 'Select connection type': self.update_status(event, arg)) 
@@ -326,9 +325,9 @@ class app:
 
 
     def handle_combobox(self, event):
-       #Clear port entry
+        #Clear port entry
         self.port_entry.delete(0, 'end') 
-       #Set default port   
+        #Set default port   
         if(self.type_combobox.get() == 'FTP'): 
             self.port_entry.insert(END, '21')
         else: 
@@ -337,13 +336,13 @@ class app:
 
 
     def connect_to_ftp(self):        
-       #Show message box
+        #Show message box
         self.float_window = Filedialogs.floating_message_dialog(self.master, "whipFTP", self.connect_icon, "Attempting to connect..." )
-       #Show 'Connecting' in status bar
+        #Show 'Connecting' in status bar
         self.unlock_status_bar()
         self.update_status(message = 'Connecting...')
         self.lock_status_bar()
-       #Check connection type create appropriate controller
+        #Check connection type create appropriate controller
         try:
             self.ftpController.disconnect()
             del self.ftpController
@@ -366,24 +365,24 @@ class app:
         except:
             thread_request_queue.put(lambda:self.unlock_status_bar())
             thread_request_queue.put(lambda:self.update_status_red('Unable to connect, please check what you have entered.'))
-           #Make sure unable to connect message stays on status bar
+            #Make sure unable to connect message stays on status bar
             thread_request_queue.put(lambda:self.lock_status_bar())
-       #Need to focus on the main window and the entry due to a bug in ttk/tkinter (entries don't focis properly after creating and destroying windowless messagebox dialog)  
+        #Need to focus on the main window and the entry due to a bug in ttk/tkinter (entries don't focis properly after creating and destroying windowless messagebox dialog)  
         thread_request_queue.put(lambda:self.hostname_entry.focus()) 
         thread_request_queue.put(lambda:self.master.focus())    
         thread_request_queue.put(lambda:self.float_window.destroy())
 
 
     def update_file_list(self):      
-       #Disable toolbar
+        #Disable toolbar
         self.disable_toolbar()
-       #Set search to false
+        #Set search to false
         self.search_performed = False
         self.update_status(message = 'Retrieving file list, Hidden files: {}, Please wait...'.format(self.ftpController.hidden_files))
         self.lock_status_bar()
         del self.file_list[:]
         del self.detailed_file_list[:]
-       #start thread
+        #start thread
         self.thread = threading.Thread(target = self.update_file_list_thread)
         self.thread.daemon = True
         self.thread.start()
@@ -394,7 +393,7 @@ class app:
             with self.thread_lock:
                 self.detailed_file_list = self.ftpController.get_detailed_file_list()
                 self.file_list = self.ftpController.get_file_list(self.detailed_file_list)
-           #Set the window title to current path
+            #Set the window title to current path
             thread_request_queue.put(lambda:self.master.wm_title('whipFTP-'+self.ftpController.pwd()))
             thread_request_queue.put(lambda:self.unlock_status_bar())
         except:
@@ -402,33 +401,33 @@ class app:
             thread_request_queue.put(lambda:self.update_status_red('Unable to retrieve file list, connection might be lost.'))
             thread_request_queue.put(lambda:self.lock_status_bar())
         thread_request_queue.put(lambda:self.draw_icons())
-       #Enable toolbar
+        #Enable toolbar
         thread_request_queue.put(lambda:self.enable_toolbar())
         
 
         
     def draw_icons(self, event = None):    
-       #Calculate cell width
+        #Calculate cell width
         self.cell_width = 70 + self.default_font.measure(self.ftpController.max_len_name)
         self.canvas_width = self.canvas.winfo_width() - 4
         self.canvas_height = self.canvas.winfo_height()
         if(self.cell_width > self.canvas_width):
             self.cell_width = self.canvas_width
-       #Clear canvas
+        #Clear canvas
         self.canvas.delete('all')
         y = 0
         x = 0
-       #Create a rectangle for update_status_mouse(self, event) function
+        #Create a rectangle for update_status_mouse(self, event) function
         self.rect_id = self.canvas.create_rectangle(-1, -1, -1, -1, fill = '', outline = '')
-       #Draw icons
-       #If there are no files, draw watermark
+        #Draw icons
+        #If there are no files, draw watermark
         if len(self.file_list) is 0:
             self.canvas.create_image(self.canvas_width/2, self.canvas_height/2, image = self.whipFTP_glow_icon)
         for file_name, file_details in zip(self.file_list, self.detailed_file_list):
             if((x+1)*self.cell_width > self.canvas_width):
                 y+=1
                 x=0
-           #Check types, draw appropriate icon
+            #Check types, draw appropriate icon
             if('d' in file_details[0]):
                 self.canvas.create_image(25+(x*self.cell_width), 18+(y*35), image = self.folder_icon)
                 canvas_id = self.canvas.create_text(45+(x*self.cell_width), 13+(y*35), anchor='nw')
@@ -439,7 +438,7 @@ class app:
                 canvas_id = self.canvas.create_text(45+(x*self.cell_width), 13+(y*35), anchor='nw')
                 self.canvas.itemconfig(canvas_id, text= file_name)  
                 x+=1
-       #Calculate scroll region for scroll bar
+        #Calculate scroll region for scroll bar
         if (y+1)*35 < self.canvas_height:
             scroll_region_y = self.canvas_height - 1
             self.vbar.configure(style = 'Whitehide.TScrollbar')
@@ -449,9 +448,9 @@ class app:
             self.vbar.configure(style = 'TScrollbar')
             self.vbar.bind('<Motion>', lambda event, arg = 'Scrollbar.': self.update_status(event, arg)) 
         self.canvas.configure(scrollregion = '-1 -1 ' + str(self.canvas_width) + ' ' + str(scroll_region_y))
-       #Redraw all selected-highlight rectangles for selected files
+        #Redraw all selected-highlight rectangles for selected files
         for file_index in self.selected_file_indices:
-           #Round canvas's width to nearest multiple of self.cell_width, width of each cell
+            #Round canvas's width to nearest multiple of self.cell_width, width of each cell
             self.max_width = self.canvas_width - (self.canvas_width % self.cell_width) 
             max_no_cells_x  = self.max_width/self.cell_width 
             x = file_index%max_no_cells_x
@@ -461,42 +460,42 @@ class app:
 
 
     def update_status_and_mouse(self, event):
-       #Get absolute mouse position on canvas
+        #Get absolute mouse position on canvas
         self.mouse_x, self.mouse_y = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y) 
-       #Calculate cell row and cell column based on mouse's position
+        #Calculate cell row and cell column based on mouse's position
         self.x_cell_pos = int(self.mouse_x/self.cell_width)
         self.y_cell_pos = int(self.mouse_y/35)
-       #Round canvas's width to nearest multiple of self.cell_width, width of each cell
+        #Round canvas's width to nearest multiple of self.cell_width, width of each cell
         self.max_width = self.canvas_width - (self.canvas_width % self.cell_width)
-       #Use index = (y*width)+x to figure out the file index from canvas and mouse position
+        #Use index = (y*width)+x to figure out the file index from canvas and mouse position
         self.current_file_index = int(((self.max_width/self.cell_width)*self.y_cell_pos) + self.x_cell_pos)
-       #Set status only if valid index, draw mouse-hover highlight rectangle
+        #Set status only if valid index, draw mouse-hover highlight rectangle
         if(self.current_file_index >= 0 and self.current_file_index < len(self.file_list) and self.mouse_x < self.max_width):
             self.update_status(event, self.detailed_file_list[self.current_file_index])
-           #Configure the rectangle created in draw_icons() to highlight the current folder mose is pointing at
+            #Configure the rectangle created in draw_icons() to highlight the current folder mose is pointing at
             self.canvas.itemconfig(self.rect_id, outline = 'black')
             self.canvas.coords(self.rect_id, self.x_cell_pos*self.cell_width+2, self.y_cell_pos*35+2, (self.x_cell_pos+1)*self.cell_width-1, (self.y_cell_pos+1)*35-1) 
         else:
-           #Tell how many files are present and how many are selected in the status bar
+            #Tell how many files are present and how many are selected in the status bar
             self.update_status(event, 'Total no. of items: ' + str(len(self.file_list)) + '   Selected: ' + str(len(self.selected_file_indices)))
-           #Stop mouse-hover highlighting
+            #Stop mouse-hover highlighting
             self.canvas.itemconfig(self.rect_id, outline = '')
             self.canvas.coords(self.rect_id, -1, -1, -1, -1)  
     
     def update_status(self, event = None, message = ' '):
-       #Stop mouse-hover highlighting
+        #Stop mouse-hover highlighting
         self.canvas.itemconfig(self.rect_id, outline = '')
         self.canvas.coords(self.rect_id, -1, -1, -1, -1) 
-       #Display message in status bar in black color only if change_status is true else ignore it
+        #Display message in status bar in black color only if change_status is true else ignore it
         if self.change_status is True:
             self.status_label.configure(style = 'TLabel')
             self.current_status.set(message)
 
     def update_status_red(self, message):
-       #Stop mouse-hover highlighting
+        #Stop mouse-hover highlighting
         self.canvas.itemconfig(self.rect_id, outline = '')
         self.canvas.coords(self.rect_id, -1, -1, -1, -1) 
-       #Display message in status bar in red color only if change_status is true else ignore it
+        #Display message in status bar in red color only if change_status is true else ignore it
         if self.change_status is True:
             self.status_label.configure(style = 'Red.TLabel')
             self.current_status.set(message)
@@ -525,93 +524,93 @@ class app:
 
     def mouse_select(self, event):
         self.master.focus()
-       #Store start position for drag select
+        #Store start position for drag select
         self.start_x = self.x_cell_pos
         self.start_y = self.y_cell_pos
-       #Deselect everything
+        #Deselect everything
         self.deselect_everything()  
-       #Set selected only if valid index
+        #Set selected only if valid index
         if(self.current_file_index >= 0 and self.current_file_index < len(self.file_list) and self.mouse_x < self.max_width):   
-           #Draw a 'selected' highlighting rectangle and save a reference to the rectangle in selected file list
+            #Draw a 'selected' highlighting rectangle and save a reference to the rectangle in selected file list
             self.selected_file_indices[self.current_file_index] = self.canvas.create_rectangle(self.x_cell_pos*self.cell_width+2, self.y_cell_pos*35+2, 
             	                                                                               (self.x_cell_pos+1)*self.cell_width - 1, (self.y_cell_pos+1)*35 - 1, 
             	                                                                               fill = '', outline = 'Red')
-       #Tell how many files are present and how many are selected in the status bar
+        #Tell how many files are present and how many are selected in the status bar
         self.update_status(event, 'Total no. of items: ' + str(len(self.file_list)) + '   Selected: ' + str(len(self.selected_file_indices)))
 
     def ctrl_select(self, event):
-       #Set selected only if valid index
+        #Set selected only if valid index
         if(self.current_file_index >= 0 and self.current_file_index < len(self.file_list) and self.mouse_x < self.max_width): 
-          #If WAS NOT selected already
+            #If WAS NOT selected already
             if(self.current_file_index not in self.selected_file_indices):
-               #Draw a 'selected' highlighting rectangle and save a reference to the rectangle in selected file list
+                #Draw a 'selected' highlighting rectangle and save a reference to the rectangle in selected file list
                 self.selected_file_indices[self.current_file_index] = self.canvas.create_rectangle(self.x_cell_pos*self.cell_width+2, self.y_cell_pos*35+2,
                                                                                                    (self.x_cell_pos+1)*self.cell_width-1, (self.y_cell_pos+1)*35-1,
                                                                                                    fill = '', outline = 'Red')
-          #If WAS selected already
+            #If WAS selected already
             else:
-               #Remove from selected file list
+                #Remove from selected file list
                 del self.selected_file_indices[self.current_file_index]
-               #Redraw icons
+                #Redraw icons
                 self.draw_icons()  
-       #Tell how many files are present and how many are selected in the status bar
+        #Tell how many files are present and how many are selected in the status bar
         self.update_status(event, 'Total no. of items: ' + str(len(self.file_list)) + '   Selected: ' + str(len(self.selected_file_indices)))
 
     def drag_select(self, event):
-       #Update to get current mouse position
+        #Update to get current mouse position
         self.update_status_and_mouse(event)
-       #Calculate steps and offsets for x-direction
+        #Calculate steps and offsets for x-direction
         if(self.x_cell_pos <= self.start_x):
             start_x_offset =1
             step_x = 1
         else:
             start_x_offset =-1
             step_x = -1
-       #Calculate steps and offsets for y-direction
+        #Calculate steps and offsets for y-direction
         if(self.y_cell_pos <= self.start_y):
             start_y_offset =1
             step_y = 1
         else:
             start_y_offset =-1
             step_y = -1
-       #Select items
+        #Select items
         for i in range(self.x_cell_pos, self.start_x +start_x_offset, step_x):
             for j in range(self.y_cell_pos, self.start_y +start_y_offset, step_y):
-               #Calculate index
+                #Calculate index
                 file_index = int(((self.max_width/self.cell_width)*j) + i)
-               #Set selected only if valid index
+                #Set selected only if valid index
                 if(file_index >= 0 and file_index < len(self.file_list) and i < self.max_width/self.cell_width):   
-                   #Draw a 'selected' highlighting rectangle and save a reference to the rectangle in selected file dictionary
+                    #Draw a 'selected' highlighting rectangle and save a reference to the rectangle in selected file dictionary
                     self.selected_file_indices[file_index] = self.canvas.create_rectangle(i*self.cell_width+2, j*35+2, (i+1)*self.cell_width-1, (j+1)*35-1, fill = '', outline = 'Red')
-       #Tell how many files are present and how many are selected in the status bar
+        #Tell how many files are present and how many are selected in the status bar
         self.update_status(event, 'Total no. of items: ' + str(len(self.file_list)) + '   Selected: ' + str(len(self.selected_file_indices)))
 
     def handle_dnd(self, action, actions, type, win, X, Y, x, y, data):
-       #If there is another child window, disable dnd
+        #If there is another child window, disable dnd
         if(len(self.master.children) != 4): return
         del self.dnd_file_list[:]
         self.dnd_file_list = self.dnd.parse_uri_list(data)
         self.upload_thread_dnd()
 
     def show_dnd_icon(self, action, actions, type, win, X, Y, x, y, data):
-       #If there is another child window, disable dnd
+        #If there is another child window, disable dnd
         if(len(self.master.children) != 4): return
         self.deselect_everything()
         self.canvas.delete("all")
         self.canvas.create_image(self.canvas_width/2, self.canvas_height/2, image = self.dnd_glow_icon)
 
     def deselect_everything(self):
-           #Delete selected file dictionary
+            #Delete selected file dictionary
             self.selected_file_indices.clear()
-           #Redraw all icons and remove any 'selected' highlighting rectangles
+            #Redraw all icons and remove any 'selected' highlighting rectangles
             self.draw_icons()
 
 
 
     def change_dir(self, event):
-       #Delete selected file list
+        #Delete selected file list
         self.selected_file_indices.clear()
-       #Show message box
+        #Show message box
         if(self.current_file_index >= 0 and self.current_file_index < len(self.file_list) and self.mouse_x < self.max_width):
             if('d' in self.detailed_file_list[self.current_file_index][0]):
                 try:
@@ -627,9 +626,9 @@ class app:
     def goto_path(self):
         path = self.goto_window.rename_entry.get()
         self.goto_window.destroy()
-       #Delete selected file list
+        #Delete selected file list
         self.selected_file_indices.clear()
-       #Show message box
+        #Show message box
         try:
             self.ftpController.ftp.cwd(path)
             self.update_file_list()       
@@ -640,9 +639,9 @@ class app:
 
 
     def dir_up(self):
-       #Delete selected file list
+        #Delete selected file list
         self.selected_file_indices.clear()
-       #Update GUI now, before mainloop, the following code takes a long time to execute
+        #Update GUI now, before mainloop, the following code takes a long time to execute
         self.master.update_idletasks() 
         try:
             if(self.search_performed is False):
@@ -655,25 +654,25 @@ class app:
 
 
     def file_properties_window(self):
-       #Check number of files selected
+        #Check number of files selected
         if(len(self.selected_file_indices) is not 1): return
-       #Create the string that contains all the properties
+        #Create the string that contains all the properties
         for key in self.selected_file_indices:
             file_name = self.file_list[key]
             file_details = self.detailed_file_list[key].split()
             file_attribs = file_details[0]+'\n'
             if('d' in self.detailed_file_list[key][0]):
                 date_modified = ' '.join(file_details[5:8])
-               #Remove the path from the name
+                #Remove the path from the name
                 file_name = ''.join((file_name.split('/')[-1:]))+'\n'
                 properties = 'Name: '+ file_name + 'Attributes: ' + file_attribs + 'Date: ' + date_modified
             else:    
                 file_size = file_details[4] + ' bytes\n'
                 date_modified = ' '.join(file_details[5:8])
-               #Remove the path from the name
+                #Remove the path from the name
                 file_name = ''.join((file_name.split('/')[-1:]))+'\n'
                 properties = 'Name: '+ file_name + 'Attributes: ' + file_attribs + 'Size: ' + file_size + 'Date: ' + date_modified
-       #Display the created string in properties dialog
+        #Display the created string in properties dialog
         self.properties_dialog = Filedialogs.file_properties_dialog(self.master, 'Properties', self.rename_window, self.change_permissions_window, self.properties_icon, properties)
 
     def rename_window(self):
@@ -682,11 +681,11 @@ class app:
 
     def rename_file_thread(self):
         rename_name = self.rename_dialog.rename_entry.get()
-       #Destroy rename window
+        #Destroy rename window
         self.rename_dialog.destroy()
-       #Show message box
+        #Show message box
         self.float_window = Filedialogs.floating_message_dialog(self.master, "whipFTP", self.rename_icon, "Renaming file..." )
-       #start thread
+        #start thread
         self.thread =  threading.Thread(target = self.rename_file, args = (self.ftpController, self.file_list, self.detailed_file_list, self.selected_file_indices, rename_name))
         self.thread.daemon = True
         self.thread.start()
@@ -696,15 +695,15 @@ class app:
         try:
             for key in selected_file_indices:
                 file_name = ftpController.cwd_parent(file_list[key])
-               #If a directory
+                #If a directory
                 if('d' in detailed_file_list[key][0]):
                     ftpController.rename_dir(file_name, rename_name)                   
-               #If a file            
+                #If a file            
                 else:
                     ftpController.ftp.rename(file_name, rename_name)
-           #Deselect everything
+            #Deselect everything
             thread_request_queue.put(lambda:self.deselect_everything())
-           #update file list and redraw icons
+            #update file list and redraw icons
             thread_request_queue.put(lambda:self.update_file_list())
         except:
             thread_request_queue.put(lambda:self.update_status_red('Unable to rename, try a diffrent name or try reconnecting.'))
@@ -717,11 +716,11 @@ class app:
 
     def change_permissions_thread(self):
         octal_notation = self.permission_window.rename_entry.get()
-       #Destroy permission window
+        #Destroy permission window
         self.permission_window.destroy()
-       #Show message box
+        #Show message box
         self.float_window = Filedialogs.floating_message_dialog(self.master, "whipFTP", self.permissions_icon, "Changing file permissions..." )
-       #start thread
+        #start thread
         self.thread = threading.Thread(target = self.change_permissions, args = (self.ftpController, self.file_list, self.selected_file_indices, octal_notation))
         self.thread.daemon = True
         self.thread.start()
@@ -732,9 +731,9 @@ class app:
             for key in selected_file_indices:
                file_name = ftpController.cwd_parent(file_list[key])
                ftpController.chmod(file_name, int(octal_notation))
-           #Deselect everything
+            #Deselect everything
             self.deselect_everything()
-           #update file list and redraw icons
+            #update file list and redraw icons
             thread_request_queue.put(lambda:self.update_file_list())
         except:
             thread_request_queue.put(lambda:self.update_status_red('Unable to change permissions.'))
@@ -747,23 +746,23 @@ class app:
         self.create_dir_dialog = Filedialogs.name_dialog(self.master, 'Create a new folder', self.create_dir_thread, self.newfolder_icon)
 
     def create_dir_thread(self):
-       #Create thread
+        #Create thread
         self.thread = threading.Thread(target = self.create_dir, args = (self.ftpController, self.create_dir_dialog.rename_entry.get()))
-       #Destroy rename window
+        #Destroy rename window
         self.create_dir_dialog.destroy()
-       #Show message box
+        #Show message box
         self.float_window = Filedialogs.floating_message_dialog(self.master, "whipFTP", self.newfolder_icon, "Creating directory..." )
-       #Start thread and process requests
+        #Start thread and process requests
         self.thread.daemon = True
         self.thread.start()
         self.process_thread_requests()
 
     def create_dir(self, ftpController, dir_name):
         try:
-           #Deselect everything
+            #Deselect everything
             thread_request_queue.put(lambda:self.deselect_everything())
             ftpController.mkd(dir_name)
-           #update file list and redraw icons
+            #update file list and redraw icons
             thread_request_queue.put(lambda:self.update_file_list())
         except:
             thread_request_queue.put(lambda:self.update_status_red('Unable to create folder, either invalid characters or not having permission may be the reason or directory already exists.'))
@@ -775,62 +774,62 @@ class app:
         self.upload_dialog = Filedialogs.open_file_dialog(self.master, 'Choose file(s) or folder(s) to upload', self.upload_thread)
 
     def upload_thread(self):
-       #Create console/terminal window
+        #Create console/terminal window
         self.create_progress_window()
-       #Destroy upload window
+        #Destroy upload window
         self.upload_dialog.destroy()
-       #Set status
+        #Set status
         self.update_status('Uploading file(s)...')
-       #start thread
+        #start thread
         self.thread =  threading.Thread(target = self.upload, args = (self.ftpController, self.upload_dialog.file_list, self.upload_dialog.selected_file_indices))
         self.thread.daemon = True
         self.thread.start()
         self.process_thread_requests()
         
     def upload(self, ftpController, file_list, selected_file_indices):     
-       #Thread safe progress function
+        #Thread safe progress function
         def progress(file_name, status):
             thread_request_queue.put(lambda:self.progress(file_name, status))
-       #Thread safe replace function
+        #Thread safe replace function
         def replace(file_name, status):
             thread_request_queue.put(lambda:self.thread_safe_replace(file_name, status))
             thread_request_queue.join()
             with self.thread_lock:
                 return self.replace_flag
-       #Loop through selected items and upload them            
+        #Loop through selected items and upload them            
         for index in selected_file_indices:
             if(isfile(file_list[index])):
                 ftpController.upload_file(file_list[index], os.path.getsize(file_list[index]), progress, replace)
             else:
                 ftpController.upload_dir(file_list[index], progress, replace)
-       #Update file list and redraw icons
+        #Update file list and redraw icons
         thread_request_queue.put(lambda:self.update_file_list())
         thread_request_queue.put(lambda:self.update_status(' '))
         thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
         thread_request_queue.put(lambda:self.console_window.enable_close_button())
 
     def upload_thread_dnd(self):
-       #Create console/terminal window
+        #Create console/terminal window
         self.create_progress_window()
-       #Set status
+        #Set status
         self.update_status('Uploading file(s)...')
-       #start thread
+        #start thread
         self.thread =  threading.Thread(target = self.upload_dnd, args = (self.ftpController, self.dnd_file_list))
         self.thread.daemon = True
         self.thread.start()
         self.process_thread_requests()
         
     def upload_dnd(self, ftpController, dnd_file_list):
-       #Thread safe progress function
+        #Thread safe progress function
         def progress(file_name, status):
             thread_request_queue.put(lambda:self.progress(file_name, status))
-       #Thread safe replace function
+        #Thread safe replace function
         def replace(file_name, status):
             thread_request_queue.put(lambda:self.thread_safe_replace(file_name, status))
             thread_request_queue.join()
             with self.thread_lock:
                 return self.replace_flag
-       #Loop through selected items and upload them         
+        #Loop through selected items and upload them         
         for file in dnd_file_list:
             os.chdir('/'.join(file.split('/')[:-1]))
             file = ''.join(file.split('/')[-1:])
@@ -838,7 +837,7 @@ class app:
                 ftpController.upload_file(file, os.path.getsize(file), progress, replace)
             else:
                 ftpController.upload_dir(file, progress, replace)
-       #Update file list and redraw icons
+        #Update file list and redraw icons
         thread_request_queue.put(lambda:self.update_file_list())
         thread_request_queue.put(lambda:self.update_status(' '))
         thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
@@ -846,43 +845,43 @@ class app:
 
 
     def download_window(self):
-       #Check number of files selected
+        #Check number of files selected
         if(len(self.selected_file_indices) < 1): return
         self.download_dialog = Filedialogs.open_file_dialog(self.master, 'Choose or Drag and Drop folder to download in', self.download_thread, True)
 
     def download_thread(self):
-       #Destroy download window
+        #Destroy download window
         self.download_dialog.destroy()
-       #Create console/terminal window
+        #Create console/terminal window
         self.create_progress_window()
-       #Set status
+        #Set status
         self.update_status('downloading file(s)...')
-       #Create new thread for downloading
+        #Create new thread for downloading
         self.thread =  threading.Thread(target = self.download, args = (self.ftpController, self.file_list, self.detailed_file_list, self.selected_file_indices))
         self.thread.daemon = True
         self.thread.start()
         self.process_thread_requests()
 
     def download(self, ftpController, file_list, detailed_file_list, selected_file_indices):                       
-       #Thread safe progress function
+        #Thread safe progress function
         def progress(file_name, status):
             thread_request_queue.put(lambda:self.progress(file_name, status))
-       #Thread safe replace function
+        #Thread safe replace function
         def replace(file_name, status):
             thread_request_queue.put(lambda:self.thread_safe_replace(file_name, status))
             thread_request_queue.join()
             with self.thread_lock:
                 return self.replace_flag
-       #Loop through selected items and download them
+        #Loop through selected items and download them
         for index in selected_file_indices:
-       #Switch to parents 
+        #Switch to parents 
             file_name = ftpController.cwd_parent(file_list[index])
-           #If a file download it to the specified directory
+            #If a file download it to the specified directory
             if('d' not in detailed_file_list[index][0]):
                 ftpController.download_file(file_name, int(detailed_file_list[index].split()[4]), progress, replace)
             else:
                 ftpController.download_dir(file_name, progress, replace)
-       #Update file list and redraw icons
+        #Update file list and redraw icons
         thread_request_queue.put(lambda:self.update_file_list())
         thread_request_queue.put(lambda:self.update_status(' '))
         thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
@@ -895,9 +894,9 @@ class app:
         self.search_window =  Filedialogs.name_dialog(self.master, 'Search', self.search_thread, self.search_icon, 'Enter file name:')
 
     def search_thread(self):
-       #Create console/terminal window
+        #Create console/terminal window
         self.create_progress_window()
-       #Create new thread for searching
+        #Create new thread for searching
         self.thread = threading.Thread(target = self.search_file, args = (self.ftpController, self.search_window.rename_entry.get()) )
         self.search_window.destroy()
         self.thread.daemon= True
@@ -905,26 +904,26 @@ class app:
         self.process_thread_requests()
 
     def search_file(self, ftpController, search_file_name):
-       #Thread safe progress function
+        #Thread safe progress function
         def progress(file_name, status):
             thread_request_queue.put(lambda:self.progress(file_name, status))        
         try:
-           #Store the current path so that we can return to it after search
+            #Store the current path so that we can return to it after search
             path = ftpController.pwd()
-           #Reset file lists
+            #Reset file lists
             thread_request_queue.put(lambda:self.selected_file_indices.clear())
             with self.thread_lock:
                 self.detailed_file_list = self.ftpController.get_detailed_file_list()
                 self.file_list = self.ftpController.get_file_list(self.detailed_file_list)       
-           #Start searching
+            #Start searching
             ftpController.clear_search_list()
             ftpController.search(path, progress, search_file_name)
-           #Add the results to file list and redraw icons
+            #Add the results to file list and redraw icons
             thread_request_queue.put(lambda:self.update_search_files())    
             thread_request_queue.put(lambda:self.update_status(' '))
-           #Restore path
+            #Restore path
             ftpController.ftp.cwd(path)
-           #Set search performed
+            #Set search performed
             thread_request_queue.put(lambda:self.search_finished())
         except:
              thread_request_queue.put(lambda:self.update_status_red('Unable to search, try reconnecting.'))
@@ -933,7 +932,7 @@ class app:
         thread_request_queue.put(lambda:self.console_window.enable_close_button())    
 
     def update_search_files(self):
-       #Replace file lists with search results and redraw icons
+        #Replace file lists with search results and redraw icons
         del self.file_list[:]
         del self.detailed_file_list[:]
         self.file_list = self.ftpController.get_search_file_list()
@@ -950,36 +949,36 @@ class app:
         self.delete_warning = Filedialogs.warning_dialog(self.master, 'Are you sure?', self.delete_thread, self.delete_icon, 'Delete selected files/folders?')
 
     def delete_thread(self):
-       #Create console/terminal window
+        #Create console/terminal window
         self.create_progress_window()
         self.replace = threading.Event()
         self.replace.clear()
-       #Destroy warning window
+        #Destroy warning window
         self.delete_warning.destroy()
-       #Set current status
+        #Set current status
         self.update_status('Deleting file(s)...')       
-       #Start thread 
+        #Start thread 
         self.thread = threading.Thread(target = self.delete_item, args = (self.ftpController, self.file_list, self.detailed_file_list, self.selected_file_indices))
         self.thread.daemon = True
         self.thread.start()
         self.process_thread_requests()
 
     def delete_item(self, ftpController, file_list, detailed_file_list, selected_file_indices):
-       #Thread safe progress function
+        #Thread safe progress function
         def progress(file_name, status):
             thread_request_queue.put(lambda:self.progress(file_name, status))
-       #Loop through all selected files and folders
+        #Loop through all selected files and folders
         for index in selected_file_indices:
             file_name = ftpController.cwd_parent(file_list[index])
-           #If directory
+            #If directory
             if('d' in detailed_file_list[index][0]):
                 ftpController.delete_dir(file_name, progress)
-           #If file                
+            #If file                
             else:
                 ftpController.delete_file(file_name, progress)
-       #Deselect everything
+        #Deselect everything
         thread_request_queue.put(lambda:self.deselect_everything)
-       #Update file list and redraw icons
+        #Update file list and redraw icons
         thread_request_queue.put(lambda:self.update_file_list())
         thread_request_queue.put(lambda:self.update_status(' '))
         thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
@@ -990,12 +989,12 @@ class app:
 
 
     def clipboard_cut(self, event = None):
-       #Check number of files in clipboard
+        #Check number of files in clipboard
         if(len(self.selected_file_indices) < 1): return
         self.cut = True
         del self.clipboard_file_list[:]
         for index in self.selected_file_indices:
-           #If it is a search result get the clipboard path from the search result
+            #If it is a search result get the clipboard path from the search result
             if(self.search_performed is True):
                 self.clipboard_path_list.append('/'.join(self.file_list[index].split('/')[:-1]))
                 self.clipboard_file_list.append(''.join(self.file_list[index].split('/')[-1:]))
@@ -1006,12 +1005,12 @@ class app:
         self.deselect_everything()
 
     def clipboard_copy(self, event = None):
-       #Check number of files in clipboard
+        #Check number of files in clipboard
         if(len(self.selected_file_indices) < 1): return      
         self.copy = True
         del self.clipboard_file_list[:]
         for index in self.selected_file_indices:
-           #If it is a search result get the clipboard path from the search result
+            #If it is a search result get the clipboard path from the search result
             if(self.search_performed is True):
                 self.clipboard_path_list.append('/'.join(self.file_list[index].split('/')[:-1]))
                 self.clipboard_file_list.append(''.join(self.file_list[index].split('/')[-1:]))
@@ -1022,11 +1021,11 @@ class app:
         self.deselect_everything()
 
     def clipboard_paste_thread_create(self, event = None):
-       #Check number of files in clipboard
+        #Check number of files in clipboard
         if(len(self.clipboard_file_list) < 1): return
-       #Create console/terminal window        
+        #Create console/terminal window        
         self.create_progress_window()
-       #start thread
+        #start thread
         self.thread =  threading.Thread(target = self.clipboard_paste, args = (self.ftpController, self.clipboard_path_list, self.clipboard_file_list, self.detailed_clipboard_file_list, 
                                             self.cut, self.copy))
         self.thread.daemon = True
@@ -1034,20 +1033,20 @@ class app:
         self.process_thread_requests()
 
     def clipboard_paste(self, ftpController, clipboard_path_list, clipboard_file_list, detailed_clipboard_file_list, cut, copy):        
-       #Set current status
+        #Set current status
         thread_request_queue.put(lambda:self.update_status('Moving file(s)...'))        
         if(cut is True):
-           #Loop through all selected files and folders
+            #Loop through all selected files and folders
             for clipboard_path, file_name in zip(clipboard_path_list, clipboard_file_list):
                 ftpController.move_dir(clipboard_path +'/'+file_name, ftpController.pwd()+'/'+file_name, self.progress, self.ask_replace)
             thread_request_queue.put(lambda:self.clear_clipboard())
             thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
         elif (copy is True):
-           #Set current status
+            #Set current status
             thread_request_queue.put(lambda:self.update_status('Copying file(s)...'))
-           #Loop through all selected files and folders
+            #Loop through all selected files and folders
             for clipboard_path, file_name, file_details in zip(clipboard_path_list, clipboard_file_list, detailed_clipboard_file_list):
-               #Check for file or directory, use appropriate function
+                #Check for file or directory, use appropriate function
                 try:
                     if('d' in file_details[0]):
                         ftpController.copy_dir(clipboard_path, file_name, self.progress, self.ask_replace)
@@ -1057,7 +1056,7 @@ class app:
                     thread_request_queue.put(lambda:self.progress('Failed to copy file/folder', file_name))
             thread_request_queue.put(lambda:self.clear_clipboard())
             thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
-       #update file list and redraw icons
+        #update file list and redraw icons
         thread_request_queue.put(lambda:self.update_file_list())
         thread_request_queue.put(lambda:self.update_status(' '))
         thread_request_queue.put(lambda:self.console_window.enable_close_button())
@@ -1071,13 +1070,13 @@ class app:
 
 
     def ask_replace(self, file_name, status):
-       #Check if replace all has been selected
+        #Check if replace all has been selected
         if(self.replace_all is True): return True
-       #Check if skip all has been selected
+        #Check if skip all has been selected
         if(self.skip_all is True): return False
-       #Create replace dialog
+        #Create replace dialog
         self.replace_window = Filedialogs.replace_dialog(self.console_window.console_dialog_window, 'Conflicting files', self.copy_icon, file_name+': '+status+', Replace?')
-       #Loop till a button is pressed
+        #Loop till a button is pressed
         while self.replace_window.command is 0:
             self.replace_window.replace_dialog_window.update()
         if (self.replace_window.command is 1): return False
@@ -1094,7 +1093,7 @@ class app:
             self.replace_flag = self.ask_replace(file_name, status)
 
     def reset_replace(self):
-       #Set replace all and skip all mode to false
+        #Set replace all and skip all mode to false
         self.replace_all = False
         self.skip_all = False
 
@@ -1109,14 +1108,14 @@ class app:
         self.console_window = Filedialogs.console_dialog(self.master, self.console_icon, self.reset_replace)
 
     def progress(self, file_name, status):
-       #If it is a progress
+        #If it is a progress
         if('%' in status):
             self.console_window.progress(status)
             return
         if(status == 'newline'):
             self.console_window.insert('')
             return
-       #Print to console
+        #Print to console
         self.console_window.insert(status+': '+file_name)
 
 
@@ -1127,7 +1126,7 @@ class app:
 
 
     def disable_toolbar(self, event = None):
-       #Disable all buttons
+        #Disable all buttons
         self.connect_button.command = None
         self.upload_button.command = None
         self.download_button.command = None
@@ -1140,7 +1139,7 @@ class app:
         self.search_button.command = None
         self.up_button.command = None
         self.info_button.command = None
-       #Disable mouse action
+        #Disable mouse action
         self.canvas.unbind("<Button-1>")
         self.canvas.unbind("<Double-Button-1>")     
         self.canvas.unbind("<Control-Button-1>")
@@ -1148,7 +1147,7 @@ class app:
         self.canvas.unbind("<Motion>")
 
     def enable_toolbar(self, event = None):
-       #Enable all buttons
+        #Enable all buttons
         self.connect_button.command = self.connect_to_ftp
         self.upload_button.command = self.upload_window
         self.download_button.command = self.download_window
@@ -1161,7 +1160,7 @@ class app:
         self.search_button.command = self.search_window_ask
         self.up_button.command = self.dir_up
         self.info_button.command = self.info
-       #Enable mouse action
+        #Enable mouse action
         self.canvas.bind("<Button-1>", self.mouse_select)
         self.canvas.bind("<Double-Button-1>" , self.change_dir)     
         self.canvas.bind("<Control-Button-1>", self.ctrl_select)

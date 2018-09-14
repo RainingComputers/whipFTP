@@ -8,14 +8,14 @@ from tkinter import PhotoImage
 class Button(ttk.Label):
 
     def __init__(self, parent, image, image_hover, command):
-       #Save reference to icon
+        #Save reference to icon
         self.icon = image
         self.hover_icon = image_hover
-       #save reference to the function
+        #save reference to the function
         self.command = command
-       #Create the label
+        #Create the label
         super().__init__(parent, image = self.icon)
-       #Bind events
+        #Bind events
         super().bind('<Enter>', self.hover)
         super().bind('<Leave>', self.left)
         super().bind('<Button-1>', self.click)
