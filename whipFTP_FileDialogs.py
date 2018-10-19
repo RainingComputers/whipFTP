@@ -17,6 +17,9 @@ from TkDND_wrapper import *
 if(platform.system() is 'Windows'):
     import win32api
     import win32con
+if(platform.system() == 'Linux'):
+    import linux_mount as mountpoints
+
 
 
 def center_window(master_window, child_window):
@@ -709,8 +712,7 @@ class open_file_dialog:
             for home_folders in ['', 'Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']:
                 if(os.path.exists(os.getcwd()+'/'+home_folders)):
                     common_file_list.append(os.getcwd()+'/'+home_folders)
-            for drive in psutil.disk_partitions():
-                common_file_list.append(drive.mountpoint)
+            common_file_list += mountpoints.get_mounts()
             self.directory_text['values'] = common_file_list
         elif(platform.system() == 'Windows'):
             common_file_list = []
