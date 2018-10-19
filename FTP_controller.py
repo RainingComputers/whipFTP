@@ -34,10 +34,10 @@ class ftp_controller:
     def toggle_hidden_files(self):
         self.hidden_files = not self.hidden_files 
 
-    def get_detailed_file_list(self):
+    def get_detailed_file_list(self, ignore_hidden_files_flag = False):
         files = []
         def dir_callback(line):
-            if(self.hidden_files is True or line.split()[8][0] is not '.'):
+            if(self.hidden_files is True or line.split()[8][0] is not '.') or ignore_hidden_files_flag == True:
                 files.append(line)
         self.ftp.dir(dir_callback)
         return files
@@ -145,7 +145,7 @@ class ftp_controller:
         #Go into the directory
         self.ftp.cwd(dir_name)
         #Get file lists
-        detailed_file_list = self.get_detailed_file_list()
+        detailed_file_list = self.get_detailed_file_list(True)
         file_list = self.get_file_list(detailed_file_list)
         for file_name, file_details in zip(file_list, detailed_file_list):
             #If directory
@@ -260,7 +260,7 @@ class ftp_controller:
         #Go into the ftp directory
         self.ftp.cwd(ftp_dir_name)
         #Get file lists
-        detailed_file_list = self.get_detailed_file_list()
+        detailed_file_list = self.get_detailed_file_list(True)
         file_list = self.get_file_list(detailed_file_list)
         for file_name, file_details in zip(file_list, detailed_file_list):
             #If directory
