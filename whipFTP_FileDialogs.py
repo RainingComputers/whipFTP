@@ -8,6 +8,7 @@ from os import listdir
 from os.path import isfile, join
 import platform
 import psutil
+import whipFTP_PaneButton as PaneButton
 from tkinter import *
 from tkinter import font
 from tkinter import ttk
@@ -661,6 +662,8 @@ class open_file_dialog:
         os.chdir(dname)
 
         #Load all icons
+        self.folder_icon_small = PhotoImage(file='Icons/folder_small.png')
+        self.mountpoint_icon_small = PhotoImage(file='Icons/mountpoint_small.png')
         self.folder_icon = PhotoImage(file='Icons/folder_big.png')
         self.textfile_icon = PhotoImage(file='Icons/textfile_big.png')
         self.up_icon = PhotoImage(file='Icons/up_small.png')
@@ -706,25 +709,30 @@ class open_file_dialog:
         self.directory_text.pack(fill = X, expand = True, side = 'left')
         self.directory_text.insert(END, os.getcwd()) 
         
+        #List of home folders
+        home_folders = ['Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']
+
         #Add all partitions to the list
         if(platform.system() == 'Linux' or platform.system() == 'FreeBSD'):
-            common_file_list = []
-            for home_folders in ['', 'Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']:
-                if(os.path.exists(os.getcwd()+'/'+home_folders)):
-                    common_file_list.append(os.getcwd()+'/'+home_folders)
-            common_file_list += mountpoints.get_mounts()
-            self.directory_text['values'] = common_file_list
+            launch_paths = []
+            launch_paths.append(os.getcwd())
+            for folder in home_folders:
+                if(os.path.exists(os.getcwd()+'/'+folder)):
+                    launch_paths.append(os.getcwd()+'/'+folder)
+            drives = mountpoints.get_mounts()
+            launch_paths += drives
+            self.directory_text['values'] = launch_paths
         elif(platform.system() == 'Windows'):
-            common_file_list = []
-            for home_folders in ['', 'Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']:
-                if(os.path.exists(os.getcwd()+'/'+home_folders)):
-                    common_file_list.append(os.getcwd()+'\\'+home_folders)
+            launch_paths = []
+            launch_paths.append(os.getcwd())
+            for folder in home_folders:
+                if(os.path.exists(os.getcwd()+'/'+folder)):
+                    launch_paths.append(os.getcwd()+'\\'+folder)
             #See SO link: https://stackoverflow.com/questions/827371/is-there-a-way-to-list-all-the-available-drive-letters-in-python
             drives = win32api.GetLogicalDriveStrings()
             drives = drives.split('\000')[:-1]
-            for drive in drives:
-                common_file_list.append(drive)
-            self.directory_text['values'] = common_file_list
+            launch_paths += drives
+            self.directory_text['values'] = launch_paths
 
         #Create up button
         self.up_button = ttk.Button(self.directory_frame, image = self.up_icon, command = self.dir_up)
@@ -733,8 +741,14 @@ class open_file_dialog:
         #Create frame for canvas and scrollbar
         self.pad_frame = ttk.Frame(self.open_file_dialog_window)
         self.pad_frame.pack(fill = BOTH, expand = True)
+
+        #Create frame for side bar
+        self.side_frame = ttk.Frame(self.pad_frame, relief = 'flat', border = 0)
+        self.side_frame.pack(side = 'left', fill = 'y', padx = 0, pady = 3)
+
+        #Create frame for canvas
         self.canvas_frame = ttk.Frame(self.pad_frame, relief = 'groove', border = 1)
-        self.canvas_frame.pack(fill = BOTH, expand = True, padx = 5, pady = 3)
+        self.canvas_frame.pack(side = 'left', fill = 'both', expand = 'true', padx = 5, pady = 3)
 
         #Create scrollbar
         self.vbar = ttk.Scrollbar(self.canvas_frame, orient=VERTICAL)
@@ -749,6 +763,27 @@ class open_file_dialog:
         self.cancel_ok_button.pack(side = 'right', pady = 3, padx = 3 )
         self.rename_ok_button = ttk.Button(self.button_frame, text = 'OK', command = func_command)
         self.rename_ok_button.pack(side = 'right', pady = 3, padx = 3 )
+
+        #Create Side frame buttons
+        for folder in launch_paths:
+            if(platform.system() == 'Windows'):
+                split_list = folder.split('\\')
+                if(len(split_list[-1]) == 0): button_name = split_list[0]
+                else: button_name = split_list[-1]
+            else:
+                button_name = folder.split('/')[-1].split(' ')[0]
+                #Check for root folder on linux
+                if(len(button_name) == 0):
+                    button_name = 'Root'
+            #Assign proper icon
+            if(folder in drives):
+                button_icon = self.mountpoint_icon_small
+            else:
+                button_icon = self.folder_icon_small
+            #Loop through all the paths and create buttons
+            PaneButton.Button(self.side_frame, name = button_name, icon = button_icon, 
+                         path = folder, command = self.change_dir_side_bar)
+        
 
         #Bind keyboard shortcuts
         self.open_file_dialog_window.bind('<Control-h>', self.toggle_hidden_files)
@@ -795,8 +830,11 @@ class open_file_dialog:
     def folder_is_hidden(self, p):
         #See SO question: https://stackoverflow.com/questions/7099290/how-to-ignore-hidden-files-using-os-listdir
         if platform.system() is 'Windows':
-            attribute = win32api.GetFileAttributes(p)
-            return attribute & (win32con.FILE_ATTRIBUTE_HIDDEN | win32con.FILE_ATTRIBUTE_SYSTEM)
+            try:
+                attribute = win32api.GetFileAttributes(p)
+                return attribute & (win32con.FILE_ATTRIBUTE_HIDDEN | win32con.FILE_ATTRIBUTE_SYSTEM)
+            except:
+                return False
         else:
             return p.startswith('.') 
 
@@ -1018,6 +1056,18 @@ class open_file_dialog:
         dir_path = self.directory_text.get()
         #Chack validity and change directory
         if os.path.isdir(dir_path): os.chdir(dir_path)
+        #Update file list and redraw icons
+        self.update_file_list()
+        self.draw_icons()
+
+    def change_dir_side_bar(self, path, event = None):
+        #Deselect everything
+        self.deselect_everything()
+        #Chack validity and change directory
+        if os.path.isdir(path): os.chdir(path)
+        #Change directory text
+        self.directory_text.delete(0, 'end')
+        self.directory_text.insert(END, os.getcwd()) 
         #Update file list and redraw icons
         self.update_file_list()
         self.draw_icons()
