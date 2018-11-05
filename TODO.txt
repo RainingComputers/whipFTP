@@ -31,7 +31,7 @@ TASK                                                                            
 ->Release v5.0 with freeBSD testing                                                     |               |NORMAL             |
 ->Add SYNC feature                                                                      |               |NORMAL             |
 ->Add sidebar, path buttons and forward/backward buttons                                |               |NORMAL             |   
-->Improve upload dialog box                                                             |               |NORMAL             |
+->Improve upload dialog box                                                             |DONE           |NORMAL             |
 ->Add support for Display scaling                                                       |               |HIGH               |
 ->Fix centering windows on windows                                                      |               |NORMAL             |
 ->Add themes                                                                            |               |NORMAL             |
