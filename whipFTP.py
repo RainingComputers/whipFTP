@@ -110,11 +110,6 @@ class app:
 
         s.configure('Red.TLabel', foreground = 'Red')
 
-        if((len(sys.argv) == 2 and sys.argv[1] == 'white') or (platform.system() == 'Windows' and platform.release() == '10')):
-            s.configure('TFrame', background = 'white')
-            s.configure('TLabel', background = 'white')
-            s.configure('TCombobox', background = 'white')
-
         #Create frame for toolbar buttons
         self.toolbar = ttk.Frame(master)
         self.toolbar.pack(fill = X)
@@ -434,7 +429,7 @@ class app:
                 y+=1
                 x=0
             #Check types, draw appropriate icon
-            if('d' in file_details[0]):
+            if(self.ftpController.is_dir(file_details)):
                 self.canvas.create_image(25+(x*self.cell_width), 18+(y*35), image = self.folder_icon)
                 canvas_id = self.canvas.create_text(45+(x*self.cell_width), 13+(y*35), anchor='nw')
                 self.canvas.itemconfig(canvas_id, text= file_name)  
@@ -618,7 +613,7 @@ class app:
         self.selected_file_indices.clear()
         #Show message box
         if(self.current_file_index >= 0 and self.current_file_index < len(self.file_list) and self.mouse_x < self.max_width):
-            if('d' in self.detailed_file_list[self.current_file_index][0]):
+            if(self.ftpController.is_dir(self.detailed_file_list[self.current_file_index])):
                 try:
                     self.ftpController.ftp.cwd(self.file_list[self.current_file_index])
                     self.update_file_list()       
@@ -664,20 +659,18 @@ class app:
         if(len(self.selected_file_indices) is not 1): return
         #Create the string that contains all the properties
         for key in self.selected_file_indices:
-            file_name = self.file_list[key]
-            file_details = self.detailed_file_list[key].split()
-            file_attribs = file_details[0]+'\n'
-            if('d' in self.detailed_file_list[key][0]):
-                date_modified = ' '.join(file_details[5:8])
-                #Remove the path from the name
-                file_name = ''.join((file_name.split('/')[-1:]))+'\n'
+            file_details = self.ftpController.get_properties(self.detailed_file_list[key])
+            #Get file name
+            file_name = file_details[0] + '\n'
+            #Get file attributes
+            file_attribs = file_details[1]+ '\n'
+            #Get date modified
+            date_modified = file_details[2]
+            if(self.ftpController.is_dir(self.detailed_file_list[key])):
                 properties = 'Name: '+ file_name + 'Attributes: ' + file_attribs + 'Date: ' + date_modified
             else:    
-                file_size = file_details[4] + ' bytes\n'
-                date_modified = ' '.join(file_details[5:8])
-                #Remove the path from the name
-                file_name = ''.join((file_name.split('/')[-1:]))+'\n'
-                properties = 'Name: '+ file_name + 'Attributes: ' + file_attribs + 'Size: ' + file_size + 'Date: ' + date_modified
+                file_size = file_details[3] + ' bytes'
+                properties = 'Name: '+ file_name + 'Attributes: ' + file_attribs + 'Date: ' + date_modified + '\n' + 'Size: ' + file_size
         #Display the created string in properties dialog
         self.properties_dialog = Filedialogs.file_properties_dialog(self.master, 'Properties', self.rename_window, self.change_permissions_window, self.properties_icon, properties)
 
@@ -702,7 +695,7 @@ class app:
             for key in selected_file_indices:
                 file_name = ftpController.cwd_parent(file_list[key])
                 #If a directory
-                if('d' in detailed_file_list[key][0]):
+                if(self.ftpController.is_dir(detailed_file_list[key])):
                     ftpController.rename_dir(file_name, rename_name)                   
                 #If a file            
                 else:
@@ -883,8 +876,8 @@ class app:
         #Switch to parents 
             file_name = ftpController.cwd_parent(file_list[index])
             #If a file download it to the specified directory
-            if('d' not in detailed_file_list[index][0]):
-                ftpController.download_file(file_name, int(detailed_file_list[index].split()[4]), progress, replace)
+            if(not self.ftpController.is_dir(detailed_file_list[index])):
+                ftpController.download_file(file_name, int(self.ftpController.get_properties(detailed_file_list[index])[3]), progress, replace)
             else:
                 ftpController.download_dir(file_name, progress, replace)
         #Update file list and redraw icons
@@ -977,7 +970,7 @@ class app:
         for index in selected_file_indices:
             file_name = ftpController.cwd_parent(file_list[index])
             #If directory
-            if('d' in detailed_file_list[index][0]):
+            if(self.ftpController.is_dir(detailed_file_list[index])):
                 ftpController.delete_dir(file_name, progress)
             #If file                
             else:
@@ -1054,7 +1047,7 @@ class app:
             for clipboard_path, file_name, file_details in zip(clipboard_path_list, clipboard_file_list, detailed_clipboard_file_list):
                 #Check for file or directory, use appropriate function
                 try:
-                    if('d' in file_details[0]):
+                    if(self.ftpController.is_dir(file_details)):
                         ftpController.copy_dir(clipboard_path, file_name, self.progress, self.ask_replace)
                     else:                    
                         ftpController.copy_file(clipboard_path, file_name, int(file_details.split()[4]), self.progress, self.ask_replace)

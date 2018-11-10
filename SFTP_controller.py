@@ -160,7 +160,7 @@ class sftp_controller:
         file_list = self.get_file_list(detailed_file_list)
         for file_name, file_details in zip(file_list, detailed_file_list):
             #If directory
-            if('d' in file_details[0]):
+            if(self.is_dir(file_details)):
                 self.delete_dir(file_name, status_command)
             #If file
             else:
@@ -252,11 +252,11 @@ class sftp_controller:
         file_list = self.get_file_list(detailed_file_list)
         for file_name, file_details in zip(file_list, detailed_file_list):
             #If directory
-            if('d' in file_details[0]):
+            if(self.is_dir(file_details)):
                 self.download_dir(file_name, status_command, replace_command)
             #If file
             else:
-                self.download_file(file_name, int(file_details.split()[4]), status_command, replace_command)
+                self.download_file(file_name, int(self.get_properties(file_details)[3]), status_command, replace_command)
         #Got to parent directory
         self.ftp.cwd('..')
         os.chdir('..')
@@ -278,7 +278,7 @@ class sftp_controller:
                 self.detailed_search_file_list.append(file_details)
                 status_command(dir+'/'+file_name, 'Found')           
             #If directory, search it 
-            if('d' in file_details[0]):
+            if(self.is_dir(file_details)):
                 status_command(file_name, 'Searching directory')
                 self.search(file_name, status_command, search_file_name)
         #Goto to parent directory
@@ -296,7 +296,7 @@ class sftp_controller:
         detailed_file_list = self.get_detailed_file_list()
         file_list = self.get_file_list(detailed_file_list)
         for file_name, file_details in zip(file_list, detailed_file_list):
-            if('d' in file_details[0]):
+            if(self.is_dir(file_details)):
         	    size+=self.get_dir_size(file_name)
             else:
                 size+=int(file_details.split()[4])
@@ -317,6 +317,24 @@ class sftp_controller:
 
     def pwd(self):
         return(self.ftp.getcwd())
+
+    def get_properties(self, file_details):
+        details_list = file_details.split()
+        #Get file attributes
+        file_attribs = details_list[0]
+        #Get date modified
+        date_modified = ' '.join(details_list[5:8])
+        #Remove the path from the name
+        file_name = ' '.join(details_list[8:])
+        #Get size if it is not a directory
+        if('d' not in file_details[0]):
+            file_size = details_list[4]
+            return [file_name, file_attribs, date_modified, file_size]
+        else:
+            return [file_name, file_attribs, date_modified]
+
+    def is_dir(self, file_details):
+        return 'd' in file_details[0]
 
     def disconnect(self):
         if self.ftp:

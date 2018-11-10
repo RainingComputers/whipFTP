@@ -42,4 +42,5 @@ TASK                                                                            
 ->Better way to show notifications                                                      |               |HIGH               |
 ->Make a pypi package                                                                   |               |LOW                |
 ->Python script that automatically spits out builds for all platforms                   |               |NORMAL             |
+->Add Right Click                                                                       |               |NORMAL             |
 ->Fix bug: does not download hidden files                                               |DONE           |HIGH               |

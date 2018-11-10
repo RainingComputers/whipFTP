@@ -24,12 +24,15 @@ class ftp_controller:
         self.max_len_name = ''
 
         #Variable to tell weather hidden files are enabled
-        self.hidden_files = False  
+        self.hidden_files = False
+
+        #Variable to store the platform the server is running on
+        self.server_platform = 'Linux'  
 
     def connect_to(self, host, username = ' ', password = ' ', port = 21):  
         self.ftp = FTP()  
         self.ftp.connect(host, port) 
-        self.ftp.login(username, password) 
+        self.ftp.login(username, password)
 
     def toggle_hidden_files(self):
         self.hidden_files = not self.hidden_files 
@@ -37,6 +40,10 @@ class ftp_controller:
     def get_detailed_file_list(self, ignore_hidden_files_flag = False):
         files = []
         def dir_callback(line):
+            print(line)
+            if(self.server_platform != 'Linux'):
+                files.append(line)
+                return
             if(self.hidden_files is True or line.split()[8][0] is not '.') or ignore_hidden_files_flag == True:
                 files.append(line)
         self.ftp.dir(dir_callback)
@@ -48,7 +55,8 @@ class ftp_controller:
         file_list = []
         for x in detailed_file_list:
             #Remove details and append only the file name
-            name = ' '.join(x.split()[8:])
+            if(self.server_platform == 'Linux'):
+                name = self.get_properties(x)[0]
             file_list.append(name)
             if(len(name) > self.max_len):
                 self.max_len = len(name)
@@ -149,7 +157,7 @@ class ftp_controller:
         file_list = self.get_file_list(detailed_file_list)
         for file_name, file_details in zip(file_list, detailed_file_list):
             #If directory
-            if('d' in file_details[0]):
+            if(self.is_dir(file_details)):
                 self.delete_dir(file_name, status_command)
             #If file
             else:
@@ -264,11 +272,11 @@ class ftp_controller:
         file_list = self.get_file_list(detailed_file_list)
         for file_name, file_details in zip(file_list, detailed_file_list):
             #If directory
-            if('d' in file_details[0]):
+            if(self.is_dir(file_details)):
                 self.download_dir(file_name, status_command, replace_command)
             #If file
             else:
-                self.download_file(file_name, int(file_details.split()[4]), status_command, replace_command)
+                self.download_file(file_name, int(self.get_properties(file_details)[3]), status_command, replace_command)
         #Got to parent directory
         self.ftp.cwd('..')
         os.chdir('..')
@@ -290,7 +298,7 @@ class ftp_controller:
                 self.detailed_search_file_list.append(file_details)
                 status_command(dir+'/'+file_name, 'Found')           
             #If directory, search it 
-            if('d' in file_details[0]):
+            if(self.is_dir(file_details)):
                 status_command(file_name, 'Searching directory')
                 self.search(file_name, status_command, search_file_name)
         #Goto to parent directory
@@ -308,7 +316,7 @@ class ftp_controller:
         detailed_file_list = self.get_detailed_file_list()
         file_list = self.get_file_list(detailed_file_list)
         for file_name, file_details in zip(file_list, detailed_file_list):
-            if('d' in file_details[0]):
+            if(self.is_dir(file_details)):
         	    size+=self.get_dir_size(file_name)
             else:
                 size+=int(file_details.split()[4])
@@ -329,3 +337,23 @@ class ftp_controller:
 
     def pwd(self):
         return(self.ftp.pwd())
+
+    def get_properties(self, file_details):
+        if(self.server_platform == 'Linux'):
+            details_list = file_details.split()
+            #Get file attributes
+            file_attribs = details_list[0]
+            #Get date modified
+            date_modified = ' '.join(details_list[5:8])
+            #Remove the path from the name
+            file_name = ' '.join(details_list[8:])
+            #Get size if it is not a directory
+            if('d' not in file_details[0]):
+                file_size = details_list[4]
+                return [file_name, file_attribs, date_modified, file_size]
+            else:
+                return [file_name, file_attribs, date_modified]
+
+    def is_dir(self, file_details):
+        if(self.server_platform == 'Linux'):
+            return 'd' in file_details[0]
