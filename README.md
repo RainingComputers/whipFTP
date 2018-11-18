@@ -7,6 +7,7 @@ whipFTP is a FTP/SFTP client written in python using the tkinter GUI toolkit. Ca
 #### Currently supported platforms:
 + Linux
 + Windows XP/7/10
++ MacOS
 
 # Getting whipFTP
 
@@ -15,6 +16,9 @@ whipFTP is a FTP/SFTP client written in python using the tkinter GUI toolkit. Ca
 
 #### Windows:
 + Install Python (minimum required version: python3.6.3 for 10/7 and python3.4.0 for XP), download the [.zip](https://github.com/RainingComputers/whipFTP/releases/download/4.3/whipFTP_4.3_windows.zip) file and extract it. Run `install_dependencies.py` script to install dependencies. Now you can run `whipFTP.pyw` to launch the application.
+
+#### MacOS:
++ Not released yet. Use `git clone` or 'download zip', Install Python (minimum required version: python3.6.3). Run `install_dependencies.py` script to install dependencies. Now you can run `whipFTP.py` to launch the application.
 
 #### Other Linux distributions:
 + Install Python (minimum required version: python3.6.3), download the [.zip](https://github.com/RainingComputers/whipFTP/releases/download/4.3/whipFTP_4.3_linux.zip) file and extract it. Run `install_dependencies.py` script to install dependencies. Now you can run `whipFTP.py` to launch the application.
