@@ -8,12 +8,7 @@
 #
 
 import os
-from os.path import expanduser
-from os import listdir
 from os.path import isfile, join
-from ctypes import *
-import sys
-import platform
 import threading
 import queue
 from tkinter import *
@@ -244,7 +239,7 @@ class app:
         self.port_entry.pack(side = 'left', padx = (0, 2))
         self.port_entry.insert(END, '22')
         #Create scrollbar
-        self.vbar = ttk.Scrollbar(self.canvas_frame, orient=VERTICAL)
+        self.vbar = ttk.Scrollbar(self.canvas_frame, orient=VERTICAL, style = 'Vertical.TScrollbar')
         self.vbar.pack(anchor = E,side=RIGHT,fill=Y)
         #Create drawing space for all file and folder icons
         self.canvas = Canvas(self.canvas_frame, relief = 'flat', bg = 'white', highlightthickness=0)
@@ -1171,19 +1166,11 @@ class app:
 #Program entry point
 #Create root window
 root = Tk()
-#Include the theme
+#Include the theme and tkdnd libraries
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
-if(platform.system() is 'Windows'):
-    arc_theme_path = (dname+'\\Theme')
-    tkdnd_path = (dname+'\\TkDND')
-else:
-    arc_theme_path = (dname+'/Theme')
-    tkdnd_path = (dname+'/TkDND')
-#Check if 64bit
-if(sys.maxsize > (2**31-1)):
-    tkdnd_path+='64'
-#Include the .so / .dll file
+arc_theme_path = (dname+'/Theme')
+tkdnd_path = (dname+'/TkDND')
 root.tk.eval('lappend auto_path {%s}' % arc_theme_path)
 root.tk.eval('lappend auto_path {%s}' % tkdnd_path)
 root.tk.eval('package require tkdnd')

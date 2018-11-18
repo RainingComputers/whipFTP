@@ -40,7 +40,6 @@ class ftp_controller:
     def get_detailed_file_list(self, ignore_hidden_files_flag = False):
         files = []
         def dir_callback(line):
-            print(line)
             if(self.server_platform != 'Linux'):
                 files.append(line)
                 return

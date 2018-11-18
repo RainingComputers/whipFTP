@@ -18,8 +18,8 @@ from TkDND_wrapper import *
 if(platform.system() is 'Windows'):
     import win32api
     import win32con
-if(platform.system() == 'Linux'):
-    import linux_mount as mountpoints
+
+import drive_detect as mountpoints
 
 
 
@@ -141,7 +141,9 @@ class about_dialog:
             self.os_icon = PhotoImage(file='Icons/linux_large.png')
         elif(platform.system() == 'FreeBSD'):
             self.os_icon = PhotoImage(file='Icons/freebsd_large.png')
-        else:
+        elif(platform.system() == 'Darwin'):
+            self.os_icon = PhotoImage(file='Icons/darwin_large.png')
+        elif(platform.system() == 'Windows'):
             self.os_icon = PhotoImage(file='Icons/windows_large.png')
 
         python_version = 'python v' + platform.python_version()
@@ -462,7 +464,7 @@ class terminal_dialog:
         ttk.Label(self.label_frame, text = 'Enter commands:', anchor = 'w').pack(fill = X, side = 'left', pady = 3)
 
         #Create scrollbar 
-        self.vbar = ttk.Scrollbar(self.text_frame, orient=VERTICAL)
+        self.vbar = ttk.Scrollbar(self.text_frame, orient=VERTICAL, style = 'Vertical.TScrollbar')
         self.vbar.pack(side=RIGHT,fill=Y)
 
         #Create text widget
@@ -556,7 +558,7 @@ class console_dialog:
         ttk.Label(self.label_frame, text = 'Performing tasks....', anchor = 'w').pack(fill = X, side = 'left', pady = 3)
 
         #Create scrollbar
-        self.vbar = ttk.Scrollbar(self.text_frame, orient=VERTICAL)
+        self.vbar = ttk.Scrollbar(self.text_frame, orient=VERTICAL, style = 'Vertical.TScrollbar')
         self.vbar.pack(side=RIGHT,fill=Y)
 
         #Create text widget
@@ -712,27 +714,19 @@ class open_file_dialog:
         #List of home folders
         home_folders = ['Desktop', 'Documents', 'Downloads', 'Music', 'Pictures', 'Videos']
 
-        #Add all partitions to the list
-        if(platform.system() == 'Linux' or platform.system() == 'FreeBSD'):
-            launch_paths = []
-            launch_paths.append(os.getcwd())
-            for folder in home_folders:
-                if(os.path.exists(os.getcwd()+'/'+folder)):
-                    launch_paths.append(os.getcwd()+'/'+folder)
-            drives = mountpoints.get_mounts()
-            launch_paths += drives
-            self.directory_text['values'] = launch_paths
-        elif(platform.system() == 'Windows'):
-            launch_paths = []
-            launch_paths.append(os.getcwd())
-            for folder in home_folders:
-                if(os.path.exists(os.getcwd()+'/'+folder)):
-                    launch_paths.append(os.getcwd()+'\\'+folder)
-            #See SO link: https://stackoverflow.com/questions/827371/is-there-a-way-to-list-all-the-available-drive-letters-in-python
-            drives = win32api.GetLogicalDriveStrings()
-            drives = drives.split('\000')[:-1]
-            launch_paths += drives
-            self.directory_text['values'] = launch_paths
+        #Automatically find paths for side buttons
+        launch_paths = []
+        home = expanduser('~')
+        if(platform.system() == 'Windows'):
+            home = home.replace(os.sep, '/')
+            print(home)
+        launch_paths.append(home)
+        for folder in home_folders:
+            if(os.path.exists(home+'/'+folder)):
+                launch_paths.append(home+'/'+folder)
+        drives = mountpoints.get_mounts()
+        launch_paths += drives
+        self.directory_text['values'] = launch_paths
 
         #Create up button
         self.up_button = ttk.Button(self.directory_frame, image = self.up_icon, command = self.dir_up)
@@ -751,7 +745,7 @@ class open_file_dialog:
         self.canvas_frame.pack(side = 'left', fill = 'both', expand = 'true', padx = 5, pady = 3)
 
         #Create scrollbar
-        self.vbar = ttk.Scrollbar(self.canvas_frame, orient=VERTICAL)
+        self.vbar = ttk.Scrollbar(self.canvas_frame, orient=VERTICAL, style = 'Vertical.TScrollbar')
         self.vbar.pack(side=RIGHT,fill=Y)
 
         #Create frame for buttons
@@ -766,14 +760,13 @@ class open_file_dialog:
 
         #Create Side frame buttons
         for folder in launch_paths:
-            if(platform.system() == 'Windows'):
-                split_list = folder.split('\\')
-                if(len(split_list[-1]) == 0): button_name = split_list[0]
-                else: button_name = split_list[-1]
-            else:
-                button_name = folder.split('/')[-1].split(' ')[0]
-                #Check for root folder on linux
-                if(len(button_name) == 0):
+            button_name = folder.split('/')[-1].split(' ')[0]
+            if(len(button_name) == 0):
+                if(platform.system == 'Windows'):
+                    #Check for drive letters on windows
+                    button_name = split_list[0]
+                else:
+                    #Check for root folder on linux
                     button_name = 'Root'
             #Assign proper icon
             if(folder in drives):
