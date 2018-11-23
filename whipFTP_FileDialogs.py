@@ -303,7 +303,7 @@ class replace_dialog:
 
     def __init__(self, master, Title, icon, message):
         #Variable to tell which button has been pressed
-        self.command = 0       
+        self.command = ''       
        
         #Create a new dialog box window
         self.replace_dialog_window = Toplevel(master)
@@ -352,19 +352,19 @@ class replace_dialog:
             except: continue
 
     def skip(self):
-        self.command = 1
+        self.command = 'skip'
         self.replace_dialog_window.destroy()
 
     def replace(self):
-        self.command = 2
+        self.command = 'replace'
         self.replace_dialog_window.destroy()
 
     def skip_all(self):
-        self.command = 3
+        self.command = 'skip_all'
         self.replace_dialog_window.destroy()
 
     def replace_all(self):
-        self.command = 4
+        self.command = 'replace_all'
         self.replace_dialog_window.destroy()
 
     def destroy(self):

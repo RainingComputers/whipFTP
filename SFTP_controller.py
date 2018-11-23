@@ -299,7 +299,7 @@ class sftp_controller:
             if(self.is_dir(file_details)):
         	    size+=self.get_dir_size(file_name)
             else:
-                size+=int(file_details.split()[4])
+                size+=int(self.get_properties(file_details)[3])
         #Goto to parent directory
         self.ftp.cwd('..')
         #return size

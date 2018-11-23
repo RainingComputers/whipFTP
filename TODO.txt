@@ -43,4 +43,6 @@ TASK                                                                            
 ->Make a pypi package                                                                   |               |LOW                |
 ->Python script that automatically spits out builds for all platforms                   |               |NORMAL             |
 ->Add Right Click                                                                       |               |NORMAL             |
+->Focus on the main window before destroying the dialog box                             |               |NORMAL             |
+->Scrap existing and make a new wrapper for TkDND                                       |               |NORMAL             |
 ->Fix bug: does not download hidden files                                               |DONE           |HIGH               |

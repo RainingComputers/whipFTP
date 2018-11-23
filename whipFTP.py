@@ -14,7 +14,6 @@ import queue
 from tkinter import *
 from tkinter import font
 from tkinter import ttk
-from tkinter import filedialog
 from tkinter import PhotoImage
 from FTP_controller import *
 from SFTP_controller import *
@@ -1045,7 +1044,7 @@ class app:
                     if(self.ftpController.is_dir(file_details)):
                         ftpController.copy_dir(clipboard_path, file_name, self.progress, self.ask_replace)
                     else:                    
-                        ftpController.copy_file(clipboard_path, file_name, int(file_details.split()[4]), self.progress, self.ask_replace)
+                        ftpController.copy_file(clipboard_path, file_name, int(self.ftpController.get_properties(file_details)[3]), self.progress, self.ask_replace)
                 except:
                     thread_request_queue.put(lambda:self.progress('Failed to copy file/folder', file_name))
             thread_request_queue.put(lambda:self.clear_clipboard())
@@ -1071,14 +1070,14 @@ class app:
         #Create replace dialog
         self.replace_window = Filedialogs.replace_dialog(self.console_window.console_dialog_window, 'Conflicting files', self.copy_icon, file_name+': '+status+', Replace?')
         #Loop till a button is pressed
-        while self.replace_window.command is 0:
+        while self.replace_window.command is '':
             self.replace_window.replace_dialog_window.update()
-        if (self.replace_window.command is 1): return False
-        elif (self.replace_window.command is 2): return True
-        elif (self.replace_window.command is 3):
+        if (self.replace_window.command is 'skip'): return False
+        elif (self.replace_window.command is 'replace'): return True
+        elif (self.replace_window.command is 'skip_all'):
             self.skip_all = True            
             return False 
-        elif (self.replace_window.command is 4):
+        elif (self.replace_window.command is 'replace_all'):
             self.replace_all = True            
             return True
 

@@ -28,6 +28,7 @@ namespace eval ttk::theme::Arc {
         -window         "#ffffff"
         -focuscolor     "#5c616c"
         -checklight     "#fbfcfc"
+        -bordercolor    "#b0b0af"
     }
 
     proc LoadImages {imgdir} {
@@ -342,10 +343,10 @@ namespace eval ttk::theme::Arc {
     # Configure Combobox style
     ttk::style configure TCombobox -selectbackground none -selectforeground 'grey' -fieldbackground 'white'
     option add *TCombobox*Listbox.background #ffffff
-    option add *TCombobox*Listbox.foreground #5c616c
-    option add *TCombobox*Listbox.selectBackground #e26652
+    option add *TCombobox*Listbox.foreground $colors(-fg)
+    option add *TCombobox*Listbox.selectBackground $colors(-selectbg)
     option add *TCombobox*Listbox.selectForeground #ffffff
-    ttk::style configure ComboboxPopdownFrame -borderwidth 1 -background #b0b0af
+    ttk::style configure ComboboxPopdownFrame -borderwidth 1 -background $colors(-bordercolor)
     }
 }
 
