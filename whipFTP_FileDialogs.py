@@ -23,19 +23,27 @@ import drive_detect as mountpoints
 
 
 
-def center_window(master_window, child_window):
-        #center the window
-        child_window.withdraw()
-        child_window.update()
-        x = master_window.winfo_rootx()
-        y = master_window.winfo_rooty()
-        main_height =master_window.winfo_height()
-        main_width = master_window.winfo_width()
-        window_height = child_window.winfo_reqheight()
-        window_width = child_window.winfo_reqwidth()
-        geom = '+%d+%d' % ((x + main_width//2 - window_width//2), (y + main_height//2 - window_height//2))  
-        child_window.geometry(geom)
-        child_window.deiconify()
+def center_window(master_window, child_window, x_offset = None, y_offset = None):
+        if(x_offset is not None):
+            x = master_window.winfo_rootx()
+            y = master_window.winfo_rooty()
+            main_height = master_window.winfo_height()
+            main_width = master_window.winfo_width()
+            geom = '+%d+%d' % (x+(main_width/2) - x_offset, y+(main_height/2) - y_offset)  
+            child_window.geometry(geom)        
+        else:
+            #center the window
+            child_window.withdraw()
+            child_window.update()
+            x = master_window.winfo_rootx()
+            y = master_window.winfo_rooty()
+            main_height =master_window.winfo_height()
+            main_width = master_window.winfo_width()
+            window_height = child_window.winfo_reqheight()
+            window_width = child_window.winfo_reqwidth()
+            geom = '+%d+%d' % ((x + main_width//2 - window_width//2), (y + main_height//2 - window_height//2))  
+            child_window.geometry(geom)
+            child_window.deiconify()
 
 
 class floating_message_dialog:
@@ -80,50 +88,6 @@ class floating_message_dialog:
     def destroy(self):
         self.floating_message_dialog_window.destroy()
 
-
-class message_dialog:
-
-    def __init__(self, master, Title, icon, message):
-
-        #Create a new dialog box window
-        self.message_dialog_window = Toplevel()
-
-        #Make it non-resizeble, set title
-        self.message_dialog_window.resizable(False, False)
-        self.message_dialog_window.title(Title)
-
-        #Create frames 
-        self.icon_frame = ttk.Frame(self.message_dialog_window)
-        self.icon_frame.pack(side = 'left', fill = Y)
-        self.entry_frame = ttk.Frame(self.message_dialog_window)
-        self.entry_frame.pack(side = 'left', fill = Y)
-
-        #Create the label showing rename icon
-        ttk.Label(self.icon_frame, image = icon).pack(padx = 3, pady = 3)
-
-        #Create the label
-        ttk.Label(self.entry_frame, text = message, anchor = 'w').pack(padx = 3, fill = X, expand = True)
-
-        #Create buttons
-        self.rename_ok_button = ttk.Button(self.entry_frame, text = 'OK', command = self.destroy)
-        self.rename_ok_button.pack(side = 'right', pady = 3, padx = 3 )
-
-        #center the window
-        center_window(master, self.message_dialog_window)
-
-        #Prevent new task in taskbar
-        self.message_dialog_window.transient(master)  
-
-        #Focus on the dialog box, freeze controll of main window
-        self.message_dialog_window.focus_force()
-        while True:
-            try:
-                self.message_dialog_window.grab_set()
-                break
-            except: continue
-
-    def destroy(self):
-        self.message_dialog_window.destroy()
 
 class about_dialog:
 
@@ -198,6 +162,7 @@ class about_dialog:
 
     def destroy(self):
         self.about_dialog_window.destroy()        
+
 
 class warning_dialog:
 
@@ -419,105 +384,6 @@ class file_properties_dialog:
         self.file_properties_dialog_window.destroy()   
 
 
-class terminal_dialog:
-    
-    def __init__(self, master, icon, func_command, terminal_prompt_name, destroy_func = None):
-        #Save reference to destroy function
-        self.destroy_function = destroy_func
-
-        #Save reference to terminal prompt name and command
-        self.terminal_prompt_name = terminal_prompt_name
-        self.func_command = func_command
-
-        #Save reference to icon
-        self.icon = icon
-
-        #Create a new dialog box window
-        self.terminal_dialog_window = Toplevel(master)
-
-        #Make it non-resizeble, set title
-        self.terminal_dialog_window.resizable(False, False)
-        self.terminal_dialog_window.title('Terminal')
-        self.terminal_dialog_window.minsize(width = 420, height = 300)
-            #self.terminal_dialog_window.maxsize(width = 420, height = 300)
-
-        #Overide [x] button
-        self.terminal_dialog_window.protocol('WM_DELETE_WINDOW', self.destroy)
-
-        #Prevent new task in taskbar
-        self.terminal_dialog_window.transient(master) 
-
-        #Create frames
-        self.label_frame = ttk.Frame(self.terminal_dialog_window)
-        self.label_frame.pack(fill = X)
-        self.pad_pad_frame = ttk.Frame(self.terminal_dialog_window)
-        self.pad_pad_frame.pack(fill = BOTH, expand = True)
-        self.pad_frame = ttk.Frame(self.pad_pad_frame, relief = 'groove')
-        self.pad_frame.pack(fill = BOTH, expand = True, pady = 3, padx = 5)
-        self.text_frame = ttk.Frame(self.pad_frame)
-        self.text_frame.pack(fill = BOTH, expand = True, pady = 1, padx = 1)
-        self.button_frame = ttk.Frame(self.terminal_dialog_window)
-        self.button_frame.pack(fill = X)
-
-        #Create icon and label
-        ttk.Label(self.label_frame, image = icon).pack(padx = 3, side = 'left')
-        ttk.Label(self.label_frame, text = 'Enter commands:', anchor = 'w').pack(fill = X, side = 'left', pady = 3)
-
-        #Create scrollbar 
-        self.vbar = ttk.Scrollbar(self.text_frame, orient=VERTICAL, style = 'Vertical.TScrollbar')
-        self.vbar.pack(side=RIGHT,fill=Y)
-
-        #Create text widget
-        self.terminal_text = Text(self.text_frame, width = 80, relief = 'flat', highlightthickness=0, background = 'white')
-        self.terminal_text.pack(fill = BOTH)
-        self.vbar.config(command = self.terminal_text.yview, style = 'Whitehide.TScrollbar')
-        self.terminal_text['yscrollcommand'] = self.vbar.set
-        self.terminal_text.insert('end',terminal_prompt_name+'>')
-
-        #Create close button
-        self.close_button = ttk.Button(self.button_frame, text = 'Close', command = self.destroy)
-        self.close_button.pack(side = 'right', pady = 3, padx = 3 )
-
-        #Center the window
-        center_window(master, self.terminal_dialog_window)
-        
-        #Bind events
-        self.terminal_text.bind('<Return>', self.print_command)
-
-        #Focus on the dialog box, freeze controll of main window
-        self.terminal_dialog_window.focus_force()
-        while True:
-            try:
-                self.terminal_dialog_window.grab_set()
-                break
-            except: continue
-
-    def print_command(self, event):
-        command = self.terminal_text.get('end-1c linestart+'+str(len(self.terminal_prompt_name)+1)+'c', 'end')
-        command = command[:-1]
-        self.func_command(command)
-        self.terminal_text.insert('end','\n'+self.terminal_prompt_name+'>')
-        self.terminal_text.see('end')
-        if(int(self.terminal_text.index('end').split('.')[0]) is 26):
-            self.vbar.config(style = 'TScrollbar')
-        return 'break'
-
-    def insert(self, line):
-        self.terminal_text.insert('end',line)
-        self.terminal_text.see('end')
-        if(int(self.terminal_text.index('end').split('.')[0]) is 26):
-            self.vbar.config(style = 'TScrollbar')
-
-    def enable_close_button(self):
-        self.closable = True
-        self.close_button.config(state = NORMAL)
-
-    def destroy(self):
-        if(self.destroy_function is not None):
-            self.destroy_function()
-        self.terminal_dialog_window.destroy()
-
-
 class console_dialog:
 
     def __init__(self, master, icon, destroy_func):                
@@ -532,8 +398,6 @@ class console_dialog:
         #Make it non-resizeble, set title
         self.console_dialog_window.resizable(False, False)
         self.console_dialog_window.title('Terminal')
-        self.console_dialog_window.minsize(width = 420, height = 300)
-            #self.console_dialog_window.maxsize(width = 420, height = 300)
 
         #Overide [x] button
         self.console_dialog_window.protocol('WM_DELETE_WINDOW', self.close_message)
@@ -687,14 +551,7 @@ class open_file_dialog:
             self.update_file_list()
 
         #center the window 
-        # (did not use the center window function becuse it does not work with this for some reason, it
-        # is fixed size anyways, so just hard coded it...)
-        x = master.winfo_rootx()
-        y = master.winfo_rooty()
-        main_height = master.winfo_height()
-        main_width = master.winfo_width()
-        geom = '+%d+%d' % (x+(main_width/2) - 320,y+(main_height/2) - 260)  
-        self.open_file_dialog_window.geometry(geom)
+        center_window(master, self.open_file_dialog_window, 320, 260)
 
         #Prevent new task in taskbar
         self.open_file_dialog_window.transient(master)
@@ -719,7 +576,6 @@ class open_file_dialog:
         home = expanduser('~')
         if(platform.system() == 'Windows'):
             home = home.replace(os.sep, '/')
-            print(home)
         launch_paths.append(home)
         for folder in home_folders:
             if(os.path.exists(home+'/'+folder)):
