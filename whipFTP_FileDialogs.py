@@ -46,49 +46,6 @@ def center_window(master_window, child_window, x_offset = None, y_offset = None)
             child_window.deiconify()
 
 
-class floating_message_dialog:
-
-    def __init__(self, master, Title, icon, message):
-        #Create a new dialog box window
-        self.floating_message_dialog_window = Toplevel()
-
-        #Make it non-resizeble, set title
-        self.floating_message_dialog_window.resizable(False, False)
-        self.floating_message_dialog_window.title(Title)
-
-        #Create frames 
-        self.icon_frame = ttk.Frame(self.floating_message_dialog_window)
-        self.icon_frame.pack(side = 'left', fill = Y)
-        self.entry_frame = ttk.Frame(self.floating_message_dialog_window)
-        self.entry_frame.pack(side = 'left', fill = Y)
-
-        #Create the label showing rename icon
-        ttk.Label(self.icon_frame, image = icon).pack(padx = 3, pady = 3)
-
-        #Create the label
-        ttk.Label(self.entry_frame, text = message, anchor = 'w').pack(padx = 3, fill = X, expand = True)
-
-        #No window border
-        self.floating_message_dialog_window.overrideredirect(1)
-
-        #center the window
-        center_window(master, self.floating_message_dialog_window)
-
-        #Prevent new task in taskbar
-        self.floating_message_dialog_window.transient(master)  
-
-        #Focus on the dialog box, freeze controll of main window
-        self.floating_message_dialog_window.focus_force()
-        while True:
-            try:
-                self.floating_message_dialog_window.grab_set()
-                break
-            except: continue
-
-    def destroy(self):
-        self.floating_message_dialog_window.destroy()
-
-
 class about_dialog:
 
     def __init__(self, master, Title, icon, software_version, author):

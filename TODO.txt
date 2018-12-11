@@ -38,11 +38,10 @@ TASK                                                                            
 ->Allow to choose keys(maybe)                                                           |               |LOW                |
 ->Fix launch times                                                                      |               |HIGH               |
 ->Enter key to start connection                                                         |DONE           |HIGH               |
-->Fix floating windows                                                                  |               |NORMAL             |
-->Better way to show notifications                                                      |               |HIGH               |
-->Make a pypi package                                                                   |               |LOW                |
+->Fix floating windows                                                                  |REPLACED       |NORMAL             |
+->Better way to show notifications                                                      |SKIP           |HIGH               |
+->Make a pypi package                                                                   |SKIP           |LOW                |
 ->Python script that automatically spits out builds for all platforms                   |               |NORMAL             |
 ->Add Right Click                                                                       |               |NORMAL             |
-->Focus on the main window before destroying the dialog box                             |               |NORMAL             |
 ->Scrap existing and make a new wrapper for TkDND                                       |               |NORMAL             |
 ->Fix bug: does not download hidden files                                               |DONE           |HIGH               |

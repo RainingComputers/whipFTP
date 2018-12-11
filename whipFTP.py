@@ -125,6 +125,11 @@ class app:
         self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragEnter>', self.show_dnd_icon, ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
         self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragLeave>', lambda action, actions, type, win, X, Y, x, y, data:self.draw_icons(), ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
 
+        #Variables to kepp track of wain frame and animation
+        self.wait_anim = False
+        self.wait_frame_index = 1
+        self.continue_wait = False
+
         #Load all icons
         self.connect_icon = PhotoImage(file='Icons/connect_big.png')
         self.upload_icon = PhotoImage(file='Icons/upload_big.png')
@@ -163,6 +168,14 @@ class app:
         self.whipFTP_glow_icon = PhotoImage(file='Icons_glow/whipFTP_large_glow.png')
         self.dnd_glow_icon = PhotoImage(file='Icons_glow/upload_large_glow.png')
         self.goto_glow_icon = PhotoImage(file='Icons_glow/gotopath_big_glow.png')
+
+        #Load icons from the wait animations
+        self.wait_frames = []
+        self.wait_frames.append(PhotoImage(file='Icons_glow/wait_anim_frame_one.png'))
+        self.wait_frames.append(PhotoImage(file='Icons_glow/wait_anim_frame_two.png'))
+        self.wait_frames.append(PhotoImage(file='Icons_glow/wait_anim_frame_three.png'))
+        self.wait_frames.append(PhotoImage(file='Icons_glow/wait_anim_frame_four.png'))
+        self.problem_icon = PhotoImage(file='Icons_glow/problem.png')
 
         #Set window icon
         self.master.iconphoto(True, self.whipFTP_icon)
@@ -331,10 +344,10 @@ class app:
 
 
     def connect_to_ftp(self, event = None):        
-        #Show message box
-        self.float_window = Filedialogs.floating_message_dialog(self.master, "whipFTP", self.connect_icon, "Attempting to connect..." )
-        #Show 'Connecting' in status bar
+        #Show wait animation
         self.unlock_status_bar()
+        self.start_wait()
+        #Show 'Connecting' in status bar
         self.update_status(message = 'Connecting...')
         self.lock_status_bar()
         #Check connection type create appropriate controller
@@ -353,9 +366,10 @@ class app:
 
     def connect_thread(self, ftpController, host, usrname, passwd, port):
         try:
-            ftpController.connect_to(host, usrname, passwd, port)            
-            thread_request_queue.put(lambda:self.update_file_list())
+            ftpController.connect_to(host, usrname, passwd, port)   
             thread_request_queue.put(lambda:self.unlock_status_bar())
+            thread_request_queue.put(lambda:self.cont_wait())         
+            thread_request_queue.put(lambda:self.update_file_list())
             thread_request_queue.put(lambda:self.update_status(message = 'Connected.'))
         except:
             thread_request_queue.put(lambda:self.unlock_status_bar())
@@ -365,14 +379,14 @@ class app:
         #Need to focus on the main window and the entry due to a bug in ttk/tkinter (entries don't focis properly after creating and destroying windowless messagebox dialog)  
         thread_request_queue.put(lambda:self.hostname_entry.focus()) 
         thread_request_queue.put(lambda:self.master.focus())    
-        thread_request_queue.put(lambda:self.float_window.destroy())
 
 
     def update_file_list(self):      
         #Disable toolbar
-        self.disable_toolbar()
+        self.start_wait()
         #Set search to false
         self.search_performed = False
+        self.unlock_status_bar()
         self.update_status(message = 'Retrieving file list, Hidden files: {}, Please wait...'.format(self.ftpController.hidden_files))
         self.lock_status_bar()
         del self.file_list[:]
@@ -397,7 +411,7 @@ class app:
             thread_request_queue.put(lambda:self.lock_status_bar())
         thread_request_queue.put(lambda:self.draw_icons())
         #Enable toolbar
-        thread_request_queue.put(lambda:self.enable_toolbar())
+        thread_request_queue.put(lambda:self.end_wait())
         
 
         
@@ -494,6 +508,7 @@ class app:
         if self.change_status is True:
             self.status_label.configure(style = 'Red.TLabel')
             self.current_status.set(message)
+            self.problem()
 
     def lock_status_bar(self):
         self.change_status = False
@@ -677,7 +692,7 @@ class app:
         #Destroy rename window
         self.rename_dialog.destroy()
         #Show message box
-        self.float_window = Filedialogs.floating_message_dialog(self.master, "whipFTP", self.rename_icon, "Renaming file..." )
+        self.start_wait()
         #start thread
         self.thread =  threading.Thread(target = self.rename_file, args = (self.ftpController, self.file_list, self.detailed_file_list, self.selected_file_indices, rename_name))
         self.thread.daemon = True
@@ -695,13 +710,13 @@ class app:
                 else:
                     ftpController.ftp.rename(file_name, rename_name)
             #Deselect everything
-            thread_request_queue.put(lambda:self.deselect_everything())
+            thread_request_queue.put(lambda:self.selected_file_indices.clear())
             #update file list and redraw icons
+            thread_request_queue.put(lambda:self.cont_wait())
             thread_request_queue.put(lambda:self.update_file_list())
         except:
             thread_request_queue.put(lambda:self.update_status_red('Unable to rename, try a diffrent name or try reconnecting.'))
             thread_request_queue.put(lambda:self.lock_status_bar())
-        thread_request_queue.put(lambda:self.float_window.destroy())
 
     def change_permissions_window(self):
         self.properties_dialog.destroy()
@@ -712,7 +727,7 @@ class app:
         #Destroy permission window
         self.permission_window.destroy()
         #Show message box
-        self.float_window = Filedialogs.floating_message_dialog(self.master, "whipFTP", self.permissions_icon, "Changing file permissions..." )
+        self.start_wait()
         #start thread
         self.thread = threading.Thread(target = self.change_permissions, args = (self.ftpController, self.file_list, self.selected_file_indices, octal_notation))
         self.thread.daemon = True
@@ -725,13 +740,13 @@ class app:
                file_name = ftpController.cwd_parent(file_list[key])
                ftpController.chmod(file_name, int(octal_notation))
             #Deselect everything
-            self.deselect_everything()
+            thread_request_queue.put(lambda:self.selected_file_indices.clear())
             #update file list and redraw icons
+            thread_request_queue.put(lambda:self.cont_wait())
             thread_request_queue.put(lambda:self.update_file_list())
         except:
             thread_request_queue.put(lambda:self.update_status_red('Unable to change permissions.'))
             thread_request_queue.put(lambda:self.lock_status_bar())
-        thread_request_queue.put(lambda:self.float_window.destroy())
 
 
     
@@ -744,7 +759,7 @@ class app:
         #Destroy rename window
         self.create_dir_dialog.destroy()
         #Show message box
-        self.float_window = Filedialogs.floating_message_dialog(self.master, "whipFTP", self.newfolder_icon, "Creating directory..." )
+        self.start_wait()
         #Start thread and process requests
         self.thread.daemon = True
         self.thread.start()
@@ -753,14 +768,14 @@ class app:
     def create_dir(self, ftpController, dir_name):
         try:
             #Deselect everything
-            thread_request_queue.put(lambda:self.deselect_everything())
+            thread_request_queue.put(lambda:self.selected_file_indices.clear())
             ftpController.mkd(dir_name)
             #update file list and redraw icons
+            thread_request_queue.put(lambda:self.cont_wait())
             thread_request_queue.put(lambda:self.update_file_list())
         except:
             thread_request_queue.put(lambda:self.update_status_red('Unable to create folder, either invalid characters or not having permission may be the reason or directory already exists.'))
             thread_request_queue.put(lambda:self.lock_status_bar())
-        thread_request_queue.put(lambda:self.float_window.destroy())
 
 
     def upload_window(self):
@@ -1120,18 +1135,7 @@ class app:
 
     def disable_toolbar(self, event = None):
         #Disable all buttons
-        self.connect_button.command = None
-        self.upload_button.command = None
-        self.download_button.command = None
-        self.newfolder_button.command = None
-        self.delete_button.command = None
-        self.properties_button.command = None
-        self.cut_button.command = None
-        self.copy_button.command = None
-        self.paste_button.command = None
-        self.search_button.command = None
-        self.up_button.command = None
-        self.info_button.command = None
+        self.canvas.grab_set()
         #Disable mouse action
         self.canvas.unbind("<Button-1>")
         self.canvas.unbind("<Double-Button-1>")     
@@ -1141,24 +1145,51 @@ class app:
 
     def enable_toolbar(self, event = None):
         #Enable all buttons
-        self.connect_button.command = self.connect_to_ftp
-        self.upload_button.command = self.upload_window
-        self.download_button.command = self.download_window
-        self.newfolder_button.command = self.create_dir_window
-        self.delete_button.command = self.delete_window
-        self.properties_button.command = self.file_properties_window
-        self.cut_button.command = self.clipboard_cut
-        self.copy_button.command = self.clipboard_copy
-        self.paste_button.command = self.clipboard_paste_thread_create
-        self.search_button.command = self.search_window_ask
-        self.up_button.command = self.dir_up
-        self.info_button.command = self.info
+        self.canvas.grab_release()
         #Enable mouse action
         self.canvas.bind("<Button-1>", self.mouse_select)
         self.canvas.bind("<Double-Button-1>" , self.change_dir)     
         self.canvas.bind("<Control-Button-1>", self.ctrl_select)
         self.canvas.bind("<B1-Motion>", self.drag_select)
         self.canvas.bind("<Motion>", self.update_status_and_mouse)
+
+    def start_wait(self, event = None):
+        if(self.change_status is False): return
+        if(self.continue_wait is True):
+            self.continue_wait = False
+            return
+        self.disable_toolbar()
+        self.wait_anim = True
+        self.wait_frame_index = 1
+        self.master.after(100, self.do_wait)
+
+    def cont_wait(self, event = None):
+        self.continue_wait = True
+
+    def do_wait(self, event = None):
+        if(self.wait_anim is False): return
+        #make sure frame index is not above 4
+        if(self.wait_frame_index == 4):
+            self.wait_frame_index = 0
+        #clear and draw the correct frame
+        self.canvas.delete('all')
+        self.canvas.create_image(self.canvas_width/2, self.canvas_height/2, image = self.wait_frames[self.wait_frame_index])
+        #update frame index
+        self.wait_frame_index += 1
+        #call the do wait function after some time to update the animation
+        if(self.wait_frame_index == 1):
+            self.master.after(400, self.do_wait)
+        else:
+            self.master.after(100, self.do_wait)
+
+    def end_wait(self, event = None):
+        self.wait_anim = False
+        self.enable_toolbar()
+
+    def problem(self, event = None):
+        self.end_wait()
+        self.canvas.delete('all')
+        self.canvas.create_image(self.canvas_width/2, self.canvas_height/2, image = self.problem_icon)
 
 
 
