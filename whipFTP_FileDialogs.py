@@ -104,7 +104,10 @@ class about_dialog:
         self.rename_ok_button.pack(pady = 3, padx = 3 )
 
         #center the window
-        center_window(master, self.about_dialog_window)
+        if(platform.system() == 'Windows'):
+            center_window(master, self.about_dialog_window, 135, 68)
+        else:
+            center_window(master, self.about_dialog_window)
 
         #Prevent new task in taskbar
         self.about_dialog_window.transient(master)  
@@ -150,7 +153,10 @@ class warning_dialog:
         self.rename_ok_button.pack(side = 'right', pady = 3, padx = 3 )
 
         #center the window
-        center_window(master, self.warning_dialog_window)
+        if(platform.system() == 'Windows'):
+            center_window(master, self.warning_dialog_window, 116, 46)
+        else:
+            center_window(master, self.warning_dialog_window)
 
         #Prevent new task in taskbar
         self.warning_dialog_window.transient(master)  
@@ -201,7 +207,10 @@ class name_dialog:
         self.rename_ok_button.pack(side = 'right', pady = 3, padx = 3 )
 
         #center the window
-        center_window(master, self.name_dialog_window)
+        if(platform.system() == 'Windows'):
+            center_window(master, self.name_dialog_window, 119, 61)
+        else:
+            center_window(master, self.name_dialog_window)
 
         #Bind events
         self.rename_entry.bind('<Return>', func_command)
@@ -399,7 +408,10 @@ class console_dialog:
         self.close_button.pack(side = 'right', pady = 3, padx = 3 )
 
         #Center the window
-        center_window(master, self.console_dialog_window)
+        if(platform.system() == 'Windows'):
+            center_window(master, self.console_dialog_window, 343, 252)
+        else:
+            center_window(master, self.console_dialog_window)
 
         #Focus on the dialog box, freeze controll of main window
         self.console_dialog_window.focus_force()
