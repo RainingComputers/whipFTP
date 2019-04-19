@@ -33,15 +33,15 @@ TASK                                                                            
 ->Add sidebar, path buttons and forward/backward buttons                                |               |NORMAL             |   
 ->Improve upload dialog box                                                             |DONE           |NORMAL             |
 ->Add support for Display scaling                                                       |               |HIGH               |
-->Fix centering windows on windows                                                      |               |NORMAL             |
-->Add themes                                                                            |               |NORMAL             |
-->Allow to choose keys(maybe)                                                           |               |LOW                |
+->Fix centering windows on windows                                                      |DONE           |NORMAL             |
+->Add themes                                                                            |SKIP           |NORMAL             |
+->Allow to choose keys                                                                  |               |LOW                |
 ->Fix launch times                                                                      |               |HIGH               |
 ->Enter key to start connection                                                         |DONE           |HIGH               |
 ->Fix floating windows                                                                  |REPLACED       |NORMAL             |
 ->Better way to show notifications                                                      |SKIP           |HIGH               |
 ->Make a pypi package                                                                   |SKIP           |LOW                |
 ->Python script that automatically spits out builds for all platforms                   |               |NORMAL             |
-->Add Right Click                                                                       |               |NORMAL             |
-->Scrap existing and make a new wrapper for TkDND                                       |               |NORMAL             |
+->Add Right Click                                                                       |SKIP           |NORMAL             |
+->Scrap existing and make a new wrapper for TkDND                                       |SKIP           |NORMAL             |
 ->Fix bug: does not download hidden files                                               |DONE           |HIGH               |

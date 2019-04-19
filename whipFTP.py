@@ -919,10 +919,7 @@ class app:
             #Store the current path so that we can return to it after search
             path = ftpController.pwd()
             #Reset file lists
-            thread_request_queue.put(lambda:self.selected_file_indices.clear())
-            with self.thread_lock:
-                self.detailed_file_list = self.ftpController.get_detailed_file_list()
-                self.file_list = self.ftpController.get_file_list(self.detailed_file_list)       
+            thread_request_queue.put(lambda:self.selected_file_indices.clear())      
             #Start searching
             ftpController.clear_search_list()
             ftpController.search(path, progress, search_file_name)
