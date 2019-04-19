@@ -50,3 +50,10 @@ whipFTP is a FTP/SFTP client written in python using the tkinter GUI toolkit. Ca
 *Search/Find files or folders*
 + ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/up_big.png)
 *Goto parent directory*
+
+# License
++ MIT License. See: https://github.com/RainingComputers/whipFTP/blob/master/LICENSE.md
+
+# Known Bugs/Issues
++ Application looks blurry when DPI scaling is enabled.
++ Search on the root directory does not work.
