@@ -22,3 +22,31 @@ whipFTP is a FTP/SFTP client written in python using the tkinter GUI toolkit. Ca
 
 #### Other Linux distributions:
 + Install Python (minimum required version: python3.6.3), download the [.zip](https://github.com/RainingComputers/whipFTP/releases/download/4.3/whipFTP_4.3_linux.zip) file and extract it. Run `install_dependencies.py` script to install dependencies. Now you can run `whipFTP.py` to launch the application.
+
+# Controls
++ ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/connect_big.png)
+*Start connection*
++ ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/upload_big.png)
+*Upload files or folders*
++ ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/download_big.png)
+*Save/Download files or folders*
++ ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/newfolder_big.png)
+*Create a new directory*
++ ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/delete_big.png)
+*Delete files or folders*
++ ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/properties_big.png)
+*Edit/View properties*
++ ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/cut_big.png)
+*Cut*
++ ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/copy_big.png)
+*Copy*
++ ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/paste_big.png)
+*Paste*
++ ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/info_big.png)
+*About/Help*
++ ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/gotopath_big.png)
+*Goto a path*
++ ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/search_big.png)
+*Search/Find files or folders*
++ ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/up_big.png)
+*Goto parent directory*
