@@ -20,6 +20,9 @@ from SFTP_controller import *
 from TkDND_wrapper import *
 import whipFTP_ToolbarButton as ToolbarButton
 import whipFTP_FileDialogs as Filedialogs
+import platform
+if(platform.system() is 'Windows'):
+    import ctypes
 
 
 class app:
@@ -1191,6 +1194,9 @@ class app:
 
 
 #Program entry point
+#Tell windows not to DPI scale this application
+if(platform.system() is 'Windows' and platform.release() != '7'):
+    ctypes.windll.shcore.SetProcessDpiAwareness(2)
 #Create root window
 root = Tk()
 #Include the theme and tkdnd libraries

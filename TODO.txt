@@ -32,11 +32,11 @@ TASK                                                                            
 ->Add SYNC feature                                                                      |               |NORMAL             |
 ->Add sidebar, path buttons and forward/backward buttons                                |               |NORMAL             |   
 ->Improve upload dialog box                                                             |DONE           |NORMAL             |
-->Add support for Display scaling                                                       |               |HIGH               |
+->Add support for Display scaling                                                       |DONE           |HIGH               |
 ->Fix centering windows on windows                                                      |DONE           |NORMAL             |
 ->Add themes                                                                            |SKIP           |NORMAL             |
 ->Allow to choose keys                                                                  |               |LOW                |
-->Fix launch times                                                                      |               |HIGH               |
+->Fix launch times                                                                      |SKIP           |HIGH               |
 ->Enter key to start connection                                                         |DONE           |HIGH               |
 ->Fix floating windows                                                                  |REPLACED       |NORMAL             |
 ->Better way to show notifications                                                      |SKIP           |HIGH               |
