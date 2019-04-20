@@ -12,16 +12,16 @@ whipFTP is a FTP/SFTP client written in python using the tkinter GUI toolkit. Ca
 # Getting whipFTP
 
 #### Ubuntu/Debian:
-+  Download the [.deb](https://github.com/RainingComputers/whipFTP/releases/download/5.0/whipftp_5.0.deb) file and install it.
++  Download the [.deb](https://github.com/RainingComputers/whipFTP/releases/download/v5.0/whipFTP_5.0.deb) file and install it.
 
 #### Windows:
-+ Install Python (minimum required version: python3.6.3 for 10/7 and python3.4.0 for XP), download the [.zip](https://github.com/RainingComputers/whipFTP/releases/download/5.0/whipFTP_5.0_windows.zip) file and extract it. Run `install_dependencies.py` script to install dependencies. Now you can run `whipFTP.pyw` to launch the application.
++ Install Python (minimum required version: python3.6.3 for 10/7 and python3.4.0 for XP), download the [.zip](https://github.com/RainingComputers/whipFTP/releases/download/v5.0/whipFTP_5.0_windows.zip) file and extract it. Run `install_dependencies.py` script to install dependencies. Now you can run `whipFTP.pyw` to launch the application.
 
 #### MacOS:
 + Not released yet. Use `git clone` or 'download zip', Install Python (minimum required version: python3.6.3). Run `install_dependencies.py` script to install dependencies. Now you can run `whipFTP.py` to launch the application.
 
 #### Other Linux distributions:
-+ Install Python (minimum required version: python3.6.3), download the [.zip](https://github.com/RainingComputers/whipFTP/releases/download/5.0/whipFTP_5.0_linux.zip) file and extract it. Run `install_dependencies.py` script to install dependencies. Now you can run `whipFTP.py` to launch the application.
++ Install Python (minimum required version: python3.6.3), download the [.zip](https://github.com/RainingComputers/whipFTP/releases/download/v5.0/whipFTP_5.0_linux.zip) file and extract it. Run `install_dependencies.py` script to install dependencies. Now you can run `whipFTP.py` to launch the application.
 
 # Controls
 + ![](https://raw.githubusercontent.com/RainingComputers/whipFTP/master/Icons/connect_big.png)
