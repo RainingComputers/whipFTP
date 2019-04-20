@@ -45,3 +45,4 @@ TASK                                                                            
 ->Add Right Click                                                                       |SKIP           |NORMAL             |
 ->Scrap existing and make a new wrapper for TkDND                                       |SKIP           |NORMAL             |
 ->Fix bug: does not download hidden files                                               |DONE           |HIGH               |
+->Add support for windows FTP server                                                    |               |NORMAL             |
