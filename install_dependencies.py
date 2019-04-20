@@ -52,11 +52,11 @@ if(platform.system() == 'Windows'):
 elif(platform.system() == 'Linux'):
     print('Platform: Linux')
     print('Upgrading pip...')
-    os.system('python3 -m pip install --upgrade pip')
+    os.system('python3 -m pip install --upgrade pip --user')
     print('Installing pramiko...')
-    os.system('python3 -m pip install paramiko')
+    os.system('python3 -m pip install paramiko --user')
     print('Installing psutil...')
-    os.system('python3 -m pip install psutil')
+    os.system('python3 -m pip install psutil --user')
     input('Press enter to continue...')
 #if FreeBSD
 elif(platform.system() == 'FreeBSD'):
