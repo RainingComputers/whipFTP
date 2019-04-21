@@ -282,7 +282,8 @@ class sftp_controller:
                 status_command(file_name, 'Searching directory')
                 self.search(file_name, status_command, search_file_name)
         #Goto to parent directory
-        self.ftp.cwd('..')
+        if(self.ftp.getcwd() != '/'):        
+            self.ftp.cwd('..')
 
     def clear_search_list(self):
         del self.search_file_list[:]

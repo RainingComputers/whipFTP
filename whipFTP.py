@@ -934,8 +934,9 @@ class app:
             #Set search performed
             thread_request_queue.put(lambda:self.search_finished())
         except:
-             thread_request_queue.put(lambda:self.update_status_red('Unable to search, try reconnecting.'))
-             self.lock_status_bar()
+            thread_request_queue.put(lambda:self.update_status_red('Unable to search, try reconnecting.'))
+            thread_request_queue.put(lambda:self.lock_status_bar())
+            thread_request_queue.put(lambda:self.progress('Failed', 'Search'))
         thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
         thread_request_queue.put(lambda:self.console_window.enable_close_button())    
 
