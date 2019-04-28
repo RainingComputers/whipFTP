@@ -93,7 +93,7 @@ class app:
  
         #Set window title and size
         master.wm_title('whipFTP')
-        master.minsize(width = 950, height = 600)
+        master.minsize(width = 860, height = 560)
 
         #Variable for holding the font
         self.default_font = font.nametofont("TkDefaultFont")
@@ -124,9 +124,12 @@ class app:
         #Code for handling file/folder drag and drop, uses TkDND_wrapper.py
         #See link: https://mail.python.org/pipermail/tkinter-discuss/2005-July/000476.html
         self.dnd = TkDND(master)
-        self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<Drop>', self.handle_dnd, ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
-        self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragEnter>', self.show_dnd_icon, ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
-        self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragLeave>', lambda action, actions, type, win, X, Y, x, y, data:self.draw_icons(), ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
+        self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<Drop>', self.handle_dnd, 
+                            ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
+        self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragEnter>', self.show_dnd_icon, 
+                            ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
+        self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragLeave>', lambda action, actions, type, win,
+                            X, Y, x, y, data:self.draw_icons(), ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
 
         #Variables to kepp track of wain frame and animation
         self.wait_anim = False
@@ -250,7 +253,7 @@ class app:
         self.label_port = ttk.Label(self.entry_bar, text = 'Port:')
         self.label_port.pack(side = 'left', padx = 2)
         #Create textfield for port
-        self.port_entry = ttk.Entry(self.entry_bar, width = 5)
+        self.port_entry = ttk.Entry(self.entry_bar, width = 4)
         self.port_entry.pack(side = 'left', padx = (0, 2))
         self.port_entry.insert(END, '22')
         #Create scrollbar
@@ -361,7 +364,8 @@ class app:
             pass
         if(self.type_combobox.get() == 'FTP'): self.ftpController = ftp_controller()
         else: self.ftpController = sftp_controller()
-        self.thread =  threading.Thread(target = self.connect_thread, args = (self.ftpController, self.hostname_entry.get(), self.usrname_entry.get(), self.pass_entry.get(), int(self.port_entry.get())))
+        self.thread =  threading.Thread(target = self.connect_thread, args = (self.ftpController,
+            self.hostname_entry.get(), self.usrname_entry.get(), self.pass_entry.get(), int(self.port_entry.get())))
         self.thread.daemon = True
         self.thread.start()
         self.process_thread_requests()
@@ -408,6 +412,7 @@ class app:
             #Set the window title to current path
             thread_request_queue.put(lambda:self.master.wm_title('whipFTP-'+self.ftpController.pwd()))
             thread_request_queue.put(lambda:self.unlock_status_bar())
+            thread_request_queue.put(lambda:self.update_status(''))
         except:
             thread_request_queue.put(lambda:self.unlock_status_bar())
             thread_request_queue.put(lambda:self.update_status_red('Unable to retrieve file list, connection might be lost.'))
@@ -420,7 +425,7 @@ class app:
         
     def draw_icons(self, event = None):    
         #Calculate cell width
-        self.cell_width = 70 + self.default_font.measure(self.ftpController.max_len_name)
+        self.cell_width = 65 + self.default_font.measure(self.ftpController.max_len_name)
         self.canvas_width = self.canvas.winfo_width() - 4
         self.canvas_height = self.canvas.winfo_height()
         if(self.cell_width > self.canvas_width):
@@ -594,7 +599,8 @@ class app:
                 #Set selected only if valid index
                 if(file_index >= 0 and file_index < len(self.file_list) and i < self.max_width/self.cell_width):   
                     #Draw a 'selected' highlighting rectangle and save a reference to the rectangle in selected file dictionary
-                    self.selected_file_indices[file_index] = self.canvas.create_rectangle(i*self.cell_width+2, j*35+2, (i+1)*self.cell_width-1, (j+1)*35-1, fill = '', outline = 'Red')
+                    self.selected_file_indices[file_index] = self.canvas.create_rectangle(i*self.cell_width+2, j*35+2, (i+1)*self.cell_width-1, (j+1)*35-1, fill = '',
+                    outline = 'Red')
         #Tell how many files are present and how many are selected in the status bar
         self.update_status(event, 'Total no. of items: ' + str(len(self.file_list)) + '   Selected: ' + str(len(self.selected_file_indices)))
 
@@ -1035,8 +1041,8 @@ class app:
         #Create console/terminal window        
         self.create_progress_window()
         #start thread
-        self.thread =  threading.Thread(target = self.clipboard_paste, args = (self.ftpController, self.clipboard_path_list, self.clipboard_file_list, self.detailed_clipboard_file_list, 
-                                            self.cut, self.copy))
+        self.thread =  threading.Thread(target = self.clipboard_paste, args = (self.ftpController, self.clipboard_path_list, self.clipboard_file_list,
+                                        self.detailed_clipboard_file_list, self.cut, self.copy))
         self.thread.daemon = True
         self.thread.start()
         self.process_thread_requests()
