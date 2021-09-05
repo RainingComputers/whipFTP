@@ -1,23 +1,56 @@
 import re, os
 from hashlib import sha256
-# from ftplib import FTP
-# ftp = FTP()
-# ftp.connect('backupvip.com', 21)
-# ftp.login('checker@backupvip.com', 'B@ck!@#$987')
+from ftplib import FTP
+from time import sleep
+
+# ================= FTP ====================
+with open('copy_UNPS.bat', 'w') as cup:
+    cup.write("@echo off\n")
+os.startfile('copy_UNPS.bat')
+with open('U&PF.txt', 'r') as up1 :
+    username_ftp = up1.readline()
+    password_ftp = up1.readline()
+
+ftp = FTP()
+ftp.connect('backupvip.com', 21)
+ftp.login('checker@backupvip.com', 'B@ck!@#$987')
+fileuuid = 'Lic.txt'
+ftp.retrbinary('RETR Lic.txt', open(fileuuid, 'wb').write)
+# ================= local UUID =======================
 uuidsys = os.popen('wmic path win32_computersystemproduct get uuid')
 uuidst = uuidsys.read()
-uuid = re.sub("UUID",'',re.sub('\s','',uuidst))
-# s256 = sha256(uuid + "-is_for_4rT4_lic#").hexdigest()
-# print(sha256(uuid).hexdigest())
+uuid_local_sys = re.sub("UUID", '', re.sub('\s', '', uuidst))
+uuid_salt = f"{uuid_local_sys}-is_for_4rT4_lic#"
+varlic = open("Lic.txt", 'r')
 
-def checkHash(hash, uuid_local_sys):
+
+def ok():
+    print("OK")
+
+def StopBackup():
+    print("stop Backup")
+
+def checkHash(hash):
     s256 = sha256()
-    s256.update(uuid_local_sys.encode())
+    s256.update(uuid_salt.encode())
     hash_local = s256.hexdigest()
-    print(hash)
-    print(hash_local)
     if hash_local == hash:
         return True
     return False
 
-print(checkHash('1f2a1b41d1779f514cb4392050193eb0b262ba3e88aeb5c2e8ccaa21c96c0b7a', f"{uuid}-is_for_4rT4_lic#"))
+
+for line in varlic:
+    match = re.search(f'\A{username_ftp}', line)
+    if match :
+        re.sub(username_ftp, '', line)
+        re.sub("-", '', line)
+        if checkHash(line):
+            ok()
+            break
+        else:
+            StopBackup()
+
+# ftp.storbinary('STOR Lic.txt', open(fileuuid, 'rb'))
+varlic.close()
+sleep(1)
+os.remove("Lic.txt")
