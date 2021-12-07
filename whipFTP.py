@@ -16,8 +16,8 @@ from tkinter import font
 from tkinter import ttk
 from tkinter import PhotoImage
 from FTP_controller import *
-from SFTP_controller import *
-from TkDND_wrapper import *
+# from SFTP_controller import *
+# from TkDND_wrapper import *
 import whipFTP_ToolbarButton as ToolbarButton
 import whipFTP_FileDialogs as Filedialogs
 import platform
@@ -123,13 +123,13 @@ class app:
 
         #Code for handling file/folder drag and drop, uses TkDND_wrapper.py
         #See link: https://mail.python.org/pipermail/tkinter-discuss/2005-July/000476.html
-        self.dnd = TkDND(master)
-        self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<Drop>', self.handle_dnd, 
-                            ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
-        self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragEnter>', self.show_dnd_icon, 
-                            ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
-        self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragLeave>', lambda action, actions, type, win,
-                            X, Y, x, y, data:self.draw_icons(), ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
+        # self.dnd = TkDND(master)
+        # self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<Drop>', self.handle_dnd,
+        #                     ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
+        # self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragEnter>', self.show_dnd_icon,
+        #                     ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
+        # self.dnd.bindtarget(self.canvas_frame, 'text/uri-list', '<DragLeave>', lambda action, actions, type, win,
+        #                     X, Y, x, y, data:self.draw_icons(), ('%A', '%a', '%T', '%W', '%X', '%Y', '%x', '%y','%D'))
 
         #Variables to kepp track of wain frame and animation
         self.wait_anim = False
@@ -138,42 +138,43 @@ class app:
 
         #Load all icons
         self.connect_icon = PhotoImage(file='Icons/connect_big.png')
-        self.upload_icon = PhotoImage(file='Icons/upload_big.png')
+        # self.upload_icon = PhotoImage(file='Icons/upload_big.png')
         self.download_icon = PhotoImage(file='Icons/download_big.png')
-        self.newfolder_icon = PhotoImage(file='Icons/newfolder_big.png')
+        # self.newfolder_icon = PhotoImage(file='Icons/newfolder_big.png')
         self.up_icon = PhotoImage(file='Icons/up_big.png')
         self.info_icon = PhotoImage(file='Icons/info_big.png')
         self.delete_icon = PhotoImage(file='Icons/delete_big.png')
-        self.properties_icon = PhotoImage(file='Icons/properties_big.png')
-        self.cut_icon = PhotoImage(file='Icons/cut_big.png')
-        self.copy_icon = PhotoImage(file='Icons/copy_big.png')
-        self.paste_icon = PhotoImage(file='Icons/paste_big.png')
-        self.permissions_icon = PhotoImage(file='Icons/permissions_big.png')
+        # self.properties_icon = PhotoImage(file='Icons/properties_big.png')
+        # self.cut_icon = PhotoImage(file='Icons/cut_big.png')
+        # self.copy_icon = PhotoImage(file='Icons/copy_big.png')
+        # self.paste_icon = PhotoImage(file='Icons/paste_big.png')
+        # self.permissions_icon = PhotoImage(file='Icons/permissions_big.png')
         self.folder_icon = PhotoImage(file='Icons/folder_big.png')
         self.textfile_icon = PhotoImage(file='Icons/textfile_big.png')
         self.console_icon = PhotoImage(file='Icons/console_big.png')
         self.search_icon = PhotoImage(file='Icons/search_big.png')
-        self.rename_icon = PhotoImage(file='Icons/rename_big.png')
+        # self.rename_icon = PhotoImage(file='Icons/rename_big.png')
         self.whipFTP_icon = PhotoImage(file='Icons/whipFTP_large.png')
-        self.goto_icon = PhotoImage(file='Icons/gotopath_big.png')
+        # self.goto_icon = PhotoImage(file='Icons/gotopath_big.png')
+        self.Warning_icon = PhotoImage(file='Icons/Warning_big.png')
 
         #Load glow version of icons
         self.connect_glow_icon = PhotoImage(file='Icons_glow/connect_big_glow.png')
-        self.upload_glow_icon = PhotoImage(file='Icons_glow/upload_big_glow.png')
+        # self.upload_glow_icon = PhotoImage(file='Icons_glow/upload_big_glow.png')
         self.download_glow_icon = PhotoImage(file='Icons_glow/download_big_glow.png')
-        self.newfolder_glow_icon = PhotoImage(file='Icons_glow/newfolder_big_glow.png')
+        # self.newfolder_glow_icon = PhotoImage(file='Icons_glow/newfolder_big_glow.png')
         self.up_glow_icon = PhotoImage(file='Icons_glow/up_big_glow.png')
         self.info_glow_icon = PhotoImage(file='Icons_glow/info_big_glow.png')
         self.delete_glow_icon = PhotoImage(file='Icons_glow/delete_big_glow.png')
-        self.properties_glow_icon = PhotoImage(file='Icons_glow/properties_big_glow.png')
-        self.cut_glow_icon = PhotoImage(file='Icons_glow/cut_big_glow.png')
-        self.copy_glow_icon = PhotoImage(file='Icons_glow/copy_big_glow.png')
-        self.paste_glow_icon = PhotoImage(file='Icons_glow/paste_big_glow.png')
+        # self.properties_glow_icon = PhotoImage(file='Icons_glow/properties_big_glow.png')
+        # self.cut_glow_icon = PhotoImage(file='Icons_glow/cut_big_glow.png')
+        # self.copy_glow_icon = PhotoImage(file='Icons_glow/copy_big_glow.png')
+        # self.paste_glow_icon = PhotoImage(file='Icons_glow/paste_big_glow.png')
         self.console_glow_icon = PhotoImage(file='Icons_glow/console_big_glow.png')
         self.search_glow_icon = PhotoImage(file='Icons_glow/search_big_glow.png')
         self.whipFTP_glow_icon = PhotoImage(file='Icons_glow/whipFTP_large_glow.png')
-        self.dnd_glow_icon = PhotoImage(file='Icons_glow/upload_large_glow.png')
-        self.goto_glow_icon = PhotoImage(file='Icons_glow/gotopath_big_glow.png')
+        # self.dnd_glow_icon = PhotoImage(file='Icons_glow/upload_large_glow.png')
+        # self.goto_glow_icon = PhotoImage(file='Icons_glow/gotopath_big_glow.png')
 
         #Load icons from the wait animations
         self.wait_frames = []
@@ -190,41 +191,41 @@ class app:
         self.connect_button = ToolbarButton.Button(self.toolbar, image = self.connect_icon, image_hover = self.connect_glow_icon, command = self.connect_to_ftp)
         self.connect_button.pack(side = 'left', padx = 5)
         #Create the upload button
-        self.upload_button = ToolbarButton.Button(self.toolbar, image = self.upload_icon, image_hover = self.upload_glow_icon, command = self.upload_window)
-        self.upload_button.pack(side = 'left', padx = 5)
-        #Create the download button
+        # self.upload_button = ToolbarButton.Button(self.toolbar, image = self.upload_icon, image_hover = self.upload_glow_icon, command = self.upload_window)
+        # self.upload_button.pack(side = 'left', padx = 5)
+        # Create the up-directory button
+        self.up_button = ToolbarButton.Button(self.toolbar, image = self.up_icon, image_hover = self.up_glow_icon, command = self.dir_up)
+        self.up_button.pack(side = 'left', padx = 5)
+        # Create the download button
         self.download_button = ToolbarButton.Button(self.toolbar, image = self.download_icon, image_hover = self.download_glow_icon, command = self.download_window)
         self.download_button.pack(side = 'left', padx = 5)
         #Create the newfolder button
-        self.newfolder_button = ToolbarButton.Button(self.toolbar, image = self.newfolder_icon, image_hover = self.newfolder_glow_icon, command = self.create_dir_window)
-        self.newfolder_button.pack(side = 'left', padx = 5)
-        #Create the up-directory button
-        self.up_button = ToolbarButton.Button(self.toolbar, image = self.up_icon, image_hover = self.up_glow_icon, command = self.dir_up)
-        self.up_button.pack(side = 'right', padx = 5)
+        # self.newfolder_button = ToolbarButton.Button(self.toolbar, image = self.newfolder_icon, image_hover = self.newfolder_glow_icon, command = self.create_dir_window)
+        # self.newfolder_button.pack(side = 'left', padx = 5)
         #Create the search button
         self.search_button = ToolbarButton.Button(self.toolbar, image = self.search_icon, image_hover = self.search_glow_icon, command = self.search_window_ask)
         self.search_button.pack(side = 'right', padx = 5)
         #Create the goto button
-        self.goto_button = ToolbarButton.Button(self.toolbar, image = self.goto_icon, image_hover = self.goto_glow_icon, command = self.goto_window_ask)
-        self.goto_button.pack(side = 'right', padx = 5)
+        # self.goto_button = ToolbarButton.Button(self.toolbar, image = self.goto_icon, image_hover = self.goto_glow_icon, command = self.goto_window_ask)
+        # self.goto_button.pack(side = 'right', padx = 5)
         #Create the info button
         self.info_button = ToolbarButton.Button(self.toolbar, image = self.info_icon, image_hover = self.info_glow_icon, command = self.info)
         self.info_button.pack(side = 'right', padx = 5)
         #Create the delete button
         self.delete_button = ToolbarButton.Button(self.toolbar, image = self.delete_icon, image_hover = self.delete_glow_icon, command = self.delete_window)
         self.delete_button.pack(side = 'left', padx = 5)
-        #Create the properties button
-        self.properties_button = ToolbarButton.Button(self.toolbar, image = self.properties_icon, image_hover = self.properties_glow_icon, command = self.file_properties_window)
-        self.properties_button.pack(side = 'left', padx = 5)
+        # Create the properties button
+        # self.properties_button = ToolbarButton.Button(self.toolbar, image = self.properties_icon, image_hover = self.properties_glow_icon, command = self.file_properties_window)
+        # self.properties_button.pack(side = 'left', padx = 5)
         #Create the cut button
-        self.cut_button = ToolbarButton.Button(self.toolbar, image = self.cut_icon, image_hover = self.cut_glow_icon, command = self.clipboard_cut)
-        self.cut_button.pack(side = 'left', padx = 5)
+        # self.cut_button = ToolbarButton.Button(self.toolbar, image = self.cut_icon, image_hover = self.cut_glow_icon, command = self.clipboard_cut)
+        # self.cut_button.pack(side = 'left', padx = 5)
         #Create the copy button
-        self.copy_button = ToolbarButton.Button(self.toolbar, image = self.copy_icon, image_hover = self.copy_glow_icon, command = self.clipboard_copy)
-        self.copy_button.pack(side = 'left', padx = 5)
+        # self.copy_button = ToolbarButton.Button(self.toolbar, image = self.copy_icon, image_hover = self.copy_glow_icon, command = self.clipboard_copy)
+        # self.copy_button.pack(side = 'left', padx = 5)
         #Create the paste button
-        self.paste_button = ToolbarButton.Button(self.toolbar, image = self.paste_icon, image_hover = self.paste_glow_icon, command = self.clipboard_paste_thread_create)
-        self.paste_button.pack(side = 'left', padx = 5)
+        # self.paste_button = ToolbarButton.Button(self.toolbar, image = self.paste_icon, image_hover = self.paste_glow_icon, command = self.clipboard_paste_thread_create)
+        # self.paste_button.pack(side = 'left', padx = 5)
         #Create label field for hostname
         self.label_hostname = ttk.Label(self.entry_bar, text = 'Host:')
         self.label_hostname.pack(side = 'left', padx = 2)
@@ -234,9 +235,9 @@ class app:
         #Create combobox
         self.connection_type = StringVar()
         self.type_combobox = ttk.Combobox(self.entry_bar, textvariable=self.connection_type, width = 5, state = 'readonly')
-        self.connection_type.set('SFTP')
-        self.type_combobox['values'] = ('FTP', 'SFTP')
-        self.type_combobox.pack(side = 'left')
+        self.connection_type.set('FTP')
+        self.type_combobox['values'] = ('FTP')
+        # self.type_combobox.pack(side = 'left')
         #Create label for username
         self.label_usrname = ttk.Label(self.entry_bar, text = 'Username:')
         self.label_usrname.pack(side = 'left', padx = 2)
@@ -248,14 +249,14 @@ class app:
         self.label_pass.pack(side = 'left', padx = 2)
         #Create textfield for password
         self.pass_entry = ttk.Entry(self.entry_bar, show = '*')
-        self.pass_entry.pack(side = 'left', expand = True, fill = X)
+        self.pass_entry.pack(side = 'left', expand = True, fill = X, padx = 2)
         #Create label for port
-        self.label_port = ttk.Label(self.entry_bar, text = 'Port:')
-        self.label_port.pack(side = 'left', padx = 2)
+        # self.label_port = ttk.Label(self.entry_bar, text = 'Port:')
+        # self.label_port.pack(side = 'left', padx = 2)
         #Create textfield for port
         self.port_entry = ttk.Entry(self.entry_bar, width = 4)
-        self.port_entry.pack(side = 'left', padx = (0, 2))
-        self.port_entry.insert(END, '22')
+        # self.port_entry.pack(side = 'left', padx = (0, 2))
+        self.port_entry.insert(END, '21')
         #Create scrollbar
         self.vbar = ttk.Scrollbar(self.canvas_frame, orient=VERTICAL, style = 'Vertical.TScrollbar')
         self.vbar.pack(anchor = E,side=RIGHT,fill=Y)
@@ -278,12 +279,12 @@ class app:
         #Bind keyboard shortcuts
         self.master.bind('<Control-h>', self.toggle_hidden_files)
         self.master.bind('<Control-H>', self.toggle_hidden_files)
-        self.master.bind('<Control-c>', self.clipboard_copy)
-        self.master.bind('<Control-C>', self.clipboard_copy)
-        self.master.bind('<Control-x>', self.clipboard_cut)
-        self.master.bind('<Control-X>', self.clipboard_cut)
-        self.master.bind('<Control-v>', self.clipboard_paste_thread_create)
-        self.master.bind('<Control-V>', self.clipboard_paste_thread_create) 
+        # self.master.bind('<Control-c>', self.clipboard_copy)
+        # self.master.bind('<Control-C>', self.clipboard_copy)
+        # self.master.bind('<Control-x>', self.clipboard_cut)
+        # self.master.bind('<Control-X>', self.clipboard_cut)
+        # self.master.bind('<Control-v>', self.clipboard_paste_thread_create)
+        # self.master.bind('<Control-V>', self.clipboard_paste_thread_create)
         self.master.bind('<Delete>', self.delete_window)
 
         #Bind events for canvas, this part of code tells what some of the functions do
@@ -303,16 +304,16 @@ class app:
 
         #Bind events for all buttons
         self.connect_button.bind('<Motion>', lambda event, arg = 'Start connection.': self.update_status(event, arg)) 
-        self.upload_button.bind('<Motion>', lambda event, arg = 'Upload file(s) or folder(s).': self.update_status(event, arg)) 
+        # self.upload_button.bind('<Motion>', lambda event, arg = 'Upload file(s) or folder(s).': self.update_status(event, arg))
         self.download_button.bind('<Motion>', lambda event, arg = 'Save/Download file(s) or folder(s).': self.update_status(event, arg)) 
-        self.newfolder_button.bind('<Motion>', lambda event, arg = 'Create a new directory.': self.update_status(event, arg)) 
-        self.delete_button.bind('<Motion>', lambda event, arg = 'Delete.': self.update_status(event, arg)) 
-        self.properties_button.bind('<Motion>', lambda event, arg = 'Edit/View properties.': self.update_status(event, arg)) 
-        self.cut_button.bind('<Motion>', lambda event, arg = 'Cut.': self.update_status(event, arg)) 
-        self.copy_button.bind('<Motion>', lambda event, arg = 'Copy.': self.update_status(event, arg)) 
-        self.paste_button.bind('<Motion>', lambda event, arg = 'Paste.': self.update_status(event, arg)) 
+        # self.newfolder_button.bind('<Motion>', lambda event, arg = 'Create a new directory.': self.update_status(event, arg))
+        self.delete_button.bind('<Motion>', lambda event, arg = 'Delete.': self.update_status(event, arg))
+        # self.properties_button.bind('<Motion>', lambda event, arg = 'Edit/View properties.': self.update_status(event, arg))
+        # self.cut_button.bind('<Motion>', lambda event, arg = 'Cut.': self.update_status(event, arg))
+        # self.copy_button.bind('<Motion>', lambda event, arg = 'Copy.': self.update_status(event, arg))
+        # self.paste_button.bind('<Motion>', lambda event, arg = 'Paste.': self.update_status(event, arg))
         self.search_button.bind('<Motion>', lambda event, arg = 'Find.': self.update_status(event, arg))
-        self.goto_button.bind('<Motion>', lambda event, arg = 'Goto.': self.update_status(event, arg)) 
+        # self.goto_button.bind('<Motion>', lambda event, arg = 'Goto.': self.update_status(event, arg))
         self.up_button.bind('<Motion>', lambda event, arg = 'Go to parent directory.': self.update_status(event, arg)) 
         self.info_button.bind('<Motion>', lambda event, arg = 'About/Info.': self.update_status(event, arg)) 
 
@@ -320,7 +321,7 @@ class app:
         self.toolbar.bind('<Motion>', lambda event, arg = ' ': self.update_status(event, arg)) 
         self.label_usrname.bind('<Motion>', lambda event, arg = ' ': self.update_status(event, arg)) 
         self.label_hostname.bind('<Motion>', lambda event, arg = ' ': self.update_status(event, arg)) 
-        self.label_port.bind('<Motion>', lambda event, arg = ' ': self.update_status(event, arg)) 
+        # self.label_port.bind('<Motion>', lambda event, arg = ' ': self.update_status(event, arg))
 
         #Bind events for all entries/text fields
         self.hostname_entry.bind('<Motion>', lambda event, arg = 'Enter host address.': self.update_status(event, arg)) 
@@ -345,7 +346,7 @@ class app:
         if(self.type_combobox.get() == 'FTP'): 
             self.port_entry.insert(END, '21')
         else: 
-            self.port_entry.insert(END, '22')
+            self.port_entry.insert(END, '21')
 
 
 
@@ -363,13 +364,14 @@ class app:
         except:
             pass
         if(self.type_combobox.get() == 'FTP'): self.ftpController = ftp_controller()
-        else: self.ftpController = sftp_controller()
-        self.thread =  threading.Thread(target = self.connect_thread, args = (self.ftpController,
-            self.hostname_entry.get(), self.usrname_entry.get(), self.pass_entry.get(), int(self.port_entry.get())))
+        else: self.ftpController = ftp_controller()
+        self.thread =  threading.Thread(target = self.connect_thread, args = (self.ftpController, '194.9.80.139', 'alavi_ftp', '@L@vi46857', int(self.port_entry.get())))
         self.thread.daemon = True
         self.thread.start()
         self.process_thread_requests()
-        
+        print(self.hostname_entry.get())
+        print(self.usrname_entry.get())
+        print(self.pass_entry.get())
 
     def connect_thread(self, ftpController, host, usrname, passwd, port):
         try:
@@ -787,78 +789,78 @@ class app:
             thread_request_queue.put(lambda:self.lock_status_bar())
 
 
-    def upload_window(self):
-        self.upload_dialog = Filedialogs.open_file_dialog(self.master, 'Choose file(s) or folder(s) to upload', self.upload_thread)
-
-    def upload_thread(self):
-        #Create console/terminal window
-        self.create_progress_window()
-        #Destroy upload window
-        self.upload_dialog.destroy()
-        #Set status
-        self.update_status('Uploading file(s)...')
-        #start thread
-        self.thread =  threading.Thread(target = self.upload, args = (self.ftpController, self.upload_dialog.file_list, self.upload_dialog.selected_file_indices))
-        self.thread.daemon = True
-        self.thread.start()
-        self.process_thread_requests()
-        
-    def upload(self, ftpController, file_list, selected_file_indices):     
-        #Thread safe progress function
-        def progress(file_name, status):
-            thread_request_queue.put(lambda:self.progress(file_name, status))
-        #Thread safe replace function
-        def replace(file_name, status):
-            thread_request_queue.put(lambda:self.thread_safe_replace(file_name, status))
-            thread_request_queue.join()
-            with self.thread_lock:
-                return self.replace_flag
-        #Loop through selected items and upload them            
-        for index in selected_file_indices:
-            if(isfile(file_list[index])):
-                ftpController.upload_file(file_list[index], os.path.getsize(file_list[index]), progress, replace)
-            else:
-                ftpController.upload_dir(file_list[index], progress, replace)
-        #Update file list and redraw icons
-        thread_request_queue.put(lambda:self.update_file_list())
-        thread_request_queue.put(lambda:self.update_status(' '))
-        thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
-        thread_request_queue.put(lambda:self.console_window.enable_close_button())
-
-    def upload_thread_dnd(self):
-        #Create console/terminal window
-        self.create_progress_window()
-        #Set status
-        self.update_status('Uploading file(s)...')
-        #start thread
-        self.thread =  threading.Thread(target = self.upload_dnd, args = (self.ftpController, self.dnd_file_list))
-        self.thread.daemon = True
-        self.thread.start()
-        self.process_thread_requests()
-        
-    def upload_dnd(self, ftpController, dnd_file_list):
-        #Thread safe progress function
-        def progress(file_name, status):
-            thread_request_queue.put(lambda:self.progress(file_name, status))
-        #Thread safe replace function
-        def replace(file_name, status):
-            thread_request_queue.put(lambda:self.thread_safe_replace(file_name, status))
-            thread_request_queue.join()
-            with self.thread_lock:
-                return self.replace_flag
-        #Loop through selected items and upload them         
-        for file in dnd_file_list:
-            os.chdir('/'.join(file.split('/')[:-1]))
-            file = ''.join(file.split('/')[-1:])
-            if(isfile(file)):
-                ftpController.upload_file(file, os.path.getsize(file), progress, replace)
-            else:
-                ftpController.upload_dir(file, progress, replace)
-        #Update file list and redraw icons
-        thread_request_queue.put(lambda:self.update_file_list())
-        thread_request_queue.put(lambda:self.update_status(' '))
-        thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
-        thread_request_queue.put(lambda:self.console_window.enable_close_button())        
+    # def upload_window(self):
+    #     self.upload_dialog = Filedialogs.open_file_dialog(self.master, 'Choose file(s) or folder(s) to upload', self.upload_thread)
+    #
+    # def upload_thread(self):
+    #     #Create console/terminal window
+    #     self.create_progress_window()
+    #     #Destroy upload window
+    #     self.upload_dialog.destroy()
+    #     #Set status
+    #     self.update_status('Uploading file(s)...')
+    #     #start thread
+    #     self.thread =  threading.Thread(target = self.upload, args = (self.ftpController, self.upload_dialog.file_list, self.upload_dialog.selected_file_indices))
+    #     self.thread.daemon = True
+    #     self.thread.start()
+    #     self.process_thread_requests()
+    #
+    # def upload(self, ftpController, file_list, selected_file_indices):
+    #     #Thread safe progress function
+    #     def progress(file_name, status):
+    #         thread_request_queue.put(lambda:self.progress(file_name, status))
+    #     #Thread safe replace function
+    #     def replace(file_name, status):
+    #         thread_request_queue.put(lambda:self.thread_safe_replace(file_name, status))
+    #         thread_request_queue.join()
+    #         with self.thread_lock:
+    #             return self.replace_flag
+    #     #Loop through selected items and upload them
+    #     for index in selected_file_indices:
+    #         if(isfile(file_list[index])):
+    #             ftpController.upload_file(file_list[index], os.path.getsize(file_list[index]), progress, replace)
+    #         else:
+    #             ftpController.upload_dir(file_list[index], progress, replace)
+    #     #Update file list and redraw icons
+    #     thread_request_queue.put(lambda:self.update_file_list())
+    #     thread_request_queue.put(lambda:self.update_status(' '))
+    #     thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
+    #     thread_request_queue.put(lambda:self.console_window.enable_close_button())
+    #
+    # def upload_thread_dnd(self):
+    #     #Create console/terminal window
+    #     self.create_progress_window()
+    #     #Set status
+    #     self.update_status('Uploading file(s)...')
+    #     #start thread
+    #     self.thread =  threading.Thread(target = self.upload_dnd, args = (self.ftpController, self.dnd_file_list))
+    #     self.thread.daemon = True
+    #     self.thread.start()
+    #     self.process_thread_requests()
+    #
+    # def upload_dnd(self, ftpController, dnd_file_list):
+    #     #Thread safe progress function
+    #     def progress(file_name, status):
+    #         thread_request_queue.put(lambda:self.progress(file_name, status))
+    #     #Thread safe replace function
+    #     def replace(file_name, status):
+    #         thread_request_queue.put(lambda:self.thread_safe_replace(file_name, status))
+    #         thread_request_queue.join()
+    #         with self.thread_lock:
+    #             return self.replace_flag
+    #     #Loop through selected items and upload them
+    #     for file in dnd_file_list:
+    #         os.chdir('/'.join(file.split('/')[:-1]))
+    #         file = ''.join(file.split('/')[-1:])
+    #         if(isfile(file)):
+    #             ftpController.upload_file(file, os.path.getsize(file), progress, replace)
+    #         else:
+    #             ftpController.upload_dir(file, progress, replace)
+    #     #Update file list and redraw icons
+    #     thread_request_queue.put(lambda:self.update_file_list())
+    #     thread_request_queue.put(lambda:self.update_status(' '))
+    #     thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
+    #     thread_request_queue.put(lambda:self.console_window.enable_close_button())
 
 
     def download_window(self):
@@ -961,7 +963,10 @@ class app:
 
     def delete_window(self, event = None):
         if(len(self.selected_file_indices) < 1): return
-        self.delete_warning = Filedialogs.warning_dialog(self.master, 'Are you sure?', self.delete_thread, self.delete_icon, 'Delete selected files/folders?')
+        self.delete_warning = Filedialogs.warning_dialog(self.master, 'Are you sure?', self.delete_real, self.Warning_icon, 'Delete selected files/folders?')
+
+    def delete_real(self):
+        self.delete_warning2 = Filedialogs.warning_dialog(self.master, 'Real , Are you sure?', self.delete_thread, self.delete_icon, 'Real , Delete selected files/folders?')
 
     def delete_thread(self):
         #Create console/terminal window
@@ -970,6 +975,7 @@ class app:
         self.replace.clear()
         #Destroy warning window
         self.delete_warning.destroy()
+        self.delete_warning2.destroy()
         #Set current status
         self.update_status('Deleting file(s)...')       
         #Start thread 
@@ -1003,85 +1009,85 @@ class app:
 
 
 
-    def clipboard_cut(self, event = None):
-        #Check number of files in clipboard
-        if(len(self.selected_file_indices) < 1): return
-        self.cut = True
-        del self.clipboard_file_list[:]
-        for index in self.selected_file_indices:
-            #If it is a search result get the clipboard path from the search result
-            if(self.search_performed is True):
-                self.clipboard_path_list.append('/'.join(self.file_list[index].split('/')[:-1]))
-                self.clipboard_file_list.append(''.join(self.file_list[index].split('/')[-1:]))
-            else:
-                self.clipboard_path_list.append(self.ftpController.pwd())
-                self.clipboard_file_list.append(self.file_list[index])
-            self.detailed_clipboard_file_list.append(self.detailed_file_list[index])
-        self.deselect_everything()
-
-    def clipboard_copy(self, event = None):
-        #Check number of files in clipboard
-        if(len(self.selected_file_indices) < 1): return      
-        self.copy = True
-        del self.clipboard_file_list[:]
-        for index in self.selected_file_indices:
-            #If it is a search result get the clipboard path from the search result
-            if(self.search_performed is True):
-                self.clipboard_path_list.append('/'.join(self.file_list[index].split('/')[:-1]))
-                self.clipboard_file_list.append(''.join(self.file_list[index].split('/')[-1:]))
-            else:
-                self.clipboard_path_list.append(self.ftpController.pwd())
-                self.clipboard_file_list.append(self.file_list[index])
-            self.detailed_clipboard_file_list.append(self.detailed_file_list[index])
-        self.deselect_everything()
-
-    def clipboard_paste_thread_create(self, event = None):
-        #Check number of files in clipboard
-        if(len(self.clipboard_file_list) < 1): return
-        #Create console/terminal window        
-        self.create_progress_window()
-        #start thread
-        self.thread =  threading.Thread(target = self.clipboard_paste, args = (self.ftpController, self.clipboard_path_list, self.clipboard_file_list,
-                                        self.detailed_clipboard_file_list, self.cut, self.copy))
-        self.thread.daemon = True
-        self.thread.start()
-        self.process_thread_requests()
-
-    def clipboard_paste(self, ftpController, clipboard_path_list, clipboard_file_list, detailed_clipboard_file_list, cut, copy):        
-        #Set current status
-        thread_request_queue.put(lambda:self.update_status('Moving file(s)...'))        
-        if(cut is True):
-            #Loop through all selected files and folders
-            for clipboard_path, file_name in zip(clipboard_path_list, clipboard_file_list):
-                ftpController.move_dir(clipboard_path +'/'+file_name, ftpController.pwd()+'/'+file_name, self.progress, self.ask_replace)
-            thread_request_queue.put(lambda:self.clear_clipboard())
-            thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
-        elif (copy is True):
-            #Set current status
-            thread_request_queue.put(lambda:self.update_status('Copying file(s)...'))
-            #Loop through all selected files and folders
-            for clipboard_path, file_name, file_details in zip(clipboard_path_list, clipboard_file_list, detailed_clipboard_file_list):
-                #Check for file or directory, use appropriate function
-                try:
-                    if(self.ftpController.is_dir(file_details)):
-                        ftpController.copy_dir(clipboard_path, file_name, self.progress, self.ask_replace)
-                    else:                    
-                        ftpController.copy_file(clipboard_path, file_name, int(self.ftpController.get_properties(file_details)[3]), self.progress, self.ask_replace)
-                except:
-                    thread_request_queue.put(lambda:self.progress('Failed to copy file/folder', file_name))
-            thread_request_queue.put(lambda:self.clear_clipboard())
-            thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
-        #update file list and redraw icons
-        thread_request_queue.put(lambda:self.update_file_list())
-        thread_request_queue.put(lambda:self.update_status(' '))
-        thread_request_queue.put(lambda:self.console_window.enable_close_button())
-
-    def clear_clipboard(self):
-        del self.clipboard_file_list[:]
-        del self.detailed_clipboard_file_list[:]
-        del self.clipboard_path_list[:]  
-        self.cut = False
-        self.copy = False      
+    # def clipboard_cut(self, event = None):
+    #     #Check number of files in clipboard
+    #     if(len(self.selected_file_indices) < 1): return
+    #     self.cut = True
+    #     del self.clipboard_file_list[:]
+    #     for index in self.selected_file_indices:
+    #         #If it is a search result get the clipboard path from the search result
+    #         if(self.search_performed is True):
+    #             self.clipboard_path_list.append('/'.join(self.file_list[index].split('/')[:-1]))
+    #             self.clipboard_file_list.append(''.join(self.file_list[index].split('/')[-1:]))
+    #         else:
+    #             self.clipboard_path_list.append(self.ftpController.pwd())
+    #             self.clipboard_file_list.append(self.file_list[index])
+    #         self.detailed_clipboard_file_list.append(self.detailed_file_list[index])
+    #     self.deselect_everything()
+    #
+    # def clipboard_copy(self, event = None):
+    #     #Check number of files in clipboard
+    #     if(len(self.selected_file_indices) < 1): return
+    #     self.copy = True
+    #     del self.clipboard_file_list[:]
+    #     for index in self.selected_file_indices:
+    #         #If it is a search result get the clipboard path from the search result
+    #         if(self.search_performed is True):
+    #             self.clipboard_path_list.append('/'.join(self.file_list[index].split('/')[:-1]))
+    #             self.clipboard_file_list.append(''.join(self.file_list[index].split('/')[-1:]))
+    #         else:
+    #             self.clipboard_path_list.append(self.ftpController.pwd())
+    #             self.clipboard_file_list.append(self.file_list[index])
+    #         self.detailed_clipboard_file_list.append(self.detailed_file_list[index])
+    #     self.deselect_everything()
+    #
+    # def clipboard_paste_thread_create(self, event = None):
+    #     #Check number of files in clipboard
+    #     if(len(self.clipboard_file_list) < 1): return
+    #     #Create console/terminal window
+    #     self.create_progress_window()
+    #     #start thread
+    #     self.thread =  threading.Thread(target = self.clipboard_paste, args = (self.ftpController, self.clipboard_path_list, self.clipboard_file_list,
+    #                                     self.detailed_clipboard_file_list, self.cut, self.copy))
+    #     self.thread.daemon = True
+    #     self.thread.start()
+    #     self.process_thread_requests()
+    #
+    # def clipboard_paste(self, ftpController, clipboard_path_list, clipboard_file_list, detailed_clipboard_file_list, cut, copy):
+    #     #Set current status
+    #     thread_request_queue.put(lambda:self.update_status('Moving file(s)...'))
+    #     if(cut is True):
+    #         #Loop through all selected files and folders
+    #         for clipboard_path, file_name in zip(clipboard_path_list, clipboard_file_list):
+    #             ftpController.move_dir(clipboard_path +'/'+file_name, ftpController.pwd()+'/'+file_name, self.progress, self.ask_replace)
+    #         thread_request_queue.put(lambda:self.clear_clipboard())
+    #         thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
+    #     elif (copy is True):
+    #         #Set current status
+    #         thread_request_queue.put(lambda:self.update_status('Copying file(s)...'))
+    #         #Loop through all selected files and folders
+    #         for clipboard_path, file_name, file_details in zip(clipboard_path_list, clipboard_file_list, detailed_clipboard_file_list):
+    #             #Check for file or directory, use appropriate function
+    #             try:
+    #                 if(self.ftpController.is_dir(file_details)):
+    #                     ftpController.copy_dir(clipboard_path, file_name, self.progress, self.ask_replace)
+    #                 else:
+    #                     ftpController.copy_file(clipboard_path, file_name, int(self.ftpController.get_properties(file_details)[3]), self.progress, self.ask_replace)
+    #             except:
+    #                 thread_request_queue.put(lambda:self.progress('Failed to copy file/folder', file_name))
+    #         thread_request_queue.put(lambda:self.clear_clipboard())
+    #         thread_request_queue.put(lambda:self.progress('You can now close the window', 'Done'))
+    #     #update file list and redraw icons
+    #     thread_request_queue.put(lambda:self.update_file_list())
+    #     thread_request_queue.put(lambda:self.update_status(' '))
+    #     thread_request_queue.put(lambda:self.console_window.enable_close_button())
+    #
+    # def clear_clipboard(self):
+    #     del self.clipboard_file_list[:]
+    #     del self.detailed_clipboard_file_list[:]
+    #     del self.clipboard_path_list[:]
+    #     self.cut = False
+    #     self.copy = False
 
 
     def ask_replace(self, file_name, status):
